@@ -1,0 +1,33 @@
+/* RichTextEditor.css */
+.editorClassName {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: plaintext !important;
+  caret-color: black;
+  line-height: 1.5;
+}
+
+.public-DraftEditor-content {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: plaintext !important;
+}
+
+.toolbarClassName {
+  direction: ltr !important;
+  border-bottom: 1px solid #f1f1f1 !important;
+}
+
+.wrapperClassName {
+  padding: 1px !important;
+  direction: ltr !important;
+}
+
+/* Fix for cursor position */
+.DraftEditor-root {
+  height: 100%;
+}
+
+.public-DraftEditor-content {
+  min-height: 100%;
+}

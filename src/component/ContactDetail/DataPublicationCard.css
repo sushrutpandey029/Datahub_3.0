@@ -1,0 +1,69 @@
+.containers-outs {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+ 
+}
+
+.containers-ins {
+ border-radius: 0px 0px 20px 20px;
+ width: 25%;
+ margin: 1rem;
+ box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+ border: 1px solid #2b60ad;
+ background-color: #fff;
+ position: relative;
+
+  button {
+   border: none;
+   background-color: #2b60ad;
+   width: 40%;
+   border-radius: 16px;
+   font-size: 14px !important
+    
+  }
+}
+
+.view-button{    position: absolute;
+ bottom: 0%;
+ width: 100%;
+button{
+ color: white !important;
+ font-size: larger;
+ font-weight: 600;
+ padding: 0.5rem;
+ margin-bottom: 1.5rem;
+ transition: 0.5s;
+ width: 50%;
+position: relative; 
+  img {
+    color: white;
+    margin-right: 0.6rem;
+  }
+}
+
+button:hover {
+ opacity: 0.5;
+ background-color:#39b1ac;
+ box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.4);
+}
+}
+
+
+ .heading {
+   margin-top: 0;
+   background: #2b60ad;
+   color: #fff;
+   border-radius: 0px 0px 40px 40px;
+   box-shadow: rgb(80 80 80 / 65%) 0px 7px 29px 0px;
+h3 {
+ font-weight: 600;
+ font-size: 1.3em;
+ padding: 8px 0px;
+}
+}
+
+.description {
+  min-height: 320px; /* Adjust this value as needed */
+  padding: 10px; /* Optional: Add padding for better spacing */
+}
