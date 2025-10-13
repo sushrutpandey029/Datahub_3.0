@@ -1,4 +1,3 @@
-// components/MonthView.js
 import React from "react";
 import {
   WEEKDAYS,
@@ -26,7 +25,6 @@ const MonthView = ({ currentDate, meetings, handleDateClick }) => {
     date.setDate(startDate.getDate() + i);
 
     const dateStr = date.toISOString().split("T")[0];
-    // const dateStr = date.toLocaleDateString("en-CA");
     const dayEvents = meetings.filter(
       (meeting) => meeting.start.split("T")[0] === dateStr
     );
@@ -57,9 +55,6 @@ const MonthView = ({ currentDate, meetings, handleDateClick }) => {
               {event.title} - {event.extendedProps.state}
             </div>
           ))}
-          {dayEvents.length === 0 && (
-            <div className="no-events">No meetings</div>
-          )}
         </div>
       </div>
     );

@@ -554,58 +554,6 @@ const PieChart = ({
     <div className="bg-white p-4 rounded-lg shadow h-full">
       {/* Header with filters and back button */}
       <div className="flex justify-between items-center mb-4">
-        {/* <div className="flex items-center gap-2">
-          {drilldownHistory.length > 0 && (
-            <Button
-              variant="outlined"
-              onClick={handleBackClick}
-              disabled={loading}
-            >
-              Back
-            </Button>
-          )}
-          <Chip
-            label={currentLevel.replace(/_/g, " ").toUpperCase()}
-            color="primary"
-            variant="outlined"
-          />
-        </div> */}
-
-        {/* <div className="flex gap-2 items-end">
-          <div>
-            <label className="block text-sm mb-1">Year</label>
-            <select
-              value={localYear}
-              onChange={(e) => handleYearChange(e.target.value)}
-              className="w-full p-2 border rounded-md text-sm"
-              disabled={loading}
-            >
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm mb-1">Month</label>
-            <select
-              value={localMonth}
-              onChange={(e) => handleMonthChange(e.target.value)}
-              className="w-full p-2 border rounded-md text-sm"
-              disabled={loading}
-            >
-              <option value="">All Months</option>
-              {months.map((month) => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div> */}
-
         <div className="mb-4 flex flex-wrap md:flex-nowrap gap-4 items-end">
           <div className="w-32">
             {drilldownHistory.length > 0 && (
@@ -617,7 +565,7 @@ const PieChart = ({
               htmlFor="year-select"
               className="block text-sm font-medium text-gray-700 mb-1 px-3"
             >
-              Year
+              Financial Year
             </label>
             <select
               value={localYear}
@@ -655,42 +603,30 @@ const PieChart = ({
         </div>
       </div>
 
-      {/* Loading State */}
-      {loading && (
-        <div className="flex justify-center items-center h-64">
+      {/* Unified Chart Wrapper (Fixed Height) */}
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "400px" }}
+      >
+        {loading ? (
           <div className="text-gray-500">Loading chart data...</div>
-        </div>
-      )}
-
-      {/* Error State */}
-      {error && (
-        <div className="flex justify-center items-center h-64">
+        ) : error ? (
           <div className="text-red-500">{error}</div>
-        </div>
-      )}
-
-      {/* Chart Area */}
-      {!loading && !error && series.length > 0 && (
-        <div className="flex-grow flex flex-col items-center justify-center">
+        ) : series.length > 0 ? (
           <ReactApexChart
             options={chartOptions}
             series={series}
             type="donut"
             width="100%"
-            height="445"
+            height="100%"
           />
-        </div>
-      )}
-
-      {/* No Data State */}
-      {!loading && !error && series.length === 0 && (
-        <div className="flex justify-center items-center h-64">
+        ) : (
           <div className="text-gray-500">No data available</div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Record Details Modal */}
-      {/* <Dialog
+      <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         maxWidth="lg"
@@ -782,56 +718,6 @@ const PieChart = ({
             <Typography>No meeting details available</Typography>
           )}
         </DialogContent>
-      </Dialog> */}
-      <Dialog
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        maxWidth="lg"
-        fullWidth
-      >
-        <DialogTitle>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography variant="h6">Meeting Records</Typography>
-            <IconButton onClick={() => setModalOpen(false)}>
-              <Close />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Regional Head</TableCell>
-                  <TableCell>Activity Type</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Region</TableCell>
-                  <TableCell>State</TableCell>
-                  <TableCell>Description</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {modalData.map((record, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{record.regional_head}</TableCell>
-                    <TableCell>{record.activity_type}</TableCell>
-                    <TableCell>{record.dateOfMeeting}</TableCell>
-                    <TableCell>{record.region}</TableCell>
-                    <TableCell>{record.state}</TableCell>
-                    <TableCell>{record.short_description}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setModalOpen(false)}>Close</Button>
-        </DialogActions>
       </Dialog>
     </div>
   );

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +8,7 @@ import axios from "axios";
 import Breadcrumb from "../../common/Breadcrumb";
 import SecurityIcon from "@mui/icons-material/Security";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"; 
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const DFM = () => {
   const user = localStorage.getItem("user");
@@ -72,7 +71,7 @@ const DFM = () => {
         <div className="row g-0 ">
           <div className="col-12">
             <div className="col-sm-6">
-            <div className="col-sm-6 mb-3">
+              <div className="col-sm-6 mb-3">
                 <button
                   onClick={() => navigate(-1)} // Goes back to previous page
                   className="back-button"

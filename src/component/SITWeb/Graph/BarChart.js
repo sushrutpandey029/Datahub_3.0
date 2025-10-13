@@ -13,13 +13,9 @@ import {
   Chip,
   Paper,
   Button,
-  Breadcrumbs,
-  Link,
 } from "@mui/material";
 import {
   Close,
-  Home,
-  CalendarMonth,
   PieChart as PieChartIcon,
   Map,
   Event,
@@ -341,61 +337,8 @@ const BarChart = ({
 
   return (
     <div className="bg-white p-4 rounded-lg shadow h-full">
-      {/* Breadcrumb Navigation */}
-      {/* {drilldownHistory.length > 0 && (
-        <Box sx={{ mb: 2 }}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link
-              color="inherit"
-              onClick={resetToInitial}
-              sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
-            >
-              <Home sx={{ mr: 0.5 }} fontSize="small" />
-              Home
-            </Link>
-            {drilldownHistory.map((item, index) => (
-              <Link
-                key={index}
-                color={
-                  index === drilldownHistory.length - 1
-                    ? "text.primary"
-                    : "inherit"
-                }
-                onClick={() => {
-                  const newHistory = drilldownHistory.slice(0, index + 1);
-                  setDrilldownHistory(newHistory);
-                  if (newHistory.length === 0) {
-                    fetchData(null, true);
-                  } else {
-                    const lastItem = newHistory[newHistory.length - 1];
-                    fetchData(
-                      { level: lastItem.level, value: lastItem.value },
-                      true
-                    );
-                  }
-                }}
-                sx={{ cursor: "pointer" }}
-              >
-                {getBreadcrumbLabel(item)}
-              </Link>
-            ))}
-          </Breadcrumbs>
-        </Box>
-      )} */}
-
       {/* Header with filters and back button */}
       <div className="flex justify-between items-center mb-4">
-        {/* <div className="flex items-center gap-2">
-          {drilldownHistory.length > 0 && (
-            <Button
-              variant="outlined"
-              onClick={handleBackClick}
-              disabled={loading}
-            >
-              <ArrowBackIcon />
-            </Button>
-          )}
-        </div> */}
         <div className="mb-4 flex flex-wrap md:flex-nowrap gap-4 items-end">
           <div className="w-32">
             {drilldownHistory.length > 0 && (
@@ -411,7 +354,7 @@ const BarChart = ({
               htmlFor="year-select"
               className="block text-sm font-medium text-gray-700 mb-1 px-3"
             >
-              Year
+             Financial Year
             </label>
             <select
               value={localYear}
@@ -449,39 +392,27 @@ const BarChart = ({
         </div>
       </div>
 
-      {/* Loading State */}
-      {loading && (
-        <div className="flex justify-center items-center h-64">
+      {/* Chart Wrapper (Fixed Height) */}
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: "400px" }}
+      >
+        {loading ? (
           <div className="text-gray-500">Loading chart data...</div>
-        </div>
-      )}
-
-      {/* Error State */}
-      {error && (
-        <div className="flex justify-center items-center h-64">
+        ) : error ? (
           <div className="text-red-500">{error}</div>
-        </div>
-      )}
-
-      {/* Chart Area */}
-      {!loading && !error && seriesData.length > 0 && (
-        <div className="flex-grow flex flex-col items-center justify-center">
+        ) : seriesData.length > 0 ? (
           <ReactApexChart
             options={chartOptions}
             series={[{ name: "Meetings", data: seriesData }]}
             type="bar"
             width="100%"
-            height="400"
+            height="100%"
           />
-        </div>
-      )}
-
-      {/* No Data State */}
-      {!loading && !error && seriesData.length === 0 && (
-        <div className="flex justify-center items-center h-64">
+        ) : (
           <div className="text-gray-500">No data available</div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Meeting Details Modal */}
       <Dialog

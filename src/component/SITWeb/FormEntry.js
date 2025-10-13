@@ -949,17 +949,6 @@ const FormEntry = () => {
             required={field.required}
           />
         );
-      // case "textarea":
-      //   return (
-      //     <textarea
-      //       name={field.name}
-      //       rows={4}
-      //       value={formData.dynamicFields[field.name] || ""}
-      //       onChange={handleChange}
-      //       className="form-control"
-      //       required={field.required}
-      //     />
-      //   );
       case "textarea":
         if (field.name === "activityDetails" || field.name === "statusUpdate") {
           return (

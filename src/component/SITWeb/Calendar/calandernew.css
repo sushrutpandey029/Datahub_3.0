@@ -1,7 +1,7 @@
 /* Custom Calendar Styles - Integrated from HTML/CSS/JS */
 .calendar-header {
   display: flex;
-  justify-content: space-between;
+  justify-content:flex-end;
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
@@ -183,8 +183,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   background-color: #f0f0f0;
-  border: 1px solid #ddd;
-}
+ }
 
 /* Remove color coding from events */
 .event-today,
@@ -259,8 +258,7 @@
   cursor: pointer;
   transition: transform 0.2s;
   background-color: #f0f0f0;
-  border: 1px solid #ddd;
-}
+ }
 
 .week-event:hover {
   transform: scale(1.02);
@@ -843,6 +841,7 @@
 .week-day-column .week-event {
   position: relative;
   z-index: 20;
+  text-align: left;
 }
 
 /* Print styles for spans */
@@ -910,8 +909,7 @@
 
 /* Regular events with dark borders */
 .event-dot {
-  border: 1px solid #333 !important; /* Dark border for regular events */
-  font-weight: 500;
+   font-weight: 500;
 }
 
 .event-span-continuation {
@@ -956,3 +954,5 @@
   background: #f5f5f5 !important;
   opacity: 0.7;
 }
+
+

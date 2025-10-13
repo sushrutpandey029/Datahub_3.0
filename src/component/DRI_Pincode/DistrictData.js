@@ -80,6 +80,7 @@ const DistrictData = ({
         } else {
           // Full district data - data comes in "data" object with pincodes as keys
           const data = response.data.data || {};
+          console.log("data in pinlist", data);
           const pinList = Object.keys(data);
           setDistrictData(data);
           setPinCodes(pinList);
@@ -280,8 +281,8 @@ const DistrictData = ({
           backgroundColor: "white",
           maxHeight: "100vh",
           flex: 1,
-          minHeight: 0, 
-          overflow: "auto", 
+          minHeight: 0,
+          overflow: "auto",
           "& td": { backgroundColor: "white !important" },
         }}
       >

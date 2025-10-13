@@ -67,19 +67,19 @@ function GraphMaster({ userRole, userName }) {
     <Grid container spacing={2}>
       {/* Global Filter Box */}
       <Grid item xs={12} mt={5}>
-        <Box
-          display="flex"
-          gap={2}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mb: 2 }}
-        >
+        <Box display="flex" gap={2} alignItems="center" justifyContent="center">
           <FormControl sx={{ minWidth: 150 }}>
-            <InputLabel>Year</InputLabel>
+            <InputLabel> Financial Year</InputLabel>
             <Select
               value={globalYear}
               onChange={(e) => setGlobalYear(e.target.value)}
-              label="Year"
+              label="Financial Year"
+              sx={{
+                height: 45, // Reduce overall height
+                "& .MuiSelect-select": {
+                  paddingY: 0.5, // Reduce vertical padding
+                },
+              }}
             >
               {years.map((year) => (
                 <MenuItem key={year} value={year}>
@@ -95,7 +95,13 @@ function GraphMaster({ userRole, userName }) {
               value={globalMonth}
               onChange={(e) => setGlobalMonth(e.target.value)}
               label="Month"
-            >
+              sx={{
+                height: 45,
+                "& .MuiSelect-select": {
+                  paddingY: 0.5,
+                },
+              }}
+             >
               <MenuItem value="">All Months</MenuItem>
               {months.map((month) => (
                 <MenuItem key={month} value={month}>

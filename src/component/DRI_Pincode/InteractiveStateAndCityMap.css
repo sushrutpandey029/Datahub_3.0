@@ -416,6 +416,7 @@ button {
 }
 
 /* // css for modal */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -447,4 +448,9 @@ button {
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+
+.MuiAutocomplete-popper {
+  z-index: 12000 !important;
 }

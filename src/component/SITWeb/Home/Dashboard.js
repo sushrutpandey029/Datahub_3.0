@@ -36,6 +36,7 @@ const Dashboard = () => {
             },
           }
         );
+       
         setActivityCounts(response.data.data);
         setLoading(false);
       } catch (err) {

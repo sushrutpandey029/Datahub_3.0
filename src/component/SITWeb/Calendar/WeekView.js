@@ -47,9 +47,7 @@ const WeekView = ({ currentDate, meetings, selectedDay, handleDayClick }) => {
                 {event.title} - {event.extendedProps.state}
               </div>
             ))
-          ) : (
-            <div className="no-events">No meetings</div>
-          )}
+          ) : null}
         </div>
       </div>
     );

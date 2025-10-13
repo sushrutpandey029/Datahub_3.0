@@ -2,7 +2,7 @@
 import React from "react";
 
 const MeetingModal = ({ showModal, selectedMeetings, setShowModal }) => {
-  console.log("selectedMeetings",selectedMeetings)
+  console.log("selectedMeetings", selectedMeetings);
   if (!showModal || selectedMeetings.length === 0) return null;
 
   return (
@@ -38,20 +38,38 @@ const MeetingModal = ({ showModal, selectedMeetings, setShowModal }) => {
           >
             <thead>
               <tr>
-                <th style={{ border: "1px solid #ccc", padding: "8px", textAlign: "left" }}>
+                <th
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
                   Activity Type
                 </th>
-                <th style={{ border: "1px solid #ccc", padding: "8px", textAlign: "left" }}>
+                <th
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
                   Date of Meeting
                 </th>
-                <th style={{ border: "1px solid #ccc", padding: "8px", textAlign: "left" }}>
+                <th
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
                   State
                 </th>
               </tr>
             </thead>
             <tbody>
               {selectedMeetings.map((meeting, idx) => (
-                <tr key={idx}>
+                <tr key={idx} >
                   <td style={{ border: "1px solid #ccc", padding: "8px" }}>
                     {meeting.title || "N/A"}
                   </td>

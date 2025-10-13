@@ -1,5 +1,6 @@
 export const BaseUrl = "https://api.mfinindia.org";
 //export const BaseUrl = "http://localhost:8000";
+
 export const GlpGrowthTrendsApi = "api/auth/glp-growth-trend-calculations";
 export const microFinanceActiveEntities =
   "api/auth/micro-finance-active-entities";
@@ -28,15 +29,6 @@ export const importCbState = "api/auth/cb-state-master";
 
 // member-associate-master
 export const importMemberAssociateMaster = "api/auth/member-associate-master";
-
-// mudra
-
-// export const importMudraBankWise = "api/auth/mudrabankwise";
-// export const importMudraDistrictWise = "api/auth/mudradistrictwise";
-// export const importRadarExternalInciterApi = "api/auth/rader-external-inciter";
-// export const importRadarNegativeAreaApi = "api/auth/rader-negative-area";
-// export const importRadarRiskyAreaApi = "api/auth/rader-risky-area";
-// export const importRadarRingLeaderApi = "api/auth/rader-ring-leader";
 
 //micrometer import
 export const importMmMasterDataApi = "api/auth/mm-import-master-data";
