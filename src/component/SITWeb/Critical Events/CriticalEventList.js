@@ -1068,7 +1068,6 @@
 
 // export default CriticalEventList;
 
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -1428,7 +1427,7 @@ const CriticalEventList = () => {
     XLSX.writeFile(wb, filename);
   };
 
-  // HOD/SI Remark Column (ALWAYS LAST)
+  // HOD/SI Remark Column (ALWAYS LAST) - COMPACT VERSION
   const hodSiRemarkColumn = {
     name: "HOD/SI Remark",
     cell: (row) => {
@@ -1465,23 +1464,24 @@ const CriticalEventList = () => {
         <div style={{ 
           display: "flex", 
           alignItems: "center", 
-          gap: "4px", 
-          minWidth: "280px",
-          maxWidth: "280px"
+          gap: "3px", 
+          minWidth: "220px",
+          maxWidth: "220px"
         }}>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
             style={{
-              padding: "4px 8px",
-              borderRadius: "4px",
+              padding: "3px 6px",
+              borderRadius: "3px",
               border: "1px solid #ccc",
-              minWidth: "90px",
-              fontSize: "11px",
-              textAlign: "left"
+              minWidth: "75px",
+              fontSize: "10px",
+              textAlign: "left",
+              height: "28px"
             }}
           >
-            <option value="">Select Status</option>
+            <option value="">Status</option>
             <option value="Open">Open</option>
             <option value="Closed">Closed</option>
           </select>
@@ -1491,16 +1491,18 @@ const CriticalEventList = () => {
             onChange={(e) => setComment(e.target.value)}
             placeholder="Comments..."
             style={{
-              padding: "4px 6px",
-              borderRadius: "4px",
+              padding: "3px 5px",
+              borderRadius: "3px",
               border: "1px solid #ccc",
-              width: "120px",
-              minWidth: "120px",
+              width: "90px",
+              minWidth: "90px",
               resize: "vertical",
-              minHeight: "32px",
-              fontSize: "11px",
+              minHeight: "28px",
+              maxHeight: "60px",
+              fontSize: "10px",
               textAlign: "left",
-              fontFamily: "inherit"
+              fontFamily: "inherit",
+              lineHeight: "1.2"
             }}
           />
 
@@ -1510,10 +1512,10 @@ const CriticalEventList = () => {
             size="small"
             onClick={handleUpdate}
             sx={{ 
-              minWidth: "28px", 
-              width: "28px",
-              height: "28px",
-              minHeight: "28px",
+              minWidth: "26px", 
+              width: "26px",
+              height: "26px",
+              minHeight: "26px",
               p: 0
             }}
           >
@@ -1523,9 +1525,9 @@ const CriticalEventList = () => {
       );
     },
     ignoreRowClick: true,
-    width: "280px",
-    minWidth: "280px",
-    maxWidth: "280px",
+    width: "220px",
+    minWidth: "220px",
+    maxWidth: "220px",
     center: false,
     omit: !(
       userRole === "Admin" ||
@@ -1534,80 +1536,27 @@ const CriticalEventList = () => {
     ),
   };
 
-  // Actions Column (View + Delete)
-  const actionsColumn = {
-    name: "Actions",
+  // SEPARATE ACTION COLUMNS
+
+  // View Column
+  const viewColumn = {
+    name: "View",
     cell: (row) => (
-      <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
-        {/* View Button */}
-        <Tooltip title="View Details">
-          <IconButton
-            color="info"
-            size="small"
-            onClick={() => handleViewClick(row)}
-            sx={{ 
-              minWidth: "32px", 
-              width: "32px",
-              height: "32px"
-            }}
-          >
-            <VisibilityIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-
-        {/* Delete Button */}
-        <Tooltip title="Delete">
-          <IconButton
-            color="error"
-            size="small"
-            onClick={() => handleDelete(row)}
-            sx={{ 
-              minWidth: "32px", 
-              width: "32px",
-              height: "32px"
-            }}
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <Tooltip title="View Details">
+        <IconButton
+          color="info"
+          size="small"
+          onClick={() => handleViewClick(row)}
+          sx={{ 
+            minWidth: "32px", 
+            width: "32px",
+            height: "32px"
+          }}
+        >
+          <VisibilityIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
     ),
-    ignoreRowClick: true,
-    width: "100px",
-    minWidth: "100px",
-    maxWidth: "100px",
-    center: true,
-  };
-
-  // Track Column
-  const trackColumn = {
-    name: "Track",
-    cell: function (row) {
-      var isReopen =
-        row.hod_observation && row.hod_observation.toLowerCase() === "reopen";
-      return (
-        <Tooltip title="Track Meeting">
-          <IconButton
-            size="small"
-            onClick={() => navigate(`/meeting-tracking/${row.id}`)}
-            sx={{
-              minWidth: "32px",
-              width: "32px",
-              height: "32px",
-              backgroundColor: isReopen ? "#ff0000" : "transparent",
-              color: isReopen ? "#fff" : "inherit",
-              fontWeight: isReopen ? "bold" : "normal",
-              animation: isReopen ? "blinkTrack 0.6s ease-in-out infinite" : "none",
-              '&:hover': {
-                backgroundColor: isReopen ? "#ff0000" : "rgba(0, 0, 0, 0.04)",
-              }
-            }}
-          >
-            <InfoIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      );
-    },
     ignoreRowClick: true,
     width: "80px",
     minWidth: "80px",
@@ -1689,37 +1638,81 @@ const CriticalEventList = () => {
       userRole === "SI_Admin",
   };
 
+  // Delete Column
+  const deleteColumn = {
+    name: "Delete",
+    cell: (row) => (
+      <Tooltip title="Delete">
+        <IconButton
+          color="error"
+          size="small"
+          onClick={() => handleDelete(row)}
+          sx={{ 
+            minWidth: "32px", 
+            width: "32px",
+            height: "32px"
+          }}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+    ),
+    ignoreRowClick: true,
+    width: "80px",
+    minWidth: "80px",
+    maxWidth: "80px",
+    center: true,
+  };
+
+  // Track Column
+// Track Column - Blue color for normal, Red for Reopen
+const trackColumn = {
+  name: "Track",
+  cell: function (row) {
+    var isReopen =
+      row.hod_observation && row.hod_observation.toLowerCase() === "reopen";
+    return (
+      <Tooltip title="Track Meeting">
+        <IconButton
+          size="small"
+          onClick={() => navigate(`/meeting-tracking/${row.id}`)}
+          sx={{
+            minWidth: "38px",
+            width: "38px",
+            height: "32px",
+            backgroundColor: isReopen ? "#ff4444" : "transparent",
+            color: isReopen ? "#ffffff" : "#1976d2", // Blue color for normal track
+            fontWeight: isReopen ? "bold" : "normal",
+            animation: isReopen ? "pulse 1.5s ease-in-out infinite" : "none",
+            '&:hover': {
+              backgroundColor: isReopen ? "#ff2222" : "rgba(25, 118, 210, 0.04)",
+              transform: isReopen ? "scale(1.1)" : "scale(1.05)",
+            },
+            transition: "all 0.3s ease",
+          }}
+        >
+          <InfoIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+    );
+  },
+  ignoreRowClick: true,
+  width: "80px",
+  minWidth: "80px",
+  maxWidth: "80px",
+  center: true,
+};
+
   // Define ALL columns in EXACT SERIES/ORDER for "View All Columns"
   const allColumnsInSeries = [
     // 1. MID
     {
-      name: "M.ID",
+      name: "MID",
       selector: (row) => row.id,
       sortable: true,
       width: "80px",
       minWidth: "80px",
       maxWidth: "80px",
-    },
-
-       {
-      name: "Region",
-      selector: (row) => row.region,
-      sortable: true,
-      width: "120px",
-      minWidth: "120px",
-    },
-    // 5. Regional Head
-    {
-      name: "Regional Head",
-      selector: (row) => row.regional_head,
-      sortable: true,
-      width: "150px",
-      minWidth: "150px",
-      omit: !(
-        userRole === "Admin" ||
-        userRole === "Vertical-Head" ||
-        userRole === "SI_Admin"
-      ),
     },
     // 2. State
     {
@@ -1728,7 +1721,17 @@ const CriticalEventList = () => {
       sortable: true,
       width: "130px",
       minWidth: "130px",
-      wrap: true,
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.state || '-'}
+        </div>
+      )
     },
     // 3. District
     {
@@ -1737,10 +1740,61 @@ const CriticalEventList = () => {
       sortable: true,
       width: "130px",
       minWidth: "130px",
-      wrap: true,
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.district || '-'}
+        </div>
+      )
     },
     // 4. Region
- 
+    {
+      name: "Region",
+      selector: (row) => row.region,
+      sortable: true,
+      width: "120px",
+      minWidth: "120px",
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.region || '-'}
+        </div>
+      )
+    },
+    // 5. Regional Head
+    {
+      name: "Regional Head",
+      selector: (row) => row.regional_head,
+      sortable: true,
+      width: "150px",
+      minWidth: "150px",
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.regional_head || '-'}
+        </div>
+      ),
+      omit: !(
+        userRole === "Admin" ||
+        userRole === "Vertical-Head" ||
+        userRole === "SI_Admin"
+      ),
+    },
     // 6. Village
     {
       name: "Village",
@@ -1748,55 +1802,77 @@ const CriticalEventList = () => {
       sortable: true,
       width: "120px",
       minWidth: "120px",
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.village || '-'}
+        </div>
+      )
     },
-    // 7. Incidents
+    // 7. Incidents - SHOW IN ONE LINE WITH ELLIPSIS
     {
       name: "Incidents",
       selector: (row) => row.incidents,
       sortable: true,
       width: "150px",
       minWidth: "150px",
-      wrap: true,
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.incidents || '-'}
+        </div>
+      )
     },
     // 8. Source of Information
     {
       name: "Source of Information",
       selector: (row) => row.source_of_information,
       sortable: true,
-      width: "180px",
-      minWidth: "180px",
-      wrap: true,
+      width: "200px",
+      minWidth: "200px",
+      cell: (row) => (
+        <div
+          title={row.source_of_information}
+          style={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: '100%',
+            textAlign: 'left'
+          }}
+        >
+          {row.source_of_information || '-'}
+        </div>
+      )
     },
-    // 9. Short Description
+    // 9. Short Description - SHOW IN ONE LINE WITH ELLIPSIS
     {
       name: "Short Description",
       selector: (row) => row.short_description,
       sortable: true,
       width: "200px",
       minWidth: "200px",
-      wrap: true,
-    },
-
-       {
-      name: "Activity Detail(s)",
-      cell: (row) =>
-        row.activity_details ? (
-          <div
-            dangerouslySetInnerHTML={{ __html: row.activity_details || "-" }}
-            style={{ 
-              maxHeight: "40px", 
-              overflow: "auto",
-              fontSize: "12px",
-              textAlign: "left"
-            }}
-          />
-        ) : (
-          "-"
-        ),
-      sortable: true,
-      width: "200px",
-      minWidth: "200px",
-      wrap: true,
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.short_description || '-'}
+        </div>
+      )
     },
     // 10. Meeting Date
     {
@@ -1813,9 +1889,42 @@ const CriticalEventList = () => {
           : "-",
       width: "140px",
       minWidth: "140px",
+      style: {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }
     },
-    // 11. Activity Detail(s)
- 
+    // 11. Activity Detail(s) - FIXED VERSION
+    {
+      name: "Activity Detail(s)",
+      cell: (row) => {
+        if (!row.activity_details) return "-";
+        
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = row.activity_details;
+        const plainText = tempDiv.textContent || tempDiv.innerText || '';
+        
+        return (
+          <div
+            style={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              width: '100%',
+              fontSize: '12px',
+              textAlign: 'left'
+            }}
+            title={plainText}
+          >
+            {plainText}
+          </div>
+        );
+      },
+      sortable: true,
+      width: "200px",
+      minWidth: "200px",
+    },
     // 12. Date Of Entry
     {
       name: "Date Of Entry",
@@ -1865,71 +1974,52 @@ const CriticalEventList = () => {
       maxWidth: "70px",
       center: true,
     },
-
-       // 10. Meeting Date
-    {
-      name: "Meeting Date",
-      selector: (row) => row.dateOfMeeting,
-      sortable: true,
-      cell: (row) =>
-        row.dateOfMeeting
-          ? new Date(row.dateOfMeeting).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })
-          : "-",
-      width: "140px",
-      minWidth: "140px",
-    },
-    // 14. HOD Observations
+    // 14. HOD Observations - COMPACT VERSION
     {
       name: "HOD Observations",
       selector: (row) => row.hod_observation,
       sortable: true,
-      width: "150px",
+      width: "200px",
       minWidth: "150px",
+      maxWidth: "150px",
       cell: (row) => {
         const isReopen =
           row.hod_observation && row.hod_observation.toLowerCase() === "reopen";
 
         return (
-          <span
+          <div
+            title={row.hod_observation}
             style={{
-              color: isReopen ? "#ff0000" : "inherit",
+              color: isReopen ? "#ff4444" : "inherit",
               fontWeight: isReopen ? "bold" : "normal",
               textTransform: isReopen ? "uppercase" : "none",
-              animation: isReopen ? "blinker 1s linear infinite" : "none",
+              animation: isReopen ? "pulse 1.5s ease-in-out infinite" : "none",
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: 'block',
+              width: '100%',
+              textAlign: 'left',
+              padding: '4px 0',
+              fontSize: '12px'
             }}
           >
             {row.hod_observation}
-            <style>
-              {`
-            @keyframes blinker {
-              0% { opacity: 1; transform: scale(1); }
-              50% { opacity: 0; transform: scale(1.1); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-            @keyframes blinkTrack {
-              0% { opacity: 1; transform: scale(1); }
-              50% { opacity: 0.5; transform: scale(1.15); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-          `}
-            </style>
-          </span>
+          </div>
         );
       },
     },
-    // 15. Edit Column
+    // 15. View Column
+    viewColumn,
+    // 16. Edit Column
     editColumn,
-    // 16. Update Column
+    // 17. Update Column
     updateColumn,
-    // 17. Actions Column
-    actionsColumn,
-    // 18. Track Column
+    // 18. Delete Column
+    deleteColumn,
+    // 19. Track Column
     trackColumn,
-    // 19. HOD/SI Remark Column (ALWAYS LAST)
+    // 20. HOD/SI Remark Column (ALWAYS LAST)
     hodSiRemarkColumn,
   ].filter(Boolean);
 
@@ -1937,7 +2027,7 @@ const CriticalEventList = () => {
   const defaultViewColumns = [
     // 1. MID
     {
-      name: "M.ID",
+      name: "MID",
       selector: (row) => row.id,
       sortable: true,
       width: "80px",
@@ -1951,7 +2041,17 @@ const CriticalEventList = () => {
       sortable: true,
       width: "130px",
       minWidth: "130px",
-      wrap: true,
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.state || '-'}
+        </div>
+      )
     },
     // 3. District
     {
@@ -1960,25 +2060,58 @@ const CriticalEventList = () => {
       sortable: true,
       width: "130px",
       minWidth: "130px",
-      wrap: true,
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.district || '-'}
+        </div>
+      )
     },
-    // 4. Incidents
+    // 4. Incidents - SHOW IN ONE LINE WITH ELLIPSIS
     {
       name: "Incidents",
       selector: (row) => row.incidents,
       sortable: true,
       width: "150px",
       minWidth: "150px",
-      wrap: true,
+      cell: (row) => (
+        <div style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+          {row.incidents || '-'}
+        </div>
+      )
     },
     // 5. Source of Information
     {
       name: "Source of Information",
       selector: (row) => row.source_of_information,
       sortable: true,
-      width: "180px",
-      minWidth: "180px",
-      wrap: true,
+      width: "200px",
+      minWidth: "200px",
+      cell: (row) => (
+        <div
+          title={row.source_of_information}
+          style={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: '100%',
+            textAlign: 'left'
+          }}
+        >
+          {row.source_of_information || '-'}
+        </div>
+      )
     },
     // 6. Meeting Date
     {
@@ -1995,55 +2128,58 @@ const CriticalEventList = () => {
           : "-",
       width: "140px",
       minWidth: "140px",
+      style: {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }
     },
-    // 7. HOD Observations
+    // 7. HOD Observations - COMPACT VERSION
     {
       name: "HOD Observations",
       selector: (row) => row.hod_observation,
       sortable: true,
-      width: "150px",
+      width: "198px",
       minWidth: "150px",
+      maxWidth: "150px",
       cell: (row) => {
         const isReopen =
           row.hod_observation && row.hod_observation.toLowerCase() === "reopen";
 
         return (
-          <span
+          <div
+            title={row.hod_observation}
             style={{
-              color: isReopen ? "#ff0000" : "inherit",
+              color: isReopen ? "#ff4444" : "inherit",
               fontWeight: isReopen ? "bold" : "normal",
               textTransform: isReopen ? "uppercase" : "none",
-              animation: isReopen ? "blinker 1s linear infinite" : "none",
+              animation: isReopen ? "pulse 1.5s ease-in-out infinite" : "none",
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: 'block',
+              width: '100%',
+              textAlign: 'left',
+              padding: '4px 0',
+              fontSize: '12px'
             }}
           >
             {row.hod_observation}
-            <style>
-              {`
-            @keyframes blinker {
-              0% { opacity: 1; transform: scale(1); }
-              50% { opacity: 0; transform: scale(1.1); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-            @keyframes blinkTrack {
-              0% { opacity: 1; transform: scale(1); }
-              50% { opacity: 0.5; transform: scale(1.15); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-          `}
-            </style>
-          </span>
+          </div>
         );
       },
     },
-    // 8. Edit Column
+    // 8. View Column
+    viewColumn,
+    // 9. Edit Column
     editColumn,
-    // 9. Update Column
+    // 10. Update Column
     updateColumn,
-    // 10. Actions Column
-    actionsColumn,
-    // 11. Track Column
+    // 11. Delete Column
+    deleteColumn,
+    // 12. Track Column
     trackColumn,
-    // 12. HOD/SI Remark Column (ALWAYS LAST)
+    // 13. HOD/SI Remark Column (ALWAYS LAST)
     hodSiRemarkColumn,
   ].filter(Boolean);
 
@@ -2080,7 +2216,7 @@ const CriticalEventList = () => {
               >
                 {/* Back */}
               </Button>
-              <Typography variant="h4" component="h1">
+              <Typography variant="h4" component="h1" sx={{ textAlign: 'center', width: '100%' }}>
                 Critical Incidents
               </Typography>
 
@@ -2357,7 +2493,17 @@ const CriticalEventList = () => {
                   {selectedRows.length > 0 && contextActions}
                 </Box>
 
-                <Box sx={{ border: "1px solid #e0e0e0", borderRadius: 1, overflow: "hidden" }}>
+                <Box sx={{ 
+                  border: "1px solid #e0e0e0", 
+                  borderRadius: 1, 
+                  overflow: "hidden",
+                  '& .rdt_Table': {
+                    minWidth: showAllColumns ? 'fit-content' : '100%',
+                  },
+                  '& .rdt_TableWrapper': {
+                    overflowX: showAllColumns ? 'auto' : 'hidden',
+                  }
+                }}>
                   <DataTable
                     columns={columns}
                     data={data}
@@ -2376,11 +2522,13 @@ const CriticalEventList = () => {
                         style: {
                           tableLayout: 'fixed',
                           width: '100%',
+                          minWidth: showAllColumns ? 'fit-content' : '100%',
                         },
                       },
                       tableWrapper: {
                         style: {
-                          overflowX: 'auto',
+                          overflowX: showAllColumns ? 'auto' : 'hidden',
+                          minWidth: '100%',
                         },
                       },
                       headCells: {
@@ -2394,7 +2542,8 @@ const CriticalEventList = () => {
                           fontSize: "14px",
                           whiteSpace: 'normal',
                           wordWrap: 'break-word',
-                          textAlign: 'left',
+                          textAlign: 'center',
+                          justifyContent: 'center'
                         },
                       },
                       cells: {
@@ -2406,6 +2555,7 @@ const CriticalEventList = () => {
                           whiteSpace: 'normal',
                           wordWrap: 'break-word',
                           textAlign: 'left',
+                          justifyContent: 'flex-start'
                         },
                       },
                     }}
@@ -2414,6 +2564,29 @@ const CriticalEventList = () => {
                     dense
                   />
                 </Box>
+
+                <style jsx global>{`
+                  @keyframes pulse {
+                    0% { 
+                      opacity: 1;
+                      box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+                    }
+                    50% { 
+                      opacity: 0.8;
+                      box-shadow: 0 0 0 10px rgba(106, 148, 227, 0);
+                    }
+                    100% { 
+                      opacity: 1;
+                      box-shadow: 0 0 0 0 rgba(53, 154, 212, 0);
+                    }
+                  }
+                  
+                  @keyframes blinkTrack {
+                    0% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.5; transform: scale(1.15); }
+                    100% { opacity: 1; transform: scale(1); }
+                  }
+                `}</style>
               </>
             )}
           </div>
