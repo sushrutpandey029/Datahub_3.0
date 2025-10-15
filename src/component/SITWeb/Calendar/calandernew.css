@@ -96,13 +96,15 @@
 }
 
 .weekday {
-  background: #f8fafc;
+  background: #39B1AC;
   padding: 15px;
   text-align: center;
   font-weight: 600;
-  color: #64748b;
+  color: #121313;
   font-size: 14px;
 }
+
+
 
 .calendar-grid {
   display: grid;
@@ -161,7 +163,7 @@
   font-weight: 600;
   font-size: 14px; /* Slightly smaller to accommodate month names */
   margin-bottom: 8px;
-  color: #000;
+  color: #de3d3d;
   align-self: flex-start;
   line-height: 1.2;
 }
@@ -954,5 +956,4 @@
   background: #f5f5f5 !important;
   opacity: 0.7;
 }
-
 

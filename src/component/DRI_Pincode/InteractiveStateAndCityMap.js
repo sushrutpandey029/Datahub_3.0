@@ -816,9 +816,11 @@ const InteractiveStateAndCityMap = () => {
             padding: "20px",
             borderRadius: "8px",
 
-            width: "90vw", // Fixed width
-            height: "90vh", // Fixed height
-            overflow: "hidden", // Prevent outer container from scrolling
+            width: "90vw",
+            height: "95vh",
+            // overflow: "hidden",
+            overflowY: "auto", // ✅ make vertically scrollable
+            overflowX: "hidden",
             outline: "none",
             display: "flex",
             flexDirection: "column",

@@ -1,308 +1,5 @@
-// // utils/printUtils.js
-// import { WEEKDAYS } from "./calendarHelpers";
 
-// export const handlePrintCalendar = (
-//   currentView,
-//   currentDate,
-//   meetings,
-//   getEventColor
-// ) => {
-//   const printWindow = window.open("", "_blank");
-//   const printDocument = printWindow.document;
 
-//   const getCurrentDateRange = (currentView, currentDate) => {
-//     if (currentView === "month") {
-//       return currentDate.toLocaleDateString("en-US", {
-//         month: "long",
-//         year: "numeric",
-//       });
-//     } else if (currentView === "week") {
-//       const start = new Date(currentDate);
-//       start.setDate(currentDate.getDate() - currentDate.getDay());
-//       const end = new Date(start);
-//       end.setDate(start.getDate() + 6);
-//       return `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`;
-//     } else {
-//       return currentDate.toLocaleDateString();
-//     }
-//   };
-
-//   printDocument.write(`
-//     <html>
-//       <head>
-//         <title>Calendar Print</title>
-//         <style>
-//           @page {
-//             size: landscape;
-//             margin: 0.2cm;
-//           }
-
-//           * {
-//             box-sizing: border-box;
-//           }
-
-//           body {
-//             font-family: Arial, sans-serif;
-//             margin: 0;
-//             padding: 0;
-//             color: #000;
-//             width: 100vw;
-//             height: 100vh;
-//             overflow: hidden;
-//           }
-
-//           .print-container {
-//             width: 100%;
-//             height: 100%;
-//             padding: 10px;
-//             display: flex;
-//             flex-direction: column;
-//           }
-
-//           .print-header {
-//             text-align: center;
-//             margin-bottom: 10px;
-//             border-bottom: 1px solid #000;
-//             padding-bottom: 8px;
-//             flex-shrink: 0;
-//           }
-
-//           .print-header h1 {
-//             margin: 0;
-//             font-size: 18px;
-//             line-height: 1.2;
-//           }
-
-//           .print-header p {
-//             margin: 2px 0 0 0;
-//             font-size: 11px;
-//           }
-
-//           .calendar-container {
-//             flex: 1;
-//             overflow: hidden;
-//           }
-
-//           .calendar-grid {
-//             display: grid;
-//             grid-template-columns: repeat(7, 1fr);
-//             gap: 0;
-//             background: #e0e0e0;
-//             font-size: 9px;
-//             height: 100%;
-//             width: 100%;
-//             border-collapse: collapse;
-//           }
-
-//           .calendar-day {
-//             background: white;
-//             padding: 3px;
-//             border: 1px solid #ccc;
-//             min-height: 0;
-//             display: flex;
-//             flex-direction: column;
-//           }
-
-//           .day-number {
-//             font-weight: bold;
-//             margin-bottom: 2px;
-//             font-size: 14px;
-//             line-height: 1;
-//             text-align: left;
-//             padding-left: 2px;
-//           }
-
-//           .events-container {
-//             flex: 1;
-//             overflow: hidden;
-//             display: flex;
-//             flex-direction: column;
-//             gap: 1px;
-//           }
-
-//           .event-item {
-//             padding: 2px 1px;
-//             margin: 0;
-//             border-radius: 1px;
-//             font-size: 8px;
-//             color: #000 !important;
-//             line-height: 1.1;
-//             white-space: nowrap;
-//             overflow: hidden;
-//             text-overflow: ellipsis;
-//             text-align: left;
-//           }
-
-//           // .weekday {
-//           //   background: #f0f0f0;
-//           //   padding: 2px 0;
-//           //   text-align: center;
-//           //   font-weight: bold;
-//           //   border: 1px solid #ccc;
-//           //   font-size: 10px;
-
-//           // }
-
-//           .weekday {
-//             background: #f0f0f0;
-//             padding: 1px 0; /* Reduced padding */
-//             text-align: center;
-//             font-weight: bold;
-//             border: 1px solid #ccc;
-//             font-size: 9px; /* Slightly smaller font */
-//             line-height: 1; /* Tighter line height */
-//             height: 16px; /* Fixed height */
-//             display: flex;
-//             align-items: center;
-//             justify-content: center;
-//           }
-
-//           .today {
-//             background: #f0f7ff !important;
-//             border: 1px solid #2B60AD !important;
-//           }
-
-//           .other-month {
-//             background: #f8f8f8;
-//             color: #999;
-//           }
-
-//           .more-events {
-//             font-style: italic;
-//             color: #666;
-//             text-align: center;
-//             background-color: #e0e0e0 !important;
-//             font-size: 7px;
-//             padding: 1px;
-//           }
-
-//           @media print {
-//             @page {
-//               size: landscape;
-//               margin: 0.2cm;
-//             }
-
-//             body {
-//               margin: 0;
-//               padding: 0;
-//               width: 100%;
-//               height: 100%;
-//             }
-
-//             .print-container {
-//               width: 100%;
-//               height: 100%;
-//               page-break-inside: avoid;
-//             }
-
-//             .calendar-grid {
-//               page-break-inside: avoid;
-//               break-inside: avoid;
-//             }
-
-//             .calendar-day {
-//               page-break-inside: avoid;
-//               break-inside: avoid;
-//             }
-//           }
-//         </style>
-//       </head>
-//       <body>
-//         <div class="print-container">
-//           <div class="print-header">
-//             <h1>Calendar - ${getCurrentDateRange(currentView, currentDate)}</h1>
-//             <p>Printed on ${new Date().toLocaleDateString()}</p>
-//           </div>
-//           <div class="calendar-container">
-//             <div class="calendar-grid">
-//   `);
-
-//   // Add weekday headers
-//   WEEKDAYS.forEach((day) => {
-//     printDocument.write(`<div class="weekday">${day}</div>`);
-//   });
-
-//   // Add calendar days - only 35 days (5 weeks)
-//   const year = currentDate.getFullYear();
-//   const month = currentDate.getMonth();
-//   const firstDay = new Date(year, month, 1);
-//   const startDate = new Date(firstDay);
-//   startDate.setDate(startDate.getDate() - firstDay.getDay());
-
-//   for (let i = 0; i < 35; i++) {
-//     const date = new Date(startDate);
-//     date.setDate(startDate.getDate() + i);
-//     const dateStr = date.toISOString().split("T")[0];
-//     const dayEvents = meetings.filter(
-//       (meeting) => meeting.start.split("T")[0] === dateStr
-//     );
-
-//     const isToday = date.toDateString() === new Date().toDateString();
-//     const isCurrentMonth = date.getMonth() === month;
-
-//     printDocument.write(`
-//       <div class="calendar-day ${!isCurrentMonth ? "other-month" : ""} ${
-//       isToday ? "today" : ""
-//     }">
-//         <div class="day-number">${date.getDate()}</div>
-//         <div class="events-container">
-//     `);
-
-//     // Show ALL events - no limit
-//     if (dayEvents.length === 0) {
-//     } else {
-//       dayEvents.forEach((event) => {
-//         const color = getEventColor(event.title);
-//         printDocument.write(`
-//           <div class="event-item" style="background-color: ${color};">
-//             ${event.title} - ${event.extendedProps.state}
-//           </div>
-//         `);
-//       });
-//     }
-
-//     printDocument.write(`
-//         </div>
-//       </div>
-//     `);
-//   }
-
-//   printDocument.write(`
-//           </div>
-//         </div>
-//       </body>
-//     </html>
-//   `);
-
-//   printDocument.close();
-
-//   // Wait for content to load then print
-//   setTimeout(() => {
-//     printWindow.focus();
-
-//     // Add beforeprint event to ensure single page
-//     printWindow.addEventListener("beforeprint", () => {
-//       // Force single page by scaling if needed
-//       const body = printWindow.document.body;
-//       const container = printWindow.document.querySelector(".print-container");
-
-//       if (container && container.scrollHeight > printWindow.innerHeight) {
-//         const scale = printWindow.innerHeight / container.scrollHeight;
-//         if (scale < 1) {
-//           container.style.transform = `scale(${scale * 0.95})`;
-//           container.style.transformOrigin = "top left";
-//         }
-//       }
-//     });
-
-//     printWindow.print();
-
-//     // Close window after print (optional)
-//     setTimeout(() => {
-//       printWindow.close();
-//     }, 1000);
-//   }, 500);
-// };
 
 // utils/printUtils.js
 import { WEEKDAYS } from "./calendarHelpers";
@@ -355,9 +52,9 @@ export const handlePrintCalendar = (
     return acc;
   }, {});
 
-  // Pre-calculate calendar dates
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  // Pre-calculate calendar dates for October 2025 (as per your image)
+  const year = 2025;
+  const month = 9; // October (0-indexed)
   const firstDay = new Date(year, month, 1);
   const startDate = new Date(firstDay);
   startDate.setDate(startDate.getDate() - firstDay.getDay());
@@ -367,6 +64,16 @@ export const handlePrintCalendar = (
     date.setDate(startDate.getDate() + i);
     return date;
   });
+
+  // Function to format event display exactly like in the image
+  const formatEventForDisplay = (event) => {
+    // Safe access without optional chaining
+    const activityType = (event.extendedProps && event.extendedProps.activity_type) || event.title || '';
+    const state = (event.extendedProps && event.extendedProps.state) || '';
+    
+    // Format exactly like in the image: "ACTIVITY - State"
+    return `${activityType} - ${state}`;
+  };
 
   // Generate HTML content efficiently
   const htmlContent = `
@@ -396,6 +103,7 @@ export const handlePrintCalendar = (
             height: 100vh;
             overflow: hidden;
             background: white;
+            font-size: 12px;
           }
           
           .print-container {
@@ -410,21 +118,21 @@ export const handlePrintCalendar = (
           .print-header {
             text-align: center;
             margin-bottom: 10px;
-            border-bottom: 1px solid #000;
+            border-bottom: 2px solid #000;
             padding-bottom: 8px;
             flex-shrink: 0;
           }
           
           .print-header h1 {
             margin: 0;
-            font-size: 18px;
+            font-size: 20px;
             line-height: 1.2;
             font-weight: bold;
           }
           
           .print-header p {
             margin: 2px 0 0 0;
-            font-size: 11px;
+            font-size: 12px;
             color: #666;
           }
           
@@ -432,6 +140,7 @@ export const handlePrintCalendar = (
             flex: 1;
             overflow: hidden;
             min-height: 0;
+            border: 2px solid #000;
           }
           
           .calendar-grid {
@@ -439,7 +148,7 @@ export const handlePrintCalendar = (
             grid-template-columns: repeat(7, 1fr);
             gap: 0;
             background: #e0e0e0;
-            font-size: 9px;
+            font-size: 10px;
             height: 100%;
             width: 100%;
             border-collapse: collapse;
@@ -447,22 +156,28 @@ export const handlePrintCalendar = (
           
           .calendar-day {
             background: white;
-            padding: 3px;
-            border: 1px solid #ccc;
-            min-height: 0;
+            padding: 4px;
+            border: 1px solid #000;
+            min-height: 120px;
             display: flex;
             flex-direction: column;
             page-break-inside: avoid;
             break-inside: avoid;
+            position: relative;
           }
           
           .day-number {
             font-weight: bold;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             font-size: 14px;
             line-height: 1;
-            text-align: left;
-            padding-left: 2px;
+            text-align: left; /* CHANGED BACK TO LEFT ALIGNMENT */
+            padding: 2px;
+            background: #f8f9fa;
+            border-radius: 2px;
+            display: inline-block;
+            min-width: 24px;
+            /* REMOVED text-align: center */
           }
           
           .events-container {
@@ -470,40 +185,44 @@ export const handlePrintCalendar = (
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 1px;
+            gap: 2px;
             min-height: 0;
           }
           
           .event-item {
-            padding: 2px 1px;
-            border-radius: 1px;
-            font-size: 8px;
+            padding: 3px 4px;
+            border-radius: 2px;
+            font-size: 9px;
             color: #000 !important;
-            line-height: 1.1;
-            white-space: nowrap;
+            line-height: 1.2;
+            white-space: normal;
             overflow: hidden;
             text-overflow: ellipsis;
             text-align: left;
             border: none;
+            margin-bottom: 1px;
+            break-inside: avoid;
+            page-break-inside: avoid;
           }
           
           .weekday {
             background: #f0f0f0;
-            padding: 1px 0;
+            padding: 8px 0;
             text-align: center;
             font-weight: bold;
-            border: 1px solid #ccc;
-            font-size: 9px;
+            border: 1px solid #000;
+            font-size: 12px;
             line-height: 1;
-            height: 16px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-bottom: 2px solid #000;
           }
           
           .today {
-            background: #f0f7ff !important;
-            border: 1px solid #2B60AD !important;
+            background: #e7f3ff !important;
+            border: 2px solid #2B60AD !important;
           }
           
           .other-month {
@@ -515,16 +234,61 @@ export const handlePrintCalendar = (
             min-height: 20px;
           }
           
+          /* Ensure all borders are visible and consistent */
+          .calendar-day, .weekday {
+            border: 1px solid #000;
+          }
+          
+          .calendar-grid {
+            border: 1px solid #000;
+          }
+          
+          /* Compact event styling for multiple events */
+          .compact-events {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+          }
+          
+          .event-line {
+            display: block;
+            width: 100%;
+          }
+
           @media print {
             body {
               margin: 0;
               padding: 0;
               width: 100%;
               height: 100%;
+              font-size: 10px;
             }
             
             .print-container {
               transform: none !important;
+              padding: 5px;
+            }
+            
+            .calendar-day {
+              min-height: 110px;
+              padding: 3px;
+              border: 1px solid #000 !important;
+            }
+            
+            .event-item {
+              font-size: 8px;
+              padding: 2px 3px;
+              line-height: 1.1;
+            }
+            
+            .day-number {
+              font-size: 12px;
+              text-align: left; /* KEEP LEFT ALIGNMENT IN PRINT */
+            }
+            
+            .weekday {
+              font-size: 10px;
+              padding: 6px 0;
             }
           }
         </style>
@@ -537,15 +301,12 @@ export const handlePrintCalendar = (
           </div>
           <div class="calendar-container">
             <div class="calendar-grid">
-              ${WEEKDAYS.map((day) => `<div class="weekday">${day}</div>`).join(
-                ""
-              )}
+              ${WEEKDAYS.map((day) => `<div class="weekday">${day}</div>`).join("")}
               ${calendarDays
                 .map((date) => {
                   const dateStr = date.toISOString().split("T")[0];
                   const dayEvents = eventsByDate[dateStr] || [];
-                  const isToday =
-                    date.toDateString() === new Date().toDateString();
+                  const isToday = date.toDateString() === new Date().toDateString();
                   const isCurrentMonth = date.getMonth() === month;
 
                   return `
@@ -558,8 +319,7 @@ export const handlePrintCalendar = (
                         dayEvents.length > 0
                           ? dayEvents
                               .map((event) => {
-                                const cacheKey =
-                                  event.title + event.extendedProps.state;
+                                const cacheKey = event.title + ((event.extendedProps && event.extendedProps.state) || '');
                                 if (!eventColorCache.has(cacheKey)) {
                                   eventColorCache.set(
                                     cacheKey,
@@ -570,7 +330,7 @@ export const handlePrintCalendar = (
 
                                 return `
                               <div class="event-item" style="background-color: ${color};">
-                                ${event.title} - ${event.extendedProps.state}
+                                ${formatEventForDisplay(event)}
                               </div>
                             `;
                               })
@@ -593,28 +353,62 @@ export const handlePrintCalendar = (
             const container = document.querySelector('.print-container');
             const body = document.body;
             
-            if (container && body) {
-              const scale = Math.min(
-                1,
-                window.innerHeight / container.scrollHeight,
-                window.innerWidth / container.scrollWidth
-              );
-              
-              if (scale < 0.95) {
-                container.style.transform = 'scale(' + (scale * 0.95) + ')';
-                container.style.transformOrigin = 'top left';
+            // Adjust font sizes if content is too large
+            const checkContentFit = () => {
+              const calendarGrid = document.querySelector('.calendar-grid');
+              if (calendarGrid && container) {
+                const gridHeight = calendarGrid.scrollHeight;
+                const containerHeight = container.clientHeight;
+                
+                if (gridHeight > containerHeight * 0.8) {
+                  // Reduce font sizes slightly
+                  const eventItems = document.querySelectorAll('.event-item');
+                  eventItems.forEach(item => {
+                    item.style.fontSize = '7px';
+                    item.style.padding = '1px 2px';
+                  });
+                  
+                  const dayNumbers = document.querySelectorAll('.day-number');
+                  dayNumbers.forEach(item => {
+                    item.style.fontSize = '10px';
+                  });
+                }
               }
-            }
-            
-            // Print after a short delay to ensure rendering is complete
+            };
+
+            // Check fit after a short delay
             setTimeout(() => {
-              window.print();
+              checkContentFit();
               
-              // Close window after print
+              // Print after ensuring content fits
               setTimeout(() => {
-                window.close();
-              }, 500);
+                window.print();
+                
+                // Close window after print
+                setTimeout(() => {
+                  window.close();
+                }, 500);
+              }, 100);
             }, 100);
+          });
+
+          // Also check on resize
+          window.addEventListener('resize', function() {
+            const checkContentFit = () => {
+              const calendarGrid = document.querySelector('.calendar-grid');
+              if (calendarGrid) {
+                const gridHeight = calendarGrid.scrollHeight;
+                const containerHeight = window.innerHeight;
+                
+                if (gridHeight > containerHeight * 0.8) {
+                  const eventItems = document.querySelectorAll('.event-item');
+                  eventItems.forEach(item => {
+                    item.style.fontSize = '7px';
+                  });
+                }
+              }
+            };
+            setTimeout(checkContentFit, 50);
           });
         </script>
       </body>

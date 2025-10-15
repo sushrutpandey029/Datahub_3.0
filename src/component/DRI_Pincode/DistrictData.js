@@ -275,7 +275,7 @@ const DistrictData = ({
       </Box>
 
       {/* Table */}
-      <TableContainer
+      {/* <TableContainer
         component={Paper}
         sx={{
           backgroundColor: "white",
@@ -319,6 +319,80 @@ const DistrictData = ({
               ))}
             </TableBody>
           </Table>
+        ) : (
+          <Box textAlign="center" py={4}>
+            <Typography variant="body1" color="textSecondary">
+              No data available.
+            </Typography>
+          </Box>
+        )}
+      </TableContainer> */}
+
+      <TableContainer
+        component={Paper}
+        sx={{
+          backgroundColor: "white",
+          maxHeight: "100vh",
+          flex: 1,
+          minHeight: 0,
+          overflow: "auto",
+          "& td": { backgroundColor: "white !important" },
+        }}
+      >
+        {tableLoading ? (
+          <Box textAlign="center" py={5}>
+            <CircularProgress />
+            <Typography mt={2}>Loading data...</Typography>
+          </Box>
+        ) : displayedData && displayedData.length > 0 ? (
+          <>
+            <Table stickyHeader size="small">
+              <TableHead
+                sx={{
+                  "& th": {
+                    backgroundColor: "#f4f4f4",
+                    fontWeight: "bold",
+                  },
+                }}
+              >
+                <TableRow>
+                  {tableHeaders.map((header) => (
+                    <TableCell key={header.key}>{header.label}</TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {displayedData.map((row, index) => (
+                  <TableRow key={index}>
+                    {tableHeaders.map((header) => (
+                      <TableCell key={header.key}>
+                        {row[header.key] !== undefined
+                          ? row[header.key]
+                          : "N/A"}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            <div
+              style={{
+                padding: "12px 16px",
+                backgroundColor: "#fafafa",
+                borderTop: "1px solid #ddd",
+              }}
+            >
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ fontStyle: "bold" }}
+              >
+                Note: Sum of all PIN codes GLP in District will not equal the
+                aggregated value.
+              </Typography>
+            </div>
+          </>
         ) : (
           <Box textAlign="center" py={4}>
             <Typography variant="body1" color="textSecondary">
