@@ -8,13 +8,13 @@ import {
 } from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 
-const ComplaintStatus = ({ ebCategoryMemberGData }) => {
+const CategoryWiseComplaintsMember = ({ ebCategoryMemberGData }) => {
   console.log("ebCategoryMemberGData", ebCategoryMemberGData);
   
-  // Static data from your image for Average TAT - Member
+  // Static data from your image for Category wise complaints-Member
   const staticPieData = {
-    series: [59, 23, 10, 8],
-    labels: ["<=7 days", "8-15 days", "16-30 days", ">30 days"],
+    series: [3716, 11513, 8376, 1113, 7411],
+    labels: ["Application", "Disbursement", "Dispute with CIR", "Insurance", "Others", "Repayment", "TPP"],
   };
 
   const pieChartOptions = {
@@ -25,9 +25,9 @@ const ComplaintStatus = ({ ebCategoryMemberGData }) => {
       },
     },
     labels: staticPieData.labels,
-    colors: ["#2B60AD", "#39B1AC", "#69AB44", "#FDBF11"],
+    colors: ["#2B60AD", "#39B1AC", "#69AB44", "#FDBF11", "#F78F6D", "#F05D5F", "#B853A0"],
     title: {
-      text: "Average TAT - Member",
+      text: "Category wise complaints-Member",
       align: "center",
       style: { fontSize: "16px", fontWeight: "bold", color: "#263238" },
     },
@@ -39,11 +39,12 @@ const ComplaintStatus = ({ ebCategoryMemberGData }) => {
     dataLabels: {
       enabled: true,
       formatter: function(val, opts) {
+        const value = staticPieData.series[opts.seriesIndex];
         const percentage = val.toFixed(0);
-        return `${percentage}%`;
+        return `${value}, ${percentage}%`;
       },
       style: {
-        fontSize: "12px",
+        fontSize: "11px",
         colors: ["#fff"]
       },
       dropShadow: {
@@ -58,7 +59,7 @@ const ComplaintStatus = ({ ebCategoryMemberGData }) => {
     tooltip: {
       y: {
         formatter: function(val) {
-          return val + "%";
+          return val;
         }
       }
     },
@@ -83,7 +84,7 @@ const ComplaintStatus = ({ ebCategoryMemberGData }) => {
                 options={pieChartOptions}
                 series={staticPieData.series}
                 type="pie"
-                height={350}
+                height={400}
               />
             </Box>
           </Box>
@@ -93,4 +94,4 @@ const ComplaintStatus = ({ ebCategoryMemberGData }) => {
   );
 };
 
-export default ComplaintStatus;
+export default CategoryWiseComplaintsMember;

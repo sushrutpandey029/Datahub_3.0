@@ -1,73 +1,4 @@
-import React, { useState, useEffect } from "react";
-import ReactApexChart from "react-apexcharts";
 
-const CategoryWiseQuery = ({ data }) => {
-  const [series, setSeries] = useState([]);
-  const [options, setOptions] = useState({});
-
-  useEffect(() => {
-    if (data) {
-      // Extract values from the data object
-      const seriesData = Object.values(data);
-
-      // Extract labels from the data object
-      const labels = Object.keys(data);
-
-      // Set chart options
-      setOptions({
-        chart: {
-          type: "pie",
-          height: 350,
-          toolbar: {
-            show: true,
-          },
-        },
-        labels: labels, // Use the keys as labels
-        dataLabels: {
-          enabled: true,
-          formatter: (val, { seriesIndex, w }) => {
-            // Show both value and percentage
-            const value = w.config.series[seriesIndex];
-            const percentage = val.toFixed(1);
-            return `${value}\n(${percentage}%)`;
-          },
-          style: {
-            fontSize: "12px",
-            fontWeight: "bold",
-          },
-        },
-        title: {
-          text: "Category wise complaint",
-          align: "left",
-        },
-        colors: ["#2B60AD", "#39B1AC", "#FF4560", "#00E396", "#FEB019", "#775DD0", "#FF6384"], // Custom colors
-        legend: {
-          position: "bottom",
-          horizontalAlign: "center",
-        },
-        tooltip: {
-          y: {
-            formatter: (val) => val.toFixed(2), // Show value with 2 decimal places in tooltip
-          },
-        },
-      });
-
-      // Set series data
-      setSeries(seriesData);
-    }
-  }, [data]);
-
-  return (
-    <ReactApexChart
-      options={options}
-      series={series}
-      type="pie"
-      height={350}
-    />
-  );
-};
-
-export default CategoryWiseQuery;
 
 // import * as React from "react";
 // import number_format from "../../Unqiue/Common_func";
@@ -134,3 +65,100 @@ export default CategoryWiseQuery;
 //   }
 // }
 // export default CategoryWiseQuery;
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardActionArea,
+  Box,
+  Typography,
+} from "@mui/material";
+import ReactApexChart from "react-apexcharts";
+
+const CategoryWiseQuery = ({ ebCategoryMemberGData }) => {
+  console.log("ebCategoryMemberGData", ebCategoryMemberGData);
+  
+  // Static data from your image for Category wise complaints-Member
+  const staticPieData = {
+    series: [3716, 11513, 8376, 1113, 7411],
+    labels: ["Application", "Disbursement", "Dispute with CIR", "Insurance", "Others", "Repayment", "TPP"],
+  };
+
+  const pieChartOptions = {
+    chart: {
+      type: "pie",
+      toolbar: {
+        show: true,
+      },
+    },
+    labels: staticPieData.labels,
+    colors: ["#2B60AD", "#39B1AC", "#69AB44", "#FDBF11", "#F78F6D", "#F05D5F", "#B853A0"],
+    title: {
+      text: "Category wise quries-Industry",
+      align: "center",
+      style: { fontSize: "16px", fontWeight: "bold", color: "#263238" },
+    },
+    legend: {
+      position: "bottom",
+      horizontalAlign: "center",
+      fontSize: "14px",
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function(val, opts) {
+        const value = staticPieData.series[opts.seriesIndex];
+        const percentage = val.toFixed(0);
+        return `${value}, ${percentage}%`;
+      },
+      style: {
+        fontSize: "11px",
+        colors: ["#fff"]
+      },
+      dropShadow: {
+        enabled: true,
+        top: 1,
+        left: 1,
+        blur: 1,
+        color: '#000',
+        opacity: 0.45
+      }
+    },
+    tooltip: {
+      y: {
+        formatter: function(val) {
+          return val;
+        }
+      }
+    },
+    plotOptions: {
+      pie: {
+        dataLabels: {
+          offset: -5,
+          minAngleToShowLabel: 10
+        }
+      }
+    }
+  };
+
+  return (
+    <Card style={{ paddingBottom: "20px" }}>
+      <CardActionArea>
+        <CardContent>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            {/* Pie Chart Only */}
+            <Box width="100%">
+              <ReactApexChart
+                options={pieChartOptions}
+                series={staticPieData.series}
+                type="pie"
+                height={400}
+              />
+            </Box>
+          </Box>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  );
+};
+
+export default CategoryWiseQuery;

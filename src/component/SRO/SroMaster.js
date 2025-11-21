@@ -79,11 +79,15 @@ import RBIOthersIndex from "./RBIReport/RBIOthersIndex";
 //cgrm -sro start from here
 import NatureofCall from "./CGRM/NatureofCall";
 import ProductWiseCall from "./CGRM/ProductWiseCall";
+import CategoryWiseComplaintsMember from "./CGRM/CategoryWiseComplaintsMember"
+import CategoryWiseComplaintsIndustry from "./CGRM/CategoryWiseComplaintsIndustry"
 import CategoryWiseQuery from "./CGRM/CategoryWiseQuery";
 import CategoryWiseComplaint from "./CGRM/CategoryWiseComplaint";
 import CategoryWiseStatus from "./CGRM/CategoryWiseStatus";
 import ResulationTAT from "./CGRM/ResulationTAT";
 import OriginOfCall from "./CGRM/OriginOfCall";
+import OriginOfCallIndustry from "./CGRM/OriginOfCallIndustry"
+
 import ComplaintStatus from "./CGRM/ComplaintStatus";
 import ReportTable from "./CGRM/ReportTable";
 import AverageTAT from "./CGRM/AverageTAT";
@@ -105,7 +109,9 @@ import {
   cbMemberlist,
   cbEnititylist,
   cbMemberDataApi,
-  cbIndustryDataApi
+  cbIndustryDataApi,
+  dropdownofcgrm,
+  table1cgrm
 } from "../url/url";
 import { BaseUrl } from "../url/url";
 import axios from "axios";
@@ -332,8 +338,38 @@ const SroMaster = () => {
       .map((key) => key + "=" + formState[key])
       .join("&");
 
-    const Quatar = formState.Quatar;
-    const member = formState.member;
+
+
+      // ✅ CORRECT: Use graphFilter.Quatar instead of formState.Quatar
+  const Quatar = graphFilter.Quatar; 
+  const member = formState.member;
+
+
+    // STEP 1: Pehle table1 data fetch karein
+    try {
+      const table1Response = await axios.get(
+        `${BaseUrl}/api/auth/CGRM_getTable1Data?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(Quatar)}`,
+        {
+          headers: authHeaders(),
+        }
+      );
+
+      console.log("Table1 API Response:", table1Response.data);
+
+      if (table1Response.data.status) {
+        // ReportData ko set karein with table1 data
+        setReportData({
+          member: member,
+          quarter: Quatar,
+          table1: table1Response.data.table1,
+          default_member: table1Response.data.default_member,
+          default_quarter: table1Response.data.default_quarter
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching table1 data:", error);
+    }
+
 
     // sro-get-cgrm-category-wise
     await axios
@@ -517,6 +553,45 @@ const SroMaster = () => {
   //     });
   //   //sro-get-QAR-paramters - member Level
   // };
+
+  // URL file mein already hai: export const dropdownofcgrm = "/api/auth/CGRM_Drop_down_data";
+
+  // API service function add karein
+  const fetchCGRMDropdownData = async () => {
+    try {
+      const response = await axios.get(`${BaseUrl}${dropdownofcgrm}`, {
+        headers: authHeaders(),
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching CGRM dropdown data:', error);
+      return {
+        status: false,
+        member: [],
+        quarter: []
+      };
+    }
+  };
+  // Naya function add karein for CGRM dropdown data
+  const getCGRMDropdownData = async () => {
+    try {
+      const dropdownData = await fetchCGRMDropdownData();
+      if (dropdownData.status) {
+        setMembers(dropdownData.member || []);
+        setQuatarList(dropdownData.quarter || []);
+
+        // Optional: Default values set karein
+        if (dropdownData.member.length > 0 && !formState.member) {
+          setFormState(prev => ({ ...prev, member: dropdownData.member[0] }));
+        }
+        if (dropdownData.quarter.length > 0 && !graphFilter.Quatar) {
+          setGraphFilter(prev => ({ ...prev, Quatar: dropdownData.quarter[0] }));
+        }
+      }
+    } catch (error) {
+      console.error('Error loading CGRM dropdown data:', error);
+    }
+  };
   const getQARData = async () => {
     console.log("before calling qardata");
     console.log("quarter", formState.quarter);
@@ -1549,6 +1624,28 @@ const SroMaster = () => {
 
 
 
+  // useEffect(() => {
+  //   console.log("value", startMonth, value);
+  //   if (value == 1) {
+  //     getCbLatestMonthYear();
+  //   }
+  //   if (value == 2) {
+  //     getEbLatestMonthYear();
+  //   }
+  //   if (value == 3) {
+  //     getQARLatestMonthYear();
+  //   }
+  //   if (value == 4) {
+  //     getQARLatestMonthYear();
+  //   }
+  //   if (value == 5) {
+  //     getQARLatestMonthYear();
+  //   }
+  //   if (value == 6) {
+  //     getQARLatestMonthYear();
+  //   }
+  // }, [value]);
+
   useEffect(() => {
     console.log("value", startMonth, value);
     if (value == 1) {
@@ -1561,7 +1658,8 @@ const SroMaster = () => {
       getQARLatestMonthYear();
     }
     if (value == 4) {
-      getQARLatestMonthYear();
+      // CGRM ke liye dropdown data fetch karein
+      getCGRMDropdownData();
     }
     if (value == 5) {
       getQARLatestMonthYear();
@@ -2156,75 +2254,80 @@ const SroMaster = () => {
                   </Grid>
                 </TabPanel>
                 {/* QAR-SRO  End from Here */}
-
                 <TabPanel value="4">
                   <Grid container spacing={2}>
                     {/* Date Filter Component Start from here */}
                     <Grid xs={12} sm={12} md={12}>
                       <Card>
                         <CardContent>
-                          <Grid container spacing={2} mt={2}>
-                            <Grid xs={12} sm={12} md={5}>
-                              <FormControl
-                                variant="standard"
-                                sx={{ m: 2, minWidth: 315 }}
-                              >
-                                <InputLabel id="demo-simple-select-standard-label">
-                                  Choose Lender Name
-                                </InputLabel>
-                                <Select
-                                  labelId="demo-simple-select-standard-label"
-                                  id="demo-simple-select-standard"
-                                  label="Choose Lender Name"
-                                  name="member"
-                                  value={formState.member}
-                                  onChange={(e) => onValueChange(e)}
-                                >
-                                  {members.map((v) => {
-                                    return (
-                                      <MenuItem value={v.ShortName}>
-                                        {v.ShortName}
-                                      </MenuItem>
-                                    );
-                                  })}
-                                </Select>
-                              </FormControl>
-                            </Grid>
+                          <Grid container spacing={2} alignItems="center" mt={2}>
+                            {/* Lender Name Dropdown */}
                             <Grid xs={12} sm={12} md={5}>
                               <FormControl
                                 variant="standard"
                                 sx={{ minWidth: "100%" }}
                               >
-                                <InputLabel id="demo-simple-select-standard-label">
-                                  Choose quater
+                                <InputLabel id="lender-name-label">
+                                  Choose Lender Name
                                 </InputLabel>
                                 <Select
-                                  labelId="demo-simple-select-standard-label"
-                                  id="demo-simple-select-standard"
-                                  name="Qautar"
-                                  value={graphFilter.Quatar}
-                                  onChange={handleGraphToDateChange}
-                                  label="Qautar"
+                                  labelId="lender-name-label"
+                                  id="lender-name-select"
+                                  label="Choose Lender Name"
+                                  name="member"
+                                  value={formState.member}
+                                  onChange={(e) => onValueChange(e)}
                                 >
-                                  {Quatars.map((q) => {
+                                  {members.map((v, index) => {
                                     return (
-                                      <MenuItem value={q.Month}>
-                                        {q.Month}
+                                      <MenuItem key={index} value={v}>
+                                        {v}
                                       </MenuItem>
                                     );
                                   })}
                                 </Select>
                               </FormControl>
                             </Grid>
+
+                            {/* Quarter Dropdown */}
+                            <Grid xs={12} sm={12} md={5}>
+                              <FormControl
+                                variant="standard"
+                                sx={{ minWidth: "100%" }}
+                              >
+                                <InputLabel id="quarter-label">
+                                  Choose Quarter
+                                </InputLabel>
+                                <Select
+                                  labelId="quarter-label"
+                                  id="quarter-select"
+                                  name="Qautar"
+                                  value={graphFilter.Quatar}
+                                  onChange={handleGraphToDateChange}
+                                  label="Choose Quarter"
+                                >
+                                  {Quatars.map((q, index) => {
+                                    return (
+                                      <MenuItem key={index} value={q}>
+                                        {q}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Select>
+                              </FormControl>
+                            </Grid>
+
+                            {/* Filter Button */}
                             <Grid xs={12} sm={12} md={2}>
                               <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                style={{
-                                  backgroundColor: "#058283 !important",
+                                sx={{
+                                  mt: 1,
+                                  mb: 1,
+
                                 }}
-                                sx={{ mt: 3, mb: 2 }}
                                 disabled={formState.isDisabled}
                                 onClick={filterCGRMHandler}
                               >
@@ -2238,9 +2341,7 @@ const SroMaster = () => {
                     </Grid>
                     {/* Date Filter Component End here */}
 
-                    {/* Date of monthly submission to CICs */}
-
-                    {/* Date of monthly submission to CICs */}
+                    {/* Rest of your CGRM components - unchanged */}
                     <Grid xs={12} sm={12} md={12}>
                       <Card
                         style={{ paddingBottom: "20px", marginBottom: "20px" }}
@@ -2280,14 +2381,25 @@ const SroMaster = () => {
                       </Card>
                     </Grid>
 
-                    <Grid xs={12} sm={12} md={12}>
+                    <Grid xs={6} sm={6} md={6}>
                       <Card
                         style={{ paddingBottom: "20px", marginBottom: "20px" }}
                       >
                         <CardActionArea>
                           <CardContent>
-                            {/* <CategoryWiseQuery /> */}
-                            <OriginOfCall data={originOfCallData} />
+                            <CategoryWiseComplaintsMember data={productWiseCallData} />
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+
+                    <Grid xs={6} sm={6} md={6}>
+                      <Card
+                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
+                      >
+                        <CardActionArea>
+                          <CardContent>
+                            <CategoryWiseComplaintsIndustry data={productWiseCallData} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
@@ -2319,6 +2431,30 @@ const SroMaster = () => {
                       </Card>
                     </Grid>
 
+                    <Grid xs={12} sm={12} md={12}>
+                      <Card
+                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
+                      >
+                        <CardActionArea>
+                          <CardContent>
+                            <OriginOfCall data={originOfCallData} />
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+
+                    <Grid xs={12} sm={12} md={12}>
+                      <Card
+                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
+                      >
+                        <CardActionArea>
+                          <CardContent>
+                            <OriginOfCallIndustry data={originOfCallData} />
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+
                     <Grid xs={6} sm={6} md={6}>
                       <Card
                         style={{ paddingBottom: "20px", marginBottom: "20px" }}
@@ -2331,18 +2467,6 @@ const SroMaster = () => {
                       </Card>
                     </Grid>
 
-                    {/* <Grid xs={6} sm={6} md={6}>
-                      <Card
-                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
-                      >
-                        <CardActionArea>
-                          <CardContent>
-                            <CategoryWiseStatus />
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid> */}
-
                     <Grid xs={6} sm={6} md={6}>
                       <Card
                         style={{ paddingBottom: "20px", marginBottom: "20px" }}
@@ -2354,74 +2478,6 @@ const SroMaster = () => {
                         </CardActionArea>
                       </Card>
                     </Grid>
-
-                    {/* <Grid xs={6} sm={6} md={6}>
-                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-                        <CardActionArea>
-                          <CardContent>
-                            <NatureofCall
-                              NatureofCallSeries={NatureofCallSeries}
-                            />
-
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-
-                    <Grid xs={6} sm={6} md={6}>
-                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-                        <CardActionArea>
-                          <CardContent>
-                            <ProductWiseCall
-                              ProductWiseCallVolumeSeries={ProductWiseCallVolumeSeries}
-                            />
-
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-
-                    <Grid xs={6} sm={6} md={6}>
-                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-                        <CardActionArea>
-                          <CardContent>
-                            <CategoryWiseQuery />
-
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-
-                    <Grid xs={6} sm={6} md={6}>
-                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-                        <CardActionArea>
-                          <CardContent>
-                            <CategoryWiseComplaint />
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                    <Grid xs={6} sm={6} md={6}>
-                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-                        <CardActionArea>
-                          <CardContent>
-                            <CategoryWiseStatus />
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-
-                    <Grid xs={6} sm={6} md={6}>
-                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-                        <CardActionArea>
-                          <CardContent>
-                            <ResulationTAT />
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid> */}
-
-                    {/* Date of monthly submission to CICs */}
                   </Grid>
                 </TabPanel>
 

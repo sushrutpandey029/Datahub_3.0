@@ -87,6 +87,12 @@ export const cbAcceptanceIndustry = "/api/auth/getGraph4Data";
 export const cbMemberDataApi = "/api/auth/table1"
 export const cbIndustryDataApi = "/api/auth/industryTable2Metrics"
 
+//new cgrm 
+
+export const  dropdownofcgrm = "/api/auth/CGRM_Drop_down_data";
+export const table1cgrm = "/api/auth/CGRM_getTable1Data";
+
+
 
 // SRO RBI Others
 export const rbiQuarterlyDataApi = "api/auth/rbi_data";

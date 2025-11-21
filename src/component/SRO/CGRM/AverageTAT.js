@@ -1,71 +1,96 @@
-import React, { useState, useEffect } from "react";
+
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardActionArea,
+  Box,
+  Typography,
+} from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 
-const AverageTAT = ({ data }) => {
-  const [series, setSeries] = useState([]);
-  const [options, setOptions] = useState({});
+const AverageTAT = ({ ebCategoryMemberGData }) => {
+  console.log("ebCategoryMemberGData", ebCategoryMemberGData);
+  
+  // Static data from your image for Average TAT - Member
+  const staticPieData = {
+    series: [59, 23, 10, 8],
+    labels: ["<=7 days", "8-15 days", "16-30 days", ">30 days"],
+  };
 
-  useEffect(() => {
-    if (data) {
-      // Extract values from the data object
-      const seriesData = [
-        data["<=7 days"] || 0,
-        data["8-15 days"] || 0,
-        data["16-30 days"] || 0,
-        data[">30 days"] || 0,
-      ];
-
-      // Set chart options
-      setOptions({
-        chart: {
-          type: "pie",
-          height: 350,
-          toolbar: {
-            show: true,
-          },
-        },
-        labels: ["<=7 days", "8-15 days", "16-30 days", ">30 days"], // Labels for the pie slices
+  const pieChartOptions = {
+    chart: {
+      type: "pie",
+      toolbar: {
+        show: true,
+      },
+    },
+    labels: staticPieData.labels,
+    colors: ["#2B60AD", "#39B1AC", "#69AB44", "#FDBF11"],
+    title: {
+      text: "Average TAT - Industry",
+      align: "center",
+      style: { fontSize: "16px", fontWeight: "bold", color: "#263238" },
+    },
+    legend: {
+      position: "bottom",
+      horizontalAlign: "center",
+      fontSize: "14px",
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function(val, opts) {
+        const percentage = val.toFixed(0);
+        return `${percentage}%`;
+      },
+      style: {
+        fontSize: "12px",
+        colors: ["#fff"]
+      },
+      dropShadow: {
+        enabled: true,
+        top: 1,
+        left: 1,
+        blur: 1,
+        color: '#000',
+        opacity: 0.45
+      }
+    },
+    tooltip: {
+      y: {
+        formatter: function(val) {
+          return val + "%";
+        }
+      }
+    },
+    plotOptions: {
+      pie: {
         dataLabels: {
-          enabled: true,
-          formatter: (val, { seriesIndex, w }) => {
-            // Show both value and percentage
-            const value = w.config.series[seriesIndex];
-            const percentage = val.toFixed(1);
-            return `${value}\n(${percentage}%)`;
-          },
-          style: {
-            fontSize: "12px",
-            fontWeight: "bold",
-          },
-        },
-        title: {
-          text: "Average TAT",
-          align: "left",
-        },
-        colors: ["#2B60AD", "#39B1AC", "#FF4560", "#00E396"], // Custom colors for the slices
-        legend: {
-          position: "bottom",
-          horizontalAlign: "center",
-        },
-        tooltip: {
-          y: {
-            formatter: (val) => val.toFixed(2), // Show value with 2 decimal places in tooltip
-          },
-        },
-      });
-
-      // Set series data
-      setSeries(seriesData);
+          offset: -5,
+          minAngleToShowLabel: 10
+        }
+      }
     }
-  }, [data]);
+  };
 
   return (
-    <ReactApexChart
-      options={options}
-      series={series}
-      type="pie"
-      height={350}
-    />
+    <Card style={{ paddingBottom: "20px" }}>
+      <CardActionArea>
+        <CardContent>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            {/* Pie Chart Only */}
+            <Box width="100%">
+              <ReactApexChart
+                options={pieChartOptions}
+                series={staticPieData.series}
+                type="pie"
+                height={350}
+              />
+            </Box>
+          </Box>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
 

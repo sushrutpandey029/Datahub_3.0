@@ -1,7 +1,10 @@
+
+
 import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const OriginOfCall = ({ data }) => {
+const OriginOfCallIndustry
+ = ({ data }) => {
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState({});
 
@@ -98,4 +101,5 @@ const OriginOfCall = ({ data }) => {
   );
 };
 
-export default OriginOfCall;
+export default OriginOfCallIndustry
+;
