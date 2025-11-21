@@ -8,20 +8,14 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from 'react';
- import Box from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import GrassIcon from '@mui/icons-material/Grass';
- import { useState, useEffect } from "react";
- import TabContext from '@mui/lab/TabContext';
- 
-import "date-fns"; 
+import { useState, useEffect } from "react";
+import TabContext from "@mui/lab/TabContext";
+import "date-fns";
 import Breadcrumb from "../../common/Breadcrumb";
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-  
-
-
-
 
 
 //Comprission Report for MFI start from here
@@ -29,7 +23,7 @@ import ComprisionReport from "../../Micrometer/Comprision/ComprisionReport";
 //Comprission Report for MFI end here
 
 // ***************  Others  : End ************************
- import { BaseUrl } from "../../url/url";
+import { BaseUrl } from "../../url/url";
 import axios from "axios";
 import authHeaders from "../../Service/AuthHeaders";
 import { Link } from "react-router-dom";
@@ -116,7 +110,7 @@ const ComparisonModule = () => {
     dateSeries: "2017",
     isLoader: false,
     isDisabled: false
-  } 
+  }
   const [graphFilter, setGraphFilter] = useState(graphFilterInitialState);
   const [Quatars, setQuatarList] = useState([]);
   const [formState, setFormState] = useState(formInitialState);
@@ -124,12 +118,12 @@ const ComparisonModule = () => {
     const api = 'api/auth/mm-quater-list';
     await axios.get(`${BaseUrl}/${api}`, { headers: authHeaders() }).then((response) => {
       setQuatarList(response.data.data);
-      setGraphFilter({ ...graphFilter, ['Quatar']: response.data.maxDate})
-      setGraphFilter({ ...graphFilter, ['Period']: response.data.maxperiod})
+      setGraphFilter({ ...graphFilter, ['Quatar']: response.data.maxDate })
+      setGraphFilter({ ...graphFilter, ['Period']: response.data.maxperiod })
     }).catch((error) => {
       console.log('error', error)
     })
-  } 
+  }
 
   const [pTopTenMfiLabels, setTopTenPMfiLabels] = useState([]);
   const [pTopTenMfiSerise, setTopTenPMfiSerise] = useState([]);
@@ -152,28 +146,28 @@ const ComparisonModule = () => {
   const [dTopTenMfiLoanAmtLabels, setDTopTenMfiLoanAmtLabels] = useState([]);
   const [dTopTenMfiLoanAmtSeries, setDTopTenMfiLoanAmtSeries] = useState([]);
 
-   
+
 
   //Attrition Rate by position
   const [hrAttritionRatePositionSeries, setHrAttritionRatePositionSeries] = useState([]);
   const [hrAttritionRatePositionLabels, setHrAttritionRatePositionLabels] = useState([]);
 
-   
 
-    //Disbursement MFI Size (Rs) graph
-    const [pDisbursementMfiWiseLabels, setPDisbursementMfiWiseLabels] = useState([]);
-    const [pDisbursementMfiWiseSeries, setPDisbursementMfiWiseSeries] = useState([]);
-    const [ShowDate, setShowDate] = useState("");
 
-    //Distribution of MFIs as per size
-    const [DistributionMFISizesLabels, setDistributionMFISizesLabels] = useState([]);
-    const [DistributionMFISizesSeries, setDistributionMFISizesSeries] = useState([]);
-    const [DistributionMFISizesDateTitle, setDistributionMFISizesDateTitle] = useState([]);
+  //Disbursement MFI Size (Rs) graph
+  const [pDisbursementMfiWiseLabels, setPDisbursementMfiWiseLabels] = useState([]);
+  const [pDisbursementMfiWiseSeries, setPDisbursementMfiWiseSeries] = useState([]);
+  const [ShowDate, setShowDate] = useState("");
 
-  
+  //Distribution of MFIs as per size
+  const [DistributionMFISizesLabels, setDistributionMFISizesLabels] = useState([]);
+  const [DistributionMFISizesSeries, setDistributionMFISizesSeries] = useState([]);
+  const [DistributionMFISizesDateTitle, setDistributionMFISizesDateTitle] = useState([]);
+
+
 
   // Outreach Tab Start from Here
-  
+
   // Outreach Tab End Here
 
   const [pqPortfolioRiskLables, setPqPortfolioRiskLables] = useState([]);
@@ -185,49 +179,49 @@ const ComparisonModule = () => {
   const [pqRiskTopFifteenState, sePqRiskTopFifteenState] = useState([]);
   const [pqRiskTopFifteenStateTitle, setPqRiskTopFifteenStateTitle] = useState('');
 
-  
+
 
   const [fEquityPositionsLabels, setFEquityPositionsLabels] = useState([]);
   const [fEquityPositionsSeries, setFEquityPositionsSeries] = useState([]);
 
   const [fAssetsOutstandingLabels, setFAssetsOutstandingLabels] = useState([]);
   const [fAssetsOutstandingSeries, setFAssetsOutstandingSeries] = useState([])
-  
+
 
 
   const [BreakupOutstandingBorrowLabels, setBreakupOutstandingBorrowLabels] = useState([]);
   const [BreakupOutstandingBorrowSeries, setBreakupOutstandingBorrowSeries] = useState([]);
   const [BreakupOutstandingBorrowLatestMonth, setBreakupOutstandingBorrowLatestMonth] = useState([]);
-  
-  
-  
- 
-
-const [BreakupBorrowLabels, setBreakupBorrowLabels] = useState([]);
-const [BreakupBorrowSeries, setBreakupBorrowSeries] = useState([]);
 
 
-const [FundingInstructionsLabels, setFundingInstructionsLabels] = useState([]);
-const [FundingInstructionsSeries, setFundingInstructionsSeries] = useState([]);
 
 
-//   const filterdateOutreachGraph = async () => {
-//     setGraphFilter({ ...graphFilter, ['isLoader']: true, ['isDisabled']: true });
- 
-//      await getFinancialGraphData(graphFilter.Quatar, graphFilter.toMonth);
 
-//    await getBreakupOutstandingBorrow(graphFilter.Quatar, graphFilter.toMonth);
+  const [BreakupBorrowLabels, setBreakupBorrowLabels] = useState([]);
+  const [BreakupBorrowSeries, setBreakupBorrowSeries] = useState([]);
 
-//    await getBreakupBorrowOS(graphFilter.Quatar, graphFilter.toMonth);
-   
-//    await getFundingInstructions(graphFilter.Quatar, graphFilter.toMonth);
 
-//     setGraphFilter({ ...graphFilter, ['isLoader']: false, ['isDisabled']: false });
-//   }
+  const [FundingInstructionsLabels, setFundingInstructionsLabels] = useState([]);
+  const [FundingInstructionsSeries, setFundingInstructionsSeries] = useState([]);
 
- 
 
-  console.log("Quatar List",Quatars)
+  //   const filterdateOutreachGraph = async () => {
+  //     setGraphFilter({ ...graphFilter, ['isLoader']: true, ['isDisabled']: true });
+
+  //      await getFinancialGraphData(graphFilter.Quatar, graphFilter.toMonth);
+
+  //    await getBreakupOutstandingBorrow(graphFilter.Quatar, graphFilter.toMonth);
+
+  //    await getBreakupBorrowOS(graphFilter.Quatar, graphFilter.toMonth);
+
+  //    await getFundingInstructions(graphFilter.Quatar, graphFilter.toMonth);
+
+  //     setGraphFilter({ ...graphFilter, ['isLoader']: false, ['isDisabled']: false });
+  //   }
+
+
+
+  console.log("Quatar List", Quatars)
   return (
     <>
       <Box sx={{ flexGrow: 1 }} mt={10}>
@@ -236,31 +230,31 @@ const [FundingInstructionsSeries, setFundingInstructionsSeries] = useState([]);
           <Grid xs={12} sm={12} md={12}>
             <Box sx={{ width: '100%', typography: 'body1' }}>
               <TabContext value={value} >
-                
 
- 
-<Grid container spacing={2}>
 
-  <Grid xs={12} sm={12} md={12}>
-    <Card style={{ padding: "8px" }} >
-      <CardActionArea>
-        <CardContent>
-          <Typography>
-            <ComprisionReport />
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-      </CardActions>
-    </Card>
-  </Grid>
- 
-</Grid>
- 
+
+                <Grid container spacing={2}>
+
+                  <Grid xs={12} sm={12} md={12}>
+                    <Card style={{ padding: "8px" }} >
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography>
+                            <ComprisionReport />
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+
+                </Grid>
+
 
               </TabContext>
 
-              <Typography style={{textAlign:"left", fontWeight:500}}></Typography>
+              <Typography style={{ textAlign: "left", fontWeight: 500 }}></Typography>
 
             </Box>
 

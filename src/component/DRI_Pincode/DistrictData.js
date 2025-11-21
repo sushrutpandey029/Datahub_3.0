@@ -225,7 +225,7 @@ const DistrictData = ({
         alignItems="center"
         mb={3}
       >
-        <Typography variant="h4">
+        <Typography variant="h4"> 
           {stateName}, {districtName}
           {selectedPinCode && `, ${selectedPinCode}`}
         </Typography>

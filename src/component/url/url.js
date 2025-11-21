@@ -47,11 +47,56 @@ export const importSROCBDataApi = "api/auth/sro-import-cb-data";
 export const importSROQARDataApi = "api/auth/sro-import-qar-data";
 export const importSROCGRMDataApi = "api/auth/sro-import-cgrm-data";
 
+// SRO - QAR
+export const qarDropdownDataApi = "api/auth/dopdown-data";
+export const qarParamertersApi = "api/auth/sro-table1-data";
+export const gauardrillapi = "api/auth/guardrailsAnalysis";
+export const gauardrillapiuniverse = "/api/auth/guardrailsIndustryAnalysis";
+export const universeashirvadbreah =
+  "/api/auth/householdIncomeAndFoirBreachIndustry";
+export const householdbymemeber = "api/auth/householdIncomeAndFoirBreachMember";
+export const beachuinverse = "/api/auth/breachGuardrailsIndustry";
+export const beachmemeber = "api/auth/breachGuardrailsMember";
+
+
+//microuniverse productmix
+
+export const TicketSizeChartApi = "/api/auth/get-ticket-size-allindia";
+
+export const TicketSizeChartApistate = "/api/auth/state-ticket-size";
+
+export const TenureSizeChartApi = "/api/auth/get-tenure-size-allindia";
+
+export const TenureSizeChartApiState = "/api/auth/get-tenure-state-allindia";
+
+export const PayementSizeChartApi = "/api/auth/get-payment-size-allindia";
+export const PayementSizeChartApistate = "/api/auth/get-payment-state-allindia";
+
+
+// SRO NEW cb 
+export const cbMemberlist = "api/auth/get-member-month-filter";
+export const cbEnititylist = "api/auth/get-entity-month-filter";
+
+export const cbSubmissionMember = "/api/auth/table1";
+export const cbSubmissionIndustry = "/api/auth/industryTable2";
+export const cbKycSeddingMember = "/api/auth/table1graph1KycVidFillRate";
+export const cbKycSeddingIndustry = "/api/auth/table1graph2KycVidFillRateIndustry";
+export const cbAcceptanceMember = "/api/auth/getGraph3Data";
+export const cbAcceptanceIndustry = "/api/auth/getGraph4Data";
+
+export const cbMemberDataApi = "/api/auth/table1"
+export const cbIndustryDataApi = "/api/auth/industryTable2Metrics"
+
+
+// SRO RBI Others
+export const rbiQuarterlyDataApi = "api/auth/rbi_data";
+
 // ALM
 export const importALMDataApi = "api/auth/alm";
 
 // RBI Master
 export const importRBIMasterDataApi = "api/auth/rbi";
+export const rbiReportDropDownDataApi = "api/auth/drop-down-data";
 
 //data publication
 export const uploadDataApi = "https://api.mfinindia.org/api/auth";
@@ -68,3 +113,5 @@ export const getPieChartDrillData =
 
 export const uploadCalendarCSV = "api/auth/meetings/upload/calendarCSV";
 export const calendarAllMeetings = "api/auth/meetings/allmeetingscalendar";
+
+

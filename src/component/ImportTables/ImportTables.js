@@ -1928,6 +1928,8 @@ const ImportTables = () => {
                     <CardActions></CardActions>
                   </Card>
                 </Grid>
+
+                
               </Grid>
 
               {/* Master Import End from Here */}
@@ -2366,7 +2368,7 @@ const ImportTables = () => {
                           DRI Pin Code Data
                         </Typography>
                         <a
-                          href="/csv_format/dri_map_data.csv"
+                          href="/csv_format/dri_map_data_pincode.csv"
                           className={classes.download_text}
                           download
                         >

@@ -29,6 +29,7 @@ import DRIStatesPincodeMap from "../DRI_Pincode/DRIStatesPincodeMap";
 import SroMaster from "../SRO/SroMaster";
 import UploadPublication from "../ContactDetail/UploadPublication";
 import PublicationList from "../ContactDetail/PublicationList";
+import Rbi_Data_list from "../ContactDetail/Rbi";
 import DataPublicationCard from "../ContactDetail/DataPublicationCard";
 import ComparisonModule from "../Home/ComparisonModule/ComparisonModule";
 
@@ -165,6 +166,13 @@ export const RolePermissionList = [
     checked: true,
     linkName: "/publicationlist",
     componentName: <PublicationList />,
+  },
+  {
+    key: "RBIDataList",
+    subkey: [],
+    checked: true,
+    linkName: "/rbi_data_list",
+    componentName: <Rbi_Data_list />,
   },
   {
     key: "Data Dashboard",

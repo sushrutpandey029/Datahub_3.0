@@ -1,0 +1,93 @@
+.ticket-size-chart {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.chart-header h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 18px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+}
+
+.chart-container {
+  overflow-x: auto;
+}
+
+.chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.chart-table th,
+.chart-table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.chart-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  color: #333;
+}
+
+.ticket-size-header {
+  background-color: #e8e8e8 !important;
+}
+
+.all-india-header {
+  background-color: #f0f0f0 !important;
+}
+
+.range-cell {
+  font-weight: bold;
+  background-color: #f9f9f9;
+  text-align: left !important;
+}
+
+.table-of-contents {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.table-of-contents h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.table-of-contents ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.table-of-contents li {
+  padding: 5px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .ticket-size-chart {
+    padding: 10px;
+    margin: 10px;
+  }
+  
+  .chart-table th,
+  .chart-table td {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}

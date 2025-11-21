@@ -77,12 +77,23 @@ const MicromirrorResource = () => {
   //   window.open(url, "_blank");
   // };
 
+  // const handlePDFDownload = (pdf) => {
+  //   const parts = pdf.split("/");
+  //   const filename = parts.slice(1).join("/"); // Remove 'pdf_files/' prefix
+  //   console.log("filename", filename);
+  //   navigate(`/secure-pdf/${encodeURIComponent(filename)}`);
+  //  };
+
   const handlePDFDownload = (pdf) => {
-    const parts = pdf.split("/");
-    const filename = parts.slice(1).join("/"); // Remove 'pdf_files/' prefix
-    console.log("filename", filename);
-    navigate(`/secure-pdf/${encodeURIComponent(filename)}`);
-   };
+    const link = document.createElement('a');
+    link.href = `https://api.mfinindia.org/public/${pdf}`;
+    link.target = "_blank"
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+
 
   return (
     <div className="row container-outs">

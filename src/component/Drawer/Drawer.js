@@ -109,6 +109,10 @@ import Calendar from "../SITWeb/Calendar/Calendar";
 import VSCM from "../SITWeb/VSCM/VSCM";
 import VSCMList from "../SITWeb/VSCM/VSCMList";
 
+import Rbi_Data_list from "../ContactDetail/Rbi.js";
+import Rbi_add_data from "../ContactDetail/Rbi_add_data.js";
+import RbiEditData from "../ContactDetail/Rbi_edit_Data.js"
+
 const drawerWidth = 250;
 
 const styles = (theme) => ({
@@ -291,6 +295,12 @@ const menuItems = [
     link: "/publicationlist",
     checked: true,
   },
+  {
+    title: "RBI Data List",
+    icon: "bi-list-check",
+    link: "/rbi_data_list",
+    checked: true,
+  }
 ];
 
 const resMenuItems = menuItems.map((item) => ({
@@ -299,8 +309,8 @@ const resMenuItems = menuItems.map((item) => ({
   link: item.link,
   match: userRoleInfo
     ? userRoleInfo.some(
-        (item2) => item.title === item2.key && item2.checked === true
-      )
+      (item2) => item.title === item2.key && item2.checked === true
+    )
     : "",
 }));
 
@@ -775,6 +785,10 @@ class MiniDrawer extends React.Component {
             <Route path="/change-phone" element={<ChangePhoneForm />} />
             <Route path="/comparison-report" element={<ComparisonModule />} />
             <Route path="/data-reports" element={<DataMaster />} />
+
+            <Route path="/rbi_data_list" element={<Rbi_Data_list />} />
+            <Route path="/rbi_add_data" element={<Rbi_add_data />} />
+            <Route path="/updaterbidata/:id" element={<RbiEditData />} />
 
             {/* route for sit */}
             <Route path="/sitdashboard/*" element={<Dashboard />} />

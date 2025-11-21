@@ -34,14 +34,6 @@ function EBDateofSubmissionTable(props) {
 
   const [open, setOpen] = useState(false);
 
-  // const downloadPdfMudraBankWise = () => {
-  //   const pdf = new jsPDF();
-  //   pdf.autoTable({
-  //     html: "#table-to-xls",
-  //   });
-  //   pdf.save("mudra-bank-wise");
-  // };
-
   const downloadPdfMudraBankWise = (tableId, filename) => {
     const pdf = new jsPDF();
     pdf.autoTable({ html: `#${tableId}` });
@@ -241,6 +233,7 @@ function EBDateofSubmissionTable(props) {
           </CardActionArea>
         </Card>
       </Grid>
+
       <Grid>
         <select
           value={ebentity}
@@ -289,27 +282,7 @@ function EBDateofSubmissionTable(props) {
                 </Typography>
 
                 <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-                  {/* <select
-                    value={ebentity}
-                    onChange={(e) => setEbEntity(e.target.value)}
-                    style={{
-                      padding: "10px 13px",
-                      borderRadius: "6px",
-                      border: "1px solid #000",
-                      background: "#fff",
-                      fontSize: "14px",
-                      cursor: "pointer",
-                      color: "#000",
-                    }}
-                  >
-                    <option value="">Select Entity</option>
-                    {ebUniqueEntity &&
-                      ebUniqueEntity.map((entity, idx) => (
-                        <option key={idx} value={entity}>
-                          {entity}
-                        </option>
-                      ))}
-                  </select> */}
+
 
                   {/* Download Dropdown */}
                   <Dropdown

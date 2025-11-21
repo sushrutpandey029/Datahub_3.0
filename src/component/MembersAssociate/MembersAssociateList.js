@@ -181,11 +181,14 @@ const MembersAssociateList = () => {
     return;
   }
 
+
   const getMemberAssociateService = async (id) => {
     const api = `api/auth/member-associate-details`
     return await axios.get(`${BaseUrl}/${api}/${id}`, { headers: authHeaders() });
 
   }
+
+
   const editMemberAssociateModal = async (id) => {
     const response = await getMemberAssociateService(id);
     setAddMemberAssociateState(response.data.data);

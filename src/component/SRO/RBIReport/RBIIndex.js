@@ -1,447 +1,622 @@
-import * as React from "react";
-import {
-  Card,
-  Button,
-  CardActions,
-  CardContent,
-  CardActionArea,
-  Typography,
-} from "@mui/material";
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
-import "bootstrap/dist/css/bootstrap.min.css";
-import Table from "react-bootstrap/Table";
-import { useState, useEffect } from "react";
-import ReactHTMLTableToExcel from "react-html-table-to-excel-3"
-import jsPDF from "jspdf";
-import "jspdf-autotable"
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Dropdown, DropdownMenuItem } from '../../Mudra/dropdown';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import PortfolioQualityRBILine from './PortfolioQualityRBILine';
-import CostBorrowingInterestRatesRBI from './CostBorrowingInterestRatesRBI';
-import { VerticalAlignCenter } from "@material-ui/icons";
 
+// import * as React from "react";
+// import { Card, Button, CardContent, Typography } from "@mui/material";
+// import Grid from "@mui/material/Unstable_Grid2";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+// import TableViewIcon from "@mui/icons-material/TableView";
+// import DataTable from "react-data-table-component";
+// import { useEffect } from "react";
+// import { BaseUrl } from "../../url/url";
+
+// function RBIIndex(props) {
+//   const [rbiDocuments, setRbiDocuments] = React.useState([]);
+
+//   // 🧩 Load data from props
+//   useEffect(() => {
+//     if (
+//       props &&
+//       props.rbiQuarterlyReportData &&
+//       props.rbiQuarterlyReportData.status === true &&
+//       Array.isArray(props.rbiQuarterlyReportData.data)
+//     ) {
+//       setRbiDocuments(props.rbiQuarterlyReportData.data);
+//     }
+//   }, [props]);
+
+//   // 🧩 Handle PDF/Excel open/download
+//   const handleDocumentClick = (filePath, docItem) => {
+//     if (!filePath) return;
+
+//     const fullFileUrl = filePath.startsWith("http")
+//       ? filePath
+//       : `${BaseUrl}/public/${filePath}`;
+
+//     const isPDF = filePath.toLowerCase().endsWith(".pdf");
+//     const isExcel =
+//       filePath.toLowerCase().endsWith(".xlsx") ||
+//       filePath.toLowerCase().endsWith(".xls");
+
+//     if (isExcel) {
+//       const link = document.createElement("a");
+//       link.href = fullFileUrl;
+//       link.setAttribute(
+//         "download",
+//         `RBI_${docItem.fy_year}_${docItem.quarter}_${docItem.Part}.xlsx`
+//       );
+//       link.setAttribute("target", "_blank");
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     } else {
+//       window.open(fullFileUrl, "_blank");
+//     }
+//   };
+
+//   // 🧩 Group data by FY & Quarter
+//   const groupedData = Object.values(
+//     rbiDocuments.reduce(function (acc, item) {
+//       const key = item.fy_year + "-" + item.quarter;
+//       if (!acc[key]) {
+//         acc[key] = {
+//           id: item.id,
+//           fy_year: item.fy_year,
+//           quarter: item.quarter,
+//           created_at: item.created_at,
+//           parts: [],
+//         };
+//       }
+//       acc[key].parts.push({
+//         part: item.Part,
+//         file: item.document,
+//       });
+//       return acc;
+//     }, {})
+//   );
+
+//   // 🧩 DataTable columns
+//   const columns = [
+//     {
+//       name: "Financial Year",
+//       selector: (row) => row.fy_year,
+//       center: true,
+//       sortable: true,
+//       width: "200px",
+//     },
+//     {
+//       name: "Quarter",
+//       selector: (row) => row.quarter,
+//       center: true,
+//       sortable: true,
+//       width: "200px",
+//     },
+//     {
+//       name: (
+//         <div style={{ textAlign: "center" }}>
+//           <div>Documents</div>
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               gap: "40px",
+//               fontSize: "13px",
+//               marginTop: "5px",
+//               padding: "0 25px",
+//             }}
+//           >
+//             <strong>Part I</strong>
+//             <strong>Part II</strong>
+//           </div>
+//         </div>
+//       ),
+//       cell: (row) => {
+//         const part1 = row.parts.find((p) => p.part === "Part I");
+//         const part2 = row.parts.find((p) => p.part === "Part II");
+
+//         const renderButton = (file) => {
+//           if (!file) return null;
+//           const isPDF = file.toLowerCase().endsWith(".pdf");
+//           const isExcel =
+//             file.toLowerCase().endsWith(".xlsx") ||
+//             file.toLowerCase().endsWith(".xls");
+
+//           return (
+//             <Button
+//               variant="contained"
+//               size="small"
+//               onClick={() => handleDocumentClick(file, row)}
+//               startIcon={isPDF ? <PictureAsPdfIcon /> : <TableViewIcon />}
+//               style={{
+//                 fontSize: "10px",
+//                 padding: "4px 8px",
+//                 minWidth: "60px",
+//                 backgroundColor: isPDF ? "#d32f2f" : "#2e7d32",
+//                 color: "white",
+//               }}
+//             >
+//               {isPDF ? "PDF" : "Excel"}
+//             </Button>
+//           );
+//         };
+
+//         return (
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               width: "200px",
+//               padding: "0 20px",
+//             }}
+//           >
+//             <div>{part1 && part1.file && renderButton(part1.file)}</div>
+//             <div>{part2 && part2.file && renderButton(part2.file)}</div>
+//           </div>
+//         );
+//       },
+//       center: true,
+//       width: "300px",
+//     },
+//     {
+//       name: "Uploaded Date",
+//       selector: (row) =>
+//         row.created_at ? new Date(row.created_at).toLocaleDateString() : "N/A",
+//       center: true,
+//       sortable: true,
+//       width: "180px",
+//     },
+//   ];
+
+//   // 🧩 Custom styles — full width + no header background
+//   const customStyles = {
+//     table: {
+//       style: {
+//         width: "100%",
+//       },
+//     },
+//     headCells: {
+//       style: {
+//         backgroundColor: "transparent", // ❌ Removed background
+//         color: "#333",
+//         fontWeight: "600",
+//         fontSize: "1rem",
+//         textAlign: "center",
+//         borderBottom: "2px solid #ddd",
+//       },
+//     },
+//     cells: {
+//       style: {
+//         textAlign: "center",
+//         padding: "0.5rem",
+//         fontSize: "0.9rem",
+//       },
+//     },
+//     rows: {
+//       style: {
+//         minHeight: "60px",
+//         "&:hover": {
+//           backgroundColor: "#f5f5f5",
+//         },
+//       },
+//     },
+//   };
+
+//   return (
+//     <Grid xs={12}>
+//       <Card
+//         style={{
+//           marginBottom: "20px",
+//           width: "100%",
+//           boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+//         }}
+//       >
+//         <CardContent>
+//           <Typography
+//             variant="h5"
+//             style={{
+//               textAlign: "left",
+//               fontSize: "18px",
+//               color: "#bd2f03",
+//               fontWeight: "bold",
+//               marginBottom: "20px",
+//             }}
+//           >
+//             RBI Quarterly Reports
+//           </Typography>
+
+//           <div style={{ width: "100%", overflowX: "auto" }}>
+//             <DataTable
+//               columns={columns}
+//               data={groupedData}
+//               pagination
+//               paginationPerPage={10}
+//               paginationRowsPerPageOptions={[5, 10, 15, 20]}
+//               customStyles={customStyles}
+//               highlightOnHover
+//               striped
+//               responsive
+//               noDataComponent={
+//                 <div
+//                   style={{
+//                     padding: "40px",
+//                     textAlign: "center",
+//                     color: "#666",
+//                   }}
+//                 >
+//                   No RBI documents available.
+//                 </div>
+//               }
+//             />
+//           </div>
+//         </CardContent>
+//       </Card>
+//     </Grid>
+//   );
+// }
+
+// export default RBIIndex;
+
+
+import * as React from "react";
+import { Card, Button, CardContent, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import "bootstrap/dist/css/bootstrap.min.css";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import TableViewIcon from "@mui/icons-material/TableView";
+import DataTable from "react-data-table-component";
+import { useEffect } from "react";
+import { BaseUrl } from "../../url/url";
 
 function RBIIndex(props) {
-  const [open, setOpen] = useState(false);
+  const [rbiDocuments, setRbiDocuments] = React.useState([]);
+
+  // Load data from props
+  useEffect(() => {
+    if (
+      props &&
+      props.rbiQuarterlyReportData &&
+      props.rbiQuarterlyReportData.status === true &&
+      Array.isArray(props.rbiQuarterlyReportData.data)
+    ) {
+      setRbiDocuments(props.rbiQuarterlyReportData.data);
+    }
+  }, [props]);
+
+  // Handle PDF/Excel open/download
+  const handleDocumentClick = (filePath, docItem) => {
+    if (!filePath) return;
+
+    const fullFileUrl = filePath.startsWith("http")
+      ? filePath
+      : `${BaseUrl}/public/${filePath}`;
+
+    const isPDF = filePath.toLowerCase().endsWith(".pdf");
+    const isExcel =
+      filePath.toLowerCase().endsWith(".xlsx") ||
+      filePath.toLowerCase().endsWith(".xls");
+
+    if (isExcel) {
+      const link = document.createElement("a");
+      link.href = fullFileUrl;
+      link.setAttribute(
+        "download",
+        `RBI_${docItem.fy_year}_${docItem.quarter}_${docItem.Part}.xlsx`
+      );
+      link.setAttribute("target", "_blank");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(fullFileUrl, "_blank");
+    }
+  };
+
+  // Group by FY-Year + Quarter
+  const groupedData = Object.values(
+    rbiDocuments.reduce((acc, item) => {
+      const key = `${item.fy_year}-${item.quarter}`;
+      if (!acc[key]) {
+        acc[key] = {
+          id: item.id,
+          fy_year: item.fy_year,
+          quarter: item.quarter,
+          created_at: item.created_at,
+          parts: [],
+        };
+      }
+      acc[key].parts.push({
+        part: item.Part,
+        file: item.document,
+      });
+      return acc;
+    }, {})
+  );
+
+  // // Table Columns
+  // const columns = [
+  //   {
+  //     name: "Financial Year",
+  //     selector: (row) => row.fy_year,
+  //     center: true,
+  //     sortable: true,
+  //     width: "200px",
+  //   },
+  //   {
+  //     name: "Quarter",
+  //     selector: (row) => row.quarter,
+  //     center: true,
+  //     sortable: true,
+  //     width: "200px",
+      
+              
+
+  //   },
+  //   {
+  //     name: (
+  //       <div style={{ textAlign: "center" }}>
+  //         <div>Documents</div>
+  //         <div
+  //           style={{
+  //             display: "flex",
+  //             justifyContent: "space-between",
+  //             gap: "40px",
+  //             fontSize: "13px",
+  //             marginTop: "5px",
+  //             padding: "0 25px",
+              
+  //           }}
+  //         >
+  //           <strong>Part I</strong>
+  //           <strong>Part II</strong>
+  //         </div>
+  //       </div>
+  //     ),
+  //     cell: (row) => {
+  //       const part1 = row.parts.find((p) => p.part === "Part I");
+  //       const part2 = row.parts.find((p) => p.part === "Part II");
+
+  //       const renderBtn = (file) => {
+  //         if (!file) return null;
+
+  //         const isPDF = file.toLowerCase().endsWith(".pdf");
+  //         const isExcel =
+  //           file.toLowerCase().endsWith(".xlsx") ||
+  //           file.toLowerCase().endsWith(".xls");
+
+  //         return (
+  //           <Button
+  //             variant="contained"
+  //             size="small"
+  //             onClick={() =>
+  //               handleDocumentClick(file, {
+  //                 fy_year: row.fy_year,
+  //                 quarter: row.quarter,
+  //                 Part: isPDF ? "Part I" : "Part II",
+  //               })
+  //             }
+  //             startIcon={isPDF ? <PictureAsPdfIcon /> : <TableViewIcon />}
+  //             style={{
+  //               fontSize: "10px",
+  //               padding: "4px 8px",
+  //               minWidth: "60px",
+  //               backgroundColor: isPDF ? "#d32f2f" : "#2e7d32",
+  //               color: "white",
+  //             }}
+  //           >
+  //             {isPDF ? "PDF" : "Excel"}
+  //           </Button>
+  //         );
+  //       };
+
+  //       return (
+  //         <div
+  //           style={{
+  //             display: "flex",
+  //             justifyContent: "space-between",
+  //             width: "200px",
+  //             padding: "0 20px",
+  //           }}
+  //         >
+  //           <div>{part1?.file && renderBtn(part1.file)}</div>
+  //           <div>{part2?.file && renderBtn(part2.file)}</div>
+  //         </div>
+  //       );
+  //     },
+  //     center: true,
+  //     width: "300px",
+  //   },
+  //   {
+  //     name: "Uploaded Date",
+  //     selector: (row) =>
+  //       row.created_at
+  //         ? new Date(row.created_at).toLocaleDateString("en-IN")
+  //         : "N/A",
+  //     center: true,
+  //     sortable: true,
+  //     width: "180px",
+  //   },
+  // ];
+
+  const columns = [
+  {
+    name: "Financial Year",
+    selector: (row) => row.fy_year,
+    sortable: true,
+    width: "200px",
+    style: { textAlign: "left" },   // 👈 DATA LEFT
+  },
+  {
+    name: "Quarter",
+    selector: (row) => row.quarter,
+    sortable: true,
+    width: "200px",
+    style: { textAlign: "left" },   // 👈 DATA LEFT
+  },
+
+  {
+    name: (
+      <div style={{ textAlign: "center" }}>
+        <div>Documents</div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "40px",
+            fontSize: "13px",
+            marginTop: "5px",
+            padding: "0 25px",
+          }}
+        >
+          <strong>Part I</strong>
+          <strong>Part II</strong>
+        </div>
+      </div>
+    ),
+    cell: (row) => {
+      const part1 = row.parts.find((p) => p.part === "Part I");
+      const part2 = row.parts.find((p) => p.part === "Part II");
+
+      const renderBtn = (file) => {
+        if (!file) return null;
+
+        const isPDF = file.toLowerCase().endsWith(".pdf");
+        const isExcel =
+          file.toLowerCase().endsWith(".xlsx") ||
+          file.toLowerCase().endsWith(".xls");
+
+        return (
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() =>
+              handleDocumentClick(file, {
+                fy_year: row.fy_year,
+                quarter: row.quarter,
+                Part: isPDF ? "Part I" : "Part II",
+              })
+            }
+            startIcon={isPDF ? <PictureAsPdfIcon /> : <TableViewIcon />}
+            style={{
+              fontSize: "10px",
+              padding: "4px 8px",
+              minWidth: "60px",
+              backgroundColor: isPDF ? "#d32f2f" : "#2e7d32",
+              color: "white",
+            }}
+          >
+            {isPDF ? "PDF" : "Excel"}
+          </Button>
+        );
+      };
+
+      return (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "200px",
+            padding: "0 20px",
+          }}
+        >
+          <div>{part1 && part1.file && renderBtn(part1.file)}   </div>
+          <div>{part2 && part2.file && renderBtn(part2.file)}</div>
+        </div>
+      );
+    },
+    width: "300px",
+    style: { textAlign: "left" },  // 👈 DATA LEFT
+  },
+
+  {
+    name: "Uploaded Date",
+    selector: (row) =>
+      row.created_at
+        ? new Date(row.created_at).toLocaleDateString("en-IN")
+        : "N/A",
+    sortable: true,
+    width: "180px",
+    style: { textAlign: "left" },   // 👈 DATA LEFT
+  },
+];
 
 
-  var rbiHouseholdData = props.rbiHouseholdData;
-  console.log("rbiHouseholdData", rbiHouseholdData);
-  if (!rbiHouseholdData || !rbiHouseholdData.Indebtedness) return <p>No data available</p>;
-
-  const downloadPdfMudraBankWise = () => {
-    const pdf = new jsPDF();
-    pdf.autoTable({
-      html: "#table-to-xls"
-    });
-    pdf.save("mudra-bank-wise")
-  }
-
-
-
-
-
-
+  // Custom Styles
+  const customStyles = {
+    table: { style: { width: "100%" } },
+    headCells: {
+      style: {
+        backgroundColor: "transparent",
+        color: "#333",
+        fontWeight: "600",
+        fontSize: "1rem",
+        textAlign: "center",
+        borderBottom: "2px solid #ddd",
+      },
+    },
+    cells: {
+      style: {
+        textAlign: "center",
+        padding: "0.5rem",
+        fontSize: "0.9rem",
+      },
+    },
+    rows: {
+      style: {
+        minHeight: "60px",
+        "&:hover": { backgroundColor: "#f5f5f5" },
+      },
+    },
+  };
 
   return (
-    <>
-      <Grid xs={12} sm={12} md={12}>
-        <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-          <CardActionArea>
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h5"
-                style={{ textAlign: "left", fontSize: "18px", color: "#bd2f03" }}
-                component="div"
-              >
-                Quarterly Data reporting for RBI <span style={{ float: "right", marginRight: "10px" }}>
-                  <Dropdown
-                    keepOpen
-                    open={open}
-                    trigger={<Button style={{ borderBottom: "2px solid", color: "#000000" }} endIcon={<ArrowDropDownIcon />}>
-                      Download
-                    </Button>}
-                    menu={[
-                      <DropdownMenuItem>
-                        <Button style={{ color: "#000000" }} endIcon={<FileDownloadIcon />}>
-                          <ReactHTMLTableToExcel
-                            id="test-table-xls-button"
-                            className="htmlToExcel"
-                            table="table-to-xls"
-                            filename="custom-report-export-excel"
-                            filetype="xls"
-                            sheet="Mudra Bank Wise Report"
-                            buttonText="Excel Format" />
-                        </Button>
-                      </DropdownMenuItem>,
-                      <DropdownMenuItem>
-                        <Button onClick={downloadPdfMudraBankWise} style={{ color: "#000000" }} endIcon={<PictureAsPdfIcon />}>
-                          PDF Format
-                        </Button>
-                      </DropdownMenuItem>,
-                    ]}
-                  />
-                </span>
-              </Typography>
-              <Table striped bordered hover style={{ marginTop: "30px", textAlign: "left" }}>
-                {(props.rbiIndexData)}
-                {/* <thead>
-                <tr>
-                  <th>Sr.</th>
-                  <th>Parameters</th>
-                  <th>Mar-22</th>
-                  <th>Dec-22</th>
-                  <th>Mar-23</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>  
-                  <td style={{width:"60%"}}>Total Asset Size (Rs. Cr)</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>2</td> 
-                  <td  style={{width:"60%"}}>On-balance sheet outstanding microfinance loans (Rs. Cr)</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>3</td> 
-                  <td  style={{width:"60%"}}>Microfinance loans as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>4</td> 
-                  <td  style={{width:"60%"}}>Average Ticket Size (Rs)</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>5</td> 
-                  <td  style={{width:"60%"}}>Off-BS microfinance loan portfolio (Rs. Cr) </td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>6</td> 
-                  <td  style={{width:"60%"}}>Business correspondent</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>7</td> 
-                  <td  style={{width:"60%"}}>Securitised portfolio</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>8</td> 
-                  <td  style={{width:"60%"}}>Assigned portfolio</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>9</td> 
-                  <td  style={{width:"60%"}}>Gross NPA as a % of on-balance sheet microfinance loans</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
+    <Grid xs={12}>
+      <Card
+        style={{
+          marginBottom: "20px",
+          width: "100%",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        }}
+      >
+        <CardContent>
+          <Typography
+            variant="h5"
+            style={{
+              textAlign: "left",
+              fontSize: "18px",
+              color: "#bd2f03",
+              fontWeight: "bold",
+              marginBottom: "20px",
+            }}
+          >
+            RBI Quarterly Reports
+          </Typography>
 
-                <tr>
-                  <td>10</td>
-                  <td  style={{width:"60%"}}>Net NPA as a % of on-balance sheet microfinance loans</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-
-                <tr>
-                  <td>11</td>  
-                  <td  style={{width:"60%"}}>Promoter equity as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-
-                <tr>
-                  <td>12</td>  
-                  <td  style={{width:"60%"}}>FDI equity as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>13</td>  
-                  <td  style={{width:"60%"}}>Others equity as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>14</td>  
-                  <td  style={{width:"60%"}}>AIFIs as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>15</td>  
-                  <td  style={{width:"60%"}}>Banks as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>16</td>  
-                  <td  style={{width:"60%"}}>Non Bank Entities as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>17</td>  
-                  <td  style={{width:"60%"}}>External commercial borrowing as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>18</td>  
-                  <td  style={{width:"60%"}}>Others as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>19</td>  
-                  <td  style={{width:"60%"}}>Term loan as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>20</td>  
-                  <td  style={{width:"60%"}}>Debentures as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>21</td>  
-                  <td  style={{width:"60%"}}>Subordinated Debt as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>22</td>  
-                  <td  style={{width:"60%"}}>Commercial Papers as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                  <td>23</td>  
-                  <td  style={{width:"60%"}}>Any other (specify) as a % of total assets</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-              </tbody> */}
-              </Table>
-              <Table striped bordered hover style={{ marginTop: "30px", textAlign: "left" }}>
-                {(props.rbiYOYData)}
-                {/* <thead>
-                <tr>
-                  <th>Sr.</th>
-                  <th>Parameters ((YOY change))</th>
-                  <th>Mar-22</th>
-                  <th>Dec-22</th>
-                  <th>Mar-23</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                <td>1</td> 
-                  <td  style={{width:"60%"}}>Net Profit (Rs. in crore) </td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>2</td> 
-                  <td  style={{width:"60%"}}>Return on Assets (%)</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-                <tr>
-                <td>3</td> 
-                  <td  style={{width:"60%"}}>Return on Equity (%)</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                  <td>00.0</td>
-                </tr>
-              </tbody> */}
-              </Table>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-
-      <Grid xs={12} sm={12} md={12}>
-        <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
-          <CardActionArea>
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h5"
-                style={{ textAlign: "left", fontSize: "18px", color: "#bd2f03" }}
-                component="div"
-              >
-                Household Income and Indebtedness data </Typography>
-
-              {/* <Table striped bordered hover style={{ marginTop: "30px", textAlign: "left" }}>
-                
-                <thead>
-                  <tr>
-                    
-                    <th>Indebtedness</th>
-                    <th>HH Income</th>
-                    <th>{"< Rs. 50,000"}</th>
-                    <th>{">=  Rs. 50,000 to < Rs. 1 lakh"} </th>
-                    <th>{">= Rs. 1 lakh to < Rs. 1.5 lakh"}</th>
-                    <th>{">= Rs. 1.5 lakh to < Rs. 2 lakh"}</th>
-                    <th>{">= Rs. 2 lakh to < Rs. 2.5 lakh"}</th>
-                    <th>{">= Rs. 2.5 lakh to <= Rs. 3 lakh"}</th>
-                  </tr>
-
-                </thead>
-                <tbody>
-                  <tr>
-                   
-                    <td>{"< 20%"}</td>
-                    <td>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_LRs50000"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs50000to1Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs1p5LaktoLRs2lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs2laktoLRs2p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs2p5LaktoLRs3Lak"]}</td>
-                  </tr>
-                  <tr>
-                    <td>{">= 20% to < 30%"}</td>
-                    <td>0%</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_LRs50000"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs1p5LaktoLRs2Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs2LaktoLR2p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs2p5LaktoLRs3Lak"]}</td>
-                    
-                  </tr>
-                  <tr>
-                    <td>{">= 30% to < 40%"}</td>
-                    <td>0%</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_LRs50000"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs1p5LaktoLRs2Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs2LaktoLRs2p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs2p5LaktoLRs3Lak"]}</td>
-                  </tr>
-                  <tr>
-                    <td>{">= 40% to <= 50%"}</td>
-                    <td>0%</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_LR50000"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs1p5LaktoLRs2Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs2LaktoLRs2p5Lak"]}</td>
-                    <td>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs2p5LaktoLRs3Lak"]}</td>
-                  </tr>
-
-                </tbody>
-              </Table> */}
-
-              <Table striped bordered hover style={{ marginTop: "30px", textAlign: "left" }}>
-
-                <thead>
-                  <tr>
-                    <th rowSpan={2} style={{ textAlign: "center", verticalAlign: "middle" }}>Indebtedness</th>
-                    <th colSpan={6} style={{textAlign:"center"}}>HH Income</th>
-
-                  </tr>
-                  <tr>
-                    <th>{"< Rs. 50,000"}</th>
-                    <th>{">=  Rs. 50,000 to < Rs. 1 lakh"} </th>
-                    <th>{">= Rs. 1 lakh to < Rs. 1.5 lakh"}</th>
-                    <th>{">= Rs. 1.5 lakh to < Rs. 2 lakh"}</th>
-                    <th>{">= Rs. 2 lakh to < Rs. 2.5 lakh"}</th>
-                    <th>{">= Rs. 2.5 lakh to <= Rs. 3 lakh"}</th>
-                  </tr>
-
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{"< 20%"}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_LRs50000"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs50000to1Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs1p5LaktoLRs2lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs2laktoLRs2p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness["< 20%"]["L20P_GRs2p5LaktoLRs3Lak"]}</td>
-                  </tr>
-                  <tr>
-                    <td>{">= 20% to < 30%"}</td>
-                    <td style={{ textAlign: "right" }}>0%</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_LRs50000"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs1p5LaktoLRs2Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs2LaktoLR2p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 20% to < 30%"]["G20ptoL30p_GRs2p5LaktoLRs3Lak"]}</td>
-
-                  </tr>
-                  <tr>
-                    <td>{">= 30% to < 40%"}</td>
-                    <td style={{ textAlign: "right" }}>0%</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_LRs50000"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs1p5LaktoLRs2Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs2LaktoLRs2p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 30% to < 40%"]["G30ptoL40p_GRs2p5LaktoLRs3Lak"]}</td>
-                  </tr>
-                  <tr>
-                    <td>{">= 40% to <= 50%"}</td>
-                    <td style={{ textAlign: "right" }}>0%</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_LR50000"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs1LaktoLRs1p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs1p5LaktoLRs2Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs2LaktoLRs2p5Lak"]}</td>
-                    <td style={{ textAlign: "right" }}>{rbiHouseholdData.Indebtedness[">= 40% to <= 50%"]["G40ptoL50p_GRs2p5LaktoLRs3Lak"]}</td>
-                  </tr>
-
-                </tbody>
-              </Table>
-
-
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-    </>
+          <div style={{ width: "100%", overflowX: "auto" }}>
+            <DataTable
+              columns={columns}
+              data={groupedData}
+              pagination
+              paginationPerPage={10}
+              paginationRowsPerPageOptions={[5, 10, 15, 20]}
+              customStyles={customStyles}
+              highlightOnHover
+              striped
+              responsive
+              noDataComponent={
+                <div
+                  style={{
+                    padding: "40px",
+                    textAlign: "center",
+                    color: "#666",
+                  }}
+                >
+                  No RBI documents available.
+                </div>
+              }
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </Grid>
   );
 }
 

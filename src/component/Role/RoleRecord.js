@@ -207,5 +207,11 @@ export const RolePermissionList = [
     checked: true,
     linkName: "/publicationlist",
   },
+  {
+    key: "RBI Data List",
+    subkey: [],
+    checked: true,
+    linkName: "/rbi_data_list",
+  },
 ];
 //export default RolePermissionList;
