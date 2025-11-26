@@ -29,7 +29,7 @@ const AverageTAT = ({ ebCategoryMemberGData }) => {
     colors: ["#2B60AD", "#39B1AC", "#69AB44", "#FDBF11"],
     title: {
       text: "Average TAT - Industry",
-      align: "center",
+      align: "left",
       style: { fontSize: "16px", fontWeight: "bold", color: "#263238" },
     },
     legend: {

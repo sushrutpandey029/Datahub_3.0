@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Card,
@@ -11,11 +10,11 @@ import ReactApexChart from "react-apexcharts";
 
 const CategoryWiseComplaint = ({ ebCategoryMemberGData }) => {
   console.log("ebCategoryMemberGData", ebCategoryMemberGData);
-  
-  // Static data from your image for Category wise complaints-Member
+
+  // Fixed: labels length now matches series length (5 items)
   const staticPieData = {
     series: [3716, 11513, 8376, 1113, 7411],
-    labels: ["Application", "Disbursement", "Dispute with CIR", "Insurance", "Others", "Repayment", "TPP"],
+    labels: ["Application", "Disbursement", "Dispute with CIR", "Insurance", "Others"],
   };
 
   const pieChartOptions = {
@@ -26,10 +25,18 @@ const CategoryWiseComplaint = ({ ebCategoryMemberGData }) => {
       },
     },
     labels: staticPieData.labels,
-    colors: ["#2B60AD", "#39B1AC", "#69AB44", "#FDBF11", "#F78F6D", "#F05D5F", "#B853A0"],
+    colors: [
+      "#2B60AD",
+      "#39B1AC",
+      "#69AB44",
+      "#FDBF11",
+      "#F78F6D",
+      "#F05D5F",
+      "#B853A0",
+    ],
     title: {
       text: "Category wise quries-Member",
-      align: "center",
+      align: "left",
       style: { fontSize: "16px", fontWeight: "bold", color: "#263238" },
     },
     legend: {
@@ -39,39 +46,39 @@ const CategoryWiseComplaint = ({ ebCategoryMemberGData }) => {
     },
     dataLabels: {
       enabled: true,
-      formatter: function(val, opts) {
+      formatter: function (val, opts) {
         const value = staticPieData.series[opts.seriesIndex];
         const percentage = val.toFixed(0);
         return `${value}, ${percentage}%`;
       },
       style: {
         fontSize: "11px",
-        colors: ["#fff"]
+        colors: ["#fff"],
       },
       dropShadow: {
         enabled: true,
         top: 1,
         left: 1,
         blur: 1,
-        color: '#000',
-        opacity: 0.45
-      }
+        color: "#000",
+        opacity: 0.45,
+      },
     },
     tooltip: {
       y: {
-        formatter: function(val) {
+        formatter: function (val) {
           return val;
-        }
-      }
+        },
+      },
     },
     plotOptions: {
       pie: {
         dataLabels: {
           offset: -5,
-          minAngleToShowLabel: 10
-        }
-      }
-    }
+          minAngleToShowLabel: 10,
+        },
+      },
+    },
   };
 
   return (
@@ -79,7 +86,6 @@ const CategoryWiseComplaint = ({ ebCategoryMemberGData }) => {
       <CardActionArea>
         <CardContent>
           <Box display="flex" justifyContent="center" alignItems="center">
-            {/* Pie Chart Only */}
             <Box width="100%">
               <ReactApexChart
                 options={pieChartOptions}

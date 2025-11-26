@@ -1,3 +1,4 @@
+// export defau
 import React, { useState, useEffect } from 'react';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -11,19 +12,19 @@ const CBDataAcceptanceMemberGraph = () => {
       try {
         setLoading(true);
         const response = await fetch('https://api.mfinindia.org/api/auth/getGraph3Data?short_name=Arohan');
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
-        
+
         const apiData = await response.json();
         console.log('API Response:', apiData); // Debug log
-        
+
         // Check if graph3_data exists and is an array (based on your previous API structure)
         if (!apiData.graph3_data || !Array.isArray(apiData.graph3_data)) {
           throw new Error('Invalid data format from API - graph3_data not found');
         }
-        
+
         // Transform API data to match chart format and remove decimals
         const transformedData = apiData.graph3_data.map(item => {
           // Check if the required properties exist
@@ -31,16 +32,16 @@ const CBDataAcceptanceMemberGraph = () => {
             console.warn('Invalid item structure:', item);
             return null;
           }
-          
+
           return {
             month: item.Month.replace('31-', '').replace('30-', ''), // Convert to "Mar-25" format
             dataSubmissionCount: Math.round(item.Data_Submission_Count_Lk), // Remove decimals
             acceptanceRate: Math.round(item.Data_Acceptance_Percent) // Remove decimals
           };
         }).filter(item => item !== null); // Remove null items
-        
+
         console.log('Transformed Data:', transformedData); // Debug log
-        
+
         setData(transformedData);
         setLoading(false);
       } catch (err) {
@@ -81,11 +82,11 @@ const CBDataAcceptanceMemberGraph = () => {
   const renderCustomBarLabel = (props) => {
     const { x, y, width, value } = props;
     return (
-      <text 
-        x={x + width / 2} 
-        y={y - 5} 
-        fill="#000" 
-        textAnchor="middle" 
+      <text
+        x={x + width / 2}
+        y={y - 8} // CHANGED: Moved from -5 to -8 (slightly more upward)
+        fill="#000"
+        textAnchor="middle"
         fontSize={11}
         fontWeight="bold"
       >
@@ -97,11 +98,11 @@ const CBDataAcceptanceMemberGraph = () => {
   const renderCustomLineLabel = (props) => {
     const { x, y, value } = props;
     return (
-      <text 
-        x={x} 
-        y={y - 8} 
-        fill="#e67e22" 
-        textAnchor="middle" 
+      <text
+        x={x}
+        y={y - 12} // CHANGED: Moved from -8 to -12 (slightly more upward)
+        fill="#e67e22"
+        textAnchor="middle"
         fontSize={11}
         fontWeight="bold"
       >
@@ -119,14 +120,17 @@ const CBDataAcceptanceMemberGraph = () => {
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         textAlign: 'center'
       }}>
-        <h3 style={{ 
-          fontSize: '18px', 
-          fontWeight: 'bold', 
-          marginBottom: '20px',
-          color: '#333'
-        }}>
+        <h3
+          style={{
+            fontSize: '18px',
+            fontWeight: 'bold',
+            marginBottom: '20px',
+            color: '#000'
+          }}
+        >
           Data submission count and acceptance rate - Member
         </h3>
+
         <p>Loading data...</p>
       </div>
     );
@@ -141,9 +145,9 @@ const CBDataAcceptanceMemberGraph = () => {
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         textAlign: 'center'
       }}>
-        <h3 style={{ 
-          fontSize: '18px', 
-          fontWeight: 'bold', 
+        <h3 style={{
+          fontSize: '18px',
+          fontWeight: 'bold',
           marginBottom: '20px',
           color: '#333'
         }}>
@@ -164,9 +168,9 @@ const CBDataAcceptanceMemberGraph = () => {
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         textAlign: 'center'
       }}>
-        <h3 style={{ 
-          fontSize: '18px', 
-          fontWeight: 'bold', 
+        <h3 style={{
+          fontSize: '18px',
+          fontWeight: 'bold',
           marginBottom: '20px',
           color: '#333'
         }}>
@@ -184,35 +188,35 @@ const CBDataAcceptanceMemberGraph = () => {
       borderRadius: '8px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
     }}>
-      <h3 style={{ 
-        fontSize: '18px', 
-        fontWeight: 'bold', 
+      <h3 style={{
+        fontSize: '18px',
+        fontWeight: 'bold',
         marginBottom: '20px',
         color: '#333',
         textAlign: 'center'
       }}>
         Data submission count and acceptance rate - Member
       </h3>
-      
+
       <ResponsiveContainer width="100%" height={400}>
-        <ComposedChart 
+        <ComposedChart
           data={data}
           margin={{ top: 30, right: 30, left: 20, bottom: 20 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-          <XAxis 
-            dataKey="month" 
+          <XAxis
+            dataKey="month"
             tick={{ fontSize: 13, fill: '#333' }}
             axisLine={{ stroke: '#ccc' }}
           />
-          <YAxis 
+          <YAxis
             yAxisId="left"
             domain={[0, 'auto']}
             tick={{ fontSize: 13, fill: '#333' }}
             axisLine={{ stroke: '#ccc' }}
             hide={true}
           />
-          <YAxis 
+          <YAxis
             yAxisId="right"
             orientation="right"
             domain={['auto', 'auto']}
@@ -221,24 +225,24 @@ const CBDataAcceptanceMemberGraph = () => {
             hide={true}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend 
-            verticalAlign="bottom" 
+          <Legend
+            verticalAlign="bottom"
             height={36}
             wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }}
           />
-          <Bar 
+          <Bar
             yAxisId="left"
-            dataKey="dataSubmissionCount" 
-            fill="#1e5a9e" 
+            dataKey="dataSubmissionCount"
+            fill="#1e5a9e"
             name="Data submission count (Lk)"
             barSize={60}
             label={renderCustomBarLabel}
           />
-          <Line 
+          <Line
             yAxisId="right"
-            type="monotone" 
-            dataKey="acceptanceRate" 
-            stroke="#e67e22" 
+            type="monotone"
+            dataKey="acceptanceRate"
+            stroke="#e67e22"
             strokeWidth={2.5}
             name="% of Data acceptance"
             dot={{ fill: '#e67e22', r: 5 }}
@@ -252,3 +256,4 @@ const CBDataAcceptanceMemberGraph = () => {
 };
 
 export default CBDataAcceptanceMemberGraph;
+

@@ -86,7 +86,7 @@ const QARBarChartSix = ({ chartData }) => {
       } else if (seriesItem.color) {
         colors.push(seriesItem.color);
       } else {
-        colors.push("#2B60AD");
+        colors.push("#39B1AC");
       }
     });
 

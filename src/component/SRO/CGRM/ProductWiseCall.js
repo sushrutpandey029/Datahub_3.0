@@ -1,19 +1,15 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
-  CardActionArea,
   Box,
-  Typography,
 } from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 
-const ProductWiseCall = ({ ebCategoryMemberGData }) => {
-  console.log("ebCategoryMemberGData", ebCategoryMemberGData);
+const ProductWiseCall = ({ data }) => {
+  console.log("ProductWiseCall data:", data);
   
-  // Static data from your image
-  const staticPieData = {
-    series: [64.8, 62.43],
+  // Use props data if available, otherwise use static data
+  const pieData = {
+    series: data ? [data.query || 64.8, data.complaint || 62.43] : [64.8, 62.43],
     labels: ["Query", "Complaints"],
   };
 
@@ -24,11 +20,11 @@ const ProductWiseCall = ({ ebCategoryMemberGData }) => {
         show: true,
       },
     },
-    labels: staticPieData.labels,
-    colors: ["#2B60AD", "#FFA500"], // Blue for Query, Orange for Complaints
+    labels: pieData.labels,
+    colors: ["#2B60AD", "#FFA500"],
     title: {
       text: "Nature of calls - Industry",
-      align: "center",
+      align: "left",
       style: { fontSize: "16px", fontWeight: "bold", color: "#263238" },
     },
     legend: {
@@ -71,23 +67,14 @@ const ProductWiseCall = ({ ebCategoryMemberGData }) => {
   };
 
   return (
-    <Card style={{ paddingBottom: "20px" }}>
-      <CardActionArea>
-        <CardContent>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            {/* Pie Chart Only */}
-            <Box width="100%">
-              <ReactApexChart
-                options={pieChartOptions}
-                series={staticPieData.series}
-                type="pie"
-                height={350}
-              />
-            </Box>
-          </Box>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <Box width="100%">
+      <ReactApexChart
+        options={pieChartOptions}
+        series={pieData.series}
+        type="pie"
+        height={350}
+      />
+    </Box>
   );
 };
 

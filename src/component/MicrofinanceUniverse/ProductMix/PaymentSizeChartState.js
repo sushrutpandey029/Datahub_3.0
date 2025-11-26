@@ -1,5 +1,3 @@
-
-
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import ReactApexChart from "react-apexcharts";
 
@@ -15,9 +13,6 @@ const PaymentSizeChartstate = ({
   console.log("data in paymentstate", data);
 
   const COLORS = ["#2B60AD", "#39B1AC", "#69AB44", "#FDBF11", "#F78F6D"];
-
-
-
 
   const [hiddenSeries, setHiddenSeries] = useState([]);
   const [hoveredLegend, setHoveredLegend] = useState(null);
@@ -189,7 +184,6 @@ const PaymentSizeChartstate = ({
     title: {
       text: (data && data.title) || "Tenure (%) - All India",
       align: "left",
-
     },
     plotOptions: {
       bar: {
@@ -201,7 +195,7 @@ const PaymentSizeChartstate = ({
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return val >= 3 ? Math.round(val) + "%" : "";
+        return val >= 0.01 ? val.toFixed(2) + "%" : "";
       },
       style: { fontSize: "10px", colors: ["#fff"], fontWeight: 600 },
     },
@@ -216,7 +210,11 @@ const PaymentSizeChartstate = ({
     legend: { show: false },
     colors: COLORS,
     tooltip: {
-      y: { formatter: function (val) { return Math.round(val) + "%"; } },
+      y: { 
+        formatter: function (val) { 
+          return val.toFixed(2) + "%"; 
+        } 
+      },
     },
   };
 
@@ -300,8 +298,26 @@ const PaymentSizeChartstate = ({
                   position: "relative",
                 }}
               >
-                <span style={{ fontSize: "11px", color: "#666", fontWeight: 600, flex: 1, textAlign: "center" }}>Volume</span>
-                <span style={{ fontSize: "11px", color: "#666", fontWeight: 600, flex: 1, textAlign: "center" }}>Value</span>
+                <span style={{ 
+                  fontSize: "15px", 
+                  color: "#666", 
+                  fontWeight: 500, 
+                  flex: 1, 
+                  textAlign: "center",
+                  fontFamily: 'sans-serif',
+                }}>
+                  Volume
+                </span>
+                <span style={{ 
+                  fontSize: "15px", 
+                  color: "#666", 
+                  fontWeight: 500, 
+                  flex: 1, 
+                  textAlign: "center",
+                  fontFamily: 'sans-serif',
+                }}>
+                  Value
+                </span>
 
                 <div
                   style={{
@@ -331,11 +347,12 @@ const PaymentSizeChartstate = ({
               <div
                 key={idx}
                 style={{
-                  fontSize: "11px",
+                  fontSize: "15px",
                   color: "#444",
-                  fontWeight: 600,
+                  fontWeight: 500,
                   flex: 1,
                   textAlign: "center",
+                  fontFamily: 'sans-serif',
                 }}
               >
                 {month}
@@ -391,9 +408,10 @@ const PaymentSizeChartstate = ({
                 />
                 <span
                   style={{
-                    fontSize: "11px",
+                    fontSize: "15px",
                     color: isHidden ? "#999" : "#444",
                     fontWeight: 500,
+                    fontFamily: 'sans-serif',
                     textDecoration: isHidden ? "line-through" : "none",
                   }}
                 >

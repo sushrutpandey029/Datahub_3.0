@@ -31,6 +31,7 @@ import CBVIDKYCSeedingIndustryGraph from "./CBReport/CBVIDKYCSeedingIndustryGrap
 import CBDataAcceptanceSmtbMemberGraph from "./CBReport/CBDataAcceptanceSmtbMemberGraph";
 import CBDataAcceptanceSmtbIndustryGraph from "./CBReport/CBDataAcceptanceSmtbIndustryGraph";
 import CBMonthlySbmsnTable from "./CBReport/CBMonthlySbmsnTable";
+
 //  CB SRO - import end here 
 
 
@@ -111,7 +112,8 @@ import {
   cbMemberDataApi,
   cbIndustryDataApi,
   dropdownofcgrm,
-  table1cgrm
+  table1cgrm,
+  graph1cgrm
 } from "../url/url";
 import { BaseUrl } from "../url/url";
 import axios from "axios";
@@ -211,13 +213,14 @@ const SroMaster = () => {
 
   // Start CGRM Report Information
   const [ReportData, setReportData] = useState(null);
+  const [table1cgrm, setTable1cgrm] = useState(null);
+  
 
   //latest
   const [natureOfCallQuery, setNatureOfCallQuery] = useState(0);
   const [natureOfCallComplaint, setNatureOfCallComplaint] = useState(0);
 
   const [productWiseCallData, setProductWiseCallData] = useState({});
-
   const [originOfCallData, setOriginOfCallData] = useState({});
 
   const [categoryWiseComplaint, setCategoryWiseComplaint] = useState({});
@@ -302,6 +305,21 @@ const SroMaster = () => {
   const [cbDataAcceptanceMember, setCBDataAcceptanceMember] = useState([])
   const [cbDataAcceptanceIndustry, setCBDataAcceptanceIndustry] = useState([])
 
+  //SRO CGRM data
+
+  //SRO - CGRM dropdown
+  const [cgrmDropdown, setCGRMDropdown] = useState({
+    members: [],
+    quarters: [],
+    entities: [],
+    startMonth: null,
+    endMonth: null,
+    selectedMember: "",
+    selectedEntity: "",
+    selectedQuarter:"",
+    isLoader: false,
+  });
+
 
   //RBI-Others information end here
 
@@ -333,181 +351,212 @@ const SroMaster = () => {
     setGraphFilter({ ...graphFilter, ["Quatar"]: e.target.value });
   };
 
-  const getCGRMData = async () => {
-    var queryString = Object.keys(formState)
-      .map((key) => key + "=" + formState[key])
-      .join("&");
+  // const getCGRMData = async () => {
+  //   const quarter = graphFilter.Quarter;
+  //   const member = formState.member;
 
+  //   console.log("🚀 Starting CGRM data fetch...");
+  //   console.log("📊 Parameters:", { member, quarter });
 
+  //   // STEP 1: Fetch table1 data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/CGRM_getTable1Data?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Table1 API URL:", url);
 
-      // ✅ CORRECT: Use graphFilter.Quatar instead of formState.Quatar
-  const Quatar = graphFilter.Quatar; 
-  const member = formState.member;
+  //     const table1Response = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
 
+  //     console.log("✅ Table1 API Full Response:", table1Response);
+  //     console.log("✅ Table1 API Data:", table1Response.data);
+  //     console.log("✅ Table1 Status:", table1Response.data.status);
+  //     console.log("✅ Table1 Data:", table1Response.data.table1);
 
-    // STEP 1: Pehle table1 data fetch karein
-    try {
-      const table1Response = await axios.get(
-        `${BaseUrl}/api/auth/CGRM_getTable1Data?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(Quatar)}`,
-        {
-          headers: authHeaders(),
-        }
-      );
+  //     if (table1Response.data.status) {
+  //       const reportData = {
+  //         member: member,
+  //         quarter: quarter,
+  //         table1: table1Response.data.table1,
+  //         default_member: table1Response.data.default_member,
+  //         default_quarter: table1Response.data.default_quarter
+  //       };
 
-      console.log("Table1 API Response:", table1Response.data);
+  //       console.log("📊 Setting ReportData:", reportData);
+  //       setReportData(reportData);
+  //     } else {
+  //       console.log("❌ API returned status false");
+  //       setReportData(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching table1 data:", error);
+  //     if (error.response && error.response.data) {
+  //       console.error("Error details:", error.response.data);
+  //     }
+  //     setReportData(null);
+  //   }
+  //   // ❌ REMOVE THIS OLD API CALL - It overwrites ReportData!
+  //   // await axios.get(`${BaseUrl}/api/auth/getReport?month=${quarter}&member=${member}`)
 
-      if (table1Response.data.status) {
-        // ReportData ko set karein with table1 data
-        setReportData({
-          member: member,
-          quarter: Quatar,
-          table1: table1Response.data.table1,
-          default_member: table1Response.data.default_member,
-          default_quarter: table1Response.data.default_quarter
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching table1 data:", error);
+  //   // STEP 2: Fetch other CGRM data (charts)
+  //   try {
+  //     // Nature of calls
+  //     const nocResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/nature-of-calls?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     console.log("Nature of calls:", nocResponse.data);
+  //     setNatureOfCallQuery(nocResponse.data.Query);
+  //     setNatureOfCallComplaint(nocResponse.data.Complaint);
+
+  //     // Product wise calls
+  //     const pwcResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/product-wise-calls?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     console.log("Product wise calls:", pwcResponse.data);
+  //     setProductWiseCallData(pwcResponse.data);
+
+  //     // Origin of calls
+  //     const oocResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/origin-of-calls?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     console.log("Origin of calls:", oocResponse.data);
+  //     setOriginOfCallData(oocResponse.data);
+
+  //     // Category wise complaint
+  //     const cwcResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/category-wise/Complaint?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     console.log("Category wise complaint:", cwcResponse.data);
+  //     setCategoryWiseComplaint(cwcResponse.data);
+
+  //     // Category wise query
+  //     const cwqResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/category-wise/Query?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     console.log("Category wise query:", cwqResponse.data);
+  //     setCategoryWiseQuery(cwqResponse.data);
+
+  //     // Complaint status
+  //     const csResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/complaint-status?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     console.log("Complaint status:", csResponse.data);
+  //     setcomplaintStatusData(csResponse.data);
+
+  //     // Average TAT
+  //     const tatResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/average-tat?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     console.log("Average TAT:", tatResponse.data);
+  //     setAverageTATData(tatResponse.data);
+
+  //   } catch (error) {
+  //     console.error("❌ Error fetching CGRM chart data:", error);
+  //     if (error.response && error.response.data) {
+  //       console.error("Chart error details:", error.response.data);
+  //     }
+  //   }
+  // };
+ 
+ 
+const getCGRMData = async (memberParam = null, quarterParam = null) => {
+  const quarter = quarterParam || graphFilter.Quarter;
+  const member = memberParam || formState.member;
+
+  console.log("🚀 Starting CGRM data fetch...");
+  console.log("📊 Parameters:", { member, quarter });
+
+  // STEP 1: Fetch table1 data
+  try {
+    const url = `${BaseUrl}/api/auth/CGRM_getTable1Data?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Table1 API URL:", url);
+
+    const table1Response = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Table1 API Response:", table1Response.data);
+
+    if (table1Response.data.status) {
+      const reportData = {
+        member: member,
+        quarter: quarter,
+        table1: table1Response.data.table1,
+        default_member: table1Response.data.default_member,
+        default_quarter: table1Response.data.default_quarter
+      };
+
+      console.log("📊 Setting table1cgrm:", reportData);
+      
+      // ✅ Set the table1cgrm state
+      setTable1cgrm(reportData);
+    } else {
+      console.log("❌ API returned status false");
+      setTable1cgrm(null);
     }
+  } catch (error) {
+    console.error("❌ Error fetching table1 data:", error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+    }
+    setTable1cgrm(null);
+  }
 
+  // STEP 2: Fetch chart data
+  try {
+    const nocResponse = await axios.get(
+      `${BaseUrl}/api/auth/nature-of-calls?month=${quarter}&member=${member}`,
+      { headers: authHeaders() }
+    );
+    setNatureOfCallQuery(nocResponse.data.Query);
+    setNatureOfCallComplaint(nocResponse.data.Complaint);
 
-    // sro-get-cgrm-category-wise
-    await axios
-      .get(`${BaseUrl}/api/auth/sro-get-cgrm-category-wise?${queryString}`, {
-        headers: authHeaders(),
-      })
-      .then((response) => {
-        setNatureofCallSeries(response.data.data.NatureOfCalls);
-        setProductWiseCallVolumeSeries(response.data.data.ProductWiseCall);
-        //setMembers(response.data.MFISelected);
-      })
-      .catch((error) => {
-        console.log("err", error);
-      });
-    //sro-get-QAR-paramters - member Level
+    const pwcResponse = await axios.get(
+      `${BaseUrl}/api/auth/product-wise-calls?month=${quarter}&member=${member}`,
+      { headers: authHeaders() }
+    );
+    setProductWiseCallData(pwcResponse.data);
 
-    //sro-get-cgrm-getReport
-    await axios
-      .get(`${BaseUrl}/api/auth/getReport?month=${Quatar}&member=${member}`, {
-        headers: authHeaders(),
-      })
-      .then((response) => {
-        setReportData(response.data);
-        // console.log("cgrm_report", response.data);
-      })
-      .catch((err) => {
-        console.log("cgrm_report_err", err);
-      });
+    const oocResponse = await axios.get(
+      `${BaseUrl}/api/auth/origin-of-calls?month=${quarter}&member=${member}`,
+      { headers: authHeaders() }
+    );
+    setOriginOfCallData(oocResponse.data);
 
-    //sro get nature-of-calls
-    await axios
-      .get(
-        `${BaseUrl}/api/auth/nature-of-calls?month=${Quatar}&member=${member}`,
-        {
-          headers: authHeaders(),
-        }
-      )
-      .then((response) => {
-        console.log("noc", response);
-        setNatureOfCallQuery(response.data.Query);
-        setNatureOfCallComplaint(response.data.Complaint);
-      })
-      .catch((err) => {
-        console.log("cgrm_noc_err", err);
-      });
+    const cwcResponse = await axios.get(
+      `${BaseUrl}/api/auth/category-wise/Complaint?month=${quarter}&member=${member}`,
+      { headers: authHeaders() }
+    );
+    setCategoryWiseComplaint(cwcResponse.data);
 
-    //sro get cgrm product-wise-call
-    await axios
-      .get(
-        `${BaseUrl}/api/auth/product-wise-calls?month=${Quatar}&member=${member}`,
-        {
-          headers: authHeaders(),
-        }
-      )
-      .then((response) => {
-        console.log("pwc", response);
-        setProductWiseCallData(response.data);
-        console.log("product", productWiseCallData);
-      })
-      .catch((err) => {
-        console.log("cgrm_noc_err", err);
-      });
+    const cwqResponse = await axios.get(
+      `${BaseUrl}/api/auth/category-wise/Query?month=${quarter}&member=${member}`,
+      { headers: authHeaders() }
+    );
+    setCategoryWiseQuery(cwqResponse.data);
 
-    //sro get cgrm origin-of-call
-    await axios
-      .get(
-        `${BaseUrl}/api/auth/origin-of-calls?month=${Quatar}&member=${member}`,
-        {
-          headers: authHeaders(),
-        }
-      )
-      .then((response) => {
-        setOriginOfCallData(response.data);
-      })
-      .catch((err) => {
-        console.log("cgrm_noc_err", err);
-      });
+    const csResponse = await axios.get(
+      `${BaseUrl}/api/auth/complaint-status?month=${quarter}&member=${member}`,
+      { headers: authHeaders() }
+    );
+    setcomplaintStatusData(csResponse.data);
 
-    //sro get cgrm category-wise-compalint data
-    await axios
-      .get(
-        `${BaseUrl}/api/auth/category-wise/Complaint?month=${Quatar}&member=${member}`,
-        {
-          headers: authHeaders(),
-        }
-      )
-      .then((response) => {
-        console.log("complaint", response);
-        setCategoryWiseComplaint(response.data);
-      })
-      .catch((err) => {
-        console.log("cgrm-category-wise-complaint-err", err);
-      });
+    const tatResponse = await axios.get(
+      `${BaseUrl}/api/auth/average-tat?month=${quarter}&member=${member}`,
+      { headers: authHeaders() }
+    );
+    setAverageTATData(tatResponse.data);
 
-    //sro get cgrm category-wise-query data
-    await axios
-      .get(
-        `${BaseUrl}/api/auth/category-wise/Query?month=${Quatar}&member=${member}`,
-        {
-          headers: authHeaders(),
-        }
-      )
-      .then((response) => {
-        console.log("query", response);
-        setCategoryWiseQuery(response.data);
-      })
-      .catch((err) => {
-        console.log("cgrm-category-wise-query-err", err);
-      });
-
-    //sro get cgrm complaint-status data
-    await axios
-      .get(
-        `${BaseUrl}/api/auth/complaint-status?month=${Quatar}&member=${member}`,
-        {
-          headers: authHeaders(),
-        }
-      )
-      .then((response) => {
-        setcomplaintStatusData(response.data);
-      })
-      .catch((err) => {
-        console.log("cgrm-complaint-status-data-err", err);
-      });
-
-    //sro get cgrm average-tat data
-    await axios
-      .get(`${BaseUrl}/api/auth/average-tat?month=${Quatar}&member=${member}`, {
-        headers: authHeaders(),
-      })
-      .then((response) => {
-        setAverageTATData(response.data);
-      })
-      .catch((err) => {
-        console.log("cgrm-average-tat-data-err", err);
-      });
-  };
-
+  } catch (error) {
+    console.error("❌ Error fetching chart data:", error);
+  }
+};
   const chartColorsMap = {
     memberChart: ["#1E3A5F", "#2C7A9E", "#B8B8B8"],
     universeChart: ["#1E3A5F", "#2E9BDE", "#D4E5F0"],
@@ -562,7 +611,13 @@ const SroMaster = () => {
       const response = await axios.get(`${BaseUrl}${dropdownofcgrm}`, {
         headers: authHeaders(),
       });
-      return response.data;
+      console.log("resp in cgrm", response.data);
+      setCGRMDropdown((prev) => ({
+        ...prev,
+        members: response.data.member,
+        quarters: response.data.quarter,
+        isLoader: false,
+      }));
     } catch (error) {
       console.error('Error fetching CGRM dropdown data:', error);
       return {
@@ -573,25 +628,32 @@ const SroMaster = () => {
     }
   };
   // Naya function add karein for CGRM dropdown data
-  const getCGRMDropdownData = async () => {
-    try {
-      const dropdownData = await fetchCGRMDropdownData();
-      if (dropdownData.status) {
-        setMembers(dropdownData.member || []);
-        setQuatarList(dropdownData.quarter || []);
+  // const getCGRMDropdownData = async () => {
+  //   console.log("🔄 Fetching CGRM dropdown data...");
 
-        // Optional: Default values set karein
-        if (dropdownData.member.length > 0 && !formState.member) {
-          setFormState(prev => ({ ...prev, member: dropdownData.member[0] }));
-        }
-        if (dropdownData.quarter.length > 0 && !graphFilter.Quatar) {
-          setGraphFilter(prev => ({ ...prev, Quatar: dropdownData.quarter[0] }));
-        }
-      }
-    } catch (error) {
-      console.error('Error loading CGRM dropdown data:', error);
-    }
-  };
+  //   try {
+  //     const dropdownData = await fetchCGRMDropdownData();
+
+  //     console.log("✅ Dropdown data:", dropdownData);
+
+  //     if (dropdownData.status) {
+  //       setMembers(dropdownData.member || []);
+  //       setQuatarList(dropdownData.quarter || []);
+
+  //       // Set default values
+  //       if (dropdownData.member.length > 0 && !formState.member) {
+  //         setFormState(prev => ({ ...prev, member: dropdownData.member[0] }));
+  //       }
+
+  //       // ✅ FIXED: Quatar → Quarter
+  //       if (dropdownData.quarter.length > 0 && !graphFilter.Quarter) {
+  //         setGraphFilter(prev => ({ ...prev, Quarter: dropdownData.quarter[0] }));
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Error loading CGRM dropdown data:', error);
+  //   }
+  // };
   const getQARData = async () => {
     console.log("before calling qardata");
     console.log("quarter", formState.quarter);
@@ -1338,20 +1400,43 @@ const SroMaster = () => {
     }
   };
 
-  const filterCGRMHandler = async () => {
-    setFormState((prevState) => ({
-      ...prevState,
-      ["isLoader"]: true,
-      ["isDisabled"]: true,
-    }));
-    await getCGRMData();
-    setFormState((prevState) => ({
-      ...prevState,
-      ["isLoader"]: false,
-      ["isDisabled"]: false,
-    }));
-  };
+  // const filterCGRMHandler = async () => {
+  //   setFormState((prevState) => ({
+  //     ...prevState,
+  //     ["isLoader"]: true,
+  //     ["isDisabled"]: true,
+  //   }));
+  //   await getCGRMData();
+  //   setFormState((prevState) => ({
+  //     ...prevState,
+  //     ["isLoader"]: false,
+  //     ["isDisabled"]: false,
+  //   }));
+  // };
 
+const filterCGRMHandler = async () => {
+  console.log("🔍 Filter clicked!");
+  console.log("📋 Selected Member:", cgrmDropdown.selectedMember);
+  console.log("📋 Selected Quarter:", cgrmDropdown.selectedQuarter);
+  
+  setFormState((prevState) => ({
+    ...prevState,
+    isLoader: true,
+    isDisabled: true,
+  }));
+  
+  // ✅ Pass selected values
+  await getCGRMData(
+    cgrmDropdown.selectedMember,
+    cgrmDropdown.selectedQuarter
+  );
+  
+  setFormState((prevState) => ({
+    ...prevState,
+    isLoader: false,
+    isDisabled: false,
+  }));
+};
   const filterRBIOthersHandler = async () => {
     setFormState((prevState) => ({
       ...prevState,
@@ -1659,7 +1744,8 @@ const SroMaster = () => {
     }
     if (value == 4) {
       // CGRM ke liye dropdown data fetch karein
-      getCGRMDropdownData();
+      fetchCGRMDropdownData();
+      
     }
     if (value == 5) {
       getQARLatestMonthYear();
@@ -2268,17 +2354,21 @@ const SroMaster = () => {
                                 sx={{ minWidth: "100%" }}
                               >
                                 <InputLabel id="lender-name-label">
-                                  Choose Lender Name
-                                </InputLabel>
+                                  Member                                </InputLabel>
                                 <Select
                                   labelId="lender-name-label"
                                   id="lender-name-select"
-                                  label="Choose Lender Name"
+                                  label="Member"
                                   name="member"
-                                  value={formState.member}
-                                  onChange={(e) => onValueChange(e)}
+                                  value={cgrmDropdown.selectedMember}
+                                  // onChange={(e) => onValueChange(e)}
+                                   onChange={(e) =>
+                                    setCGRMDropdown(function (prev) {
+                                      return { ...prev, selectedMember: e.target.value };
+                                    })
+                                  }
                                 >
-                                  {members.map((v, index) => {
+                                  {cgrmDropdown.members.map((v, index) => {
                                     return (
                                       <MenuItem key={index} value={v}>
                                         {v}
@@ -2302,11 +2392,15 @@ const SroMaster = () => {
                                   labelId="quarter-label"
                                   id="quarter-select"
                                   name="Qautar"
-                                  value={graphFilter.Quatar}
-                                  onChange={handleGraphToDateChange}
+                                  value={cgrmDropdown.selectedQuarter}
+                                  onChange={(e) =>
+                                    setCGRMDropdown(function (prev) {
+                                      return { ...prev, selectedQuarter: e.target.value };
+                                    })
+                                  }
                                   label="Choose Quarter"
                                 >
-                                  {Quatars.map((q, index) => {
+                                  {cgrmDropdown.quarters.map((q, index) => {
                                     return (
                                       <MenuItem key={index} value={q}>
                                         {q}
@@ -2331,7 +2425,7 @@ const SroMaster = () => {
                                 disabled={formState.isDisabled}
                                 onClick={filterCGRMHandler}
                               >
-                                Filter
+                                Filters
                                 <Loader loader={formState.isLoader} size={15} />
                               </Button>
                             </Grid>
@@ -2348,7 +2442,7 @@ const SroMaster = () => {
                       >
                         <CardActionArea>
                           <CardContent>
-                            <ReportTable ReportData={ReportData} />
+        <ReportTable table1cgrm={table1cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
@@ -2358,14 +2452,12 @@ const SroMaster = () => {
                       <Card
                         style={{ paddingBottom: "20px", marginBottom: "20px" }}
                       >
-                        <CardActionArea>
-                          <CardContent>
-                            <NatureofCall
-                              Query={natureOfCallQuery}
-                              Complaint={natureOfCallComplaint}
-                            />
-                          </CardContent>
-                        </CardActionArea>
+
+                        <NatureofCall
+                          Query={natureOfCallQuery}
+                          Complaint={natureOfCallComplaint}
+                        />
+
                       </Card>
                     </Grid>
 

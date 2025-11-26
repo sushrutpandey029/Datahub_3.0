@@ -35,9 +35,8 @@ const QARBarCharttwo = ({ chartData }) => {
     },
     plotOptions: {
       bar: {
-        columnWidth: "50%", // ✅ narrower bars for more space between columns
+        columnWidth: "45%", // ✅ narrower bars for more space between columns
         distributed: true,
-        borderRadius: 4,
         dataLabels: {
           position: "top",
         },
@@ -55,7 +54,7 @@ const QARBarCharttwo = ({ chartData }) => {
     },
     xaxis: {
       categories: [],
-      axisBorder: { show: false },
+      axisBorder: { show: true },
       axisTicks: { show: false },
       labels: {
         style: {
@@ -70,7 +69,7 @@ const QARBarCharttwo = ({ chartData }) => {
       max: 5,
       tickAmount: 5,
     },
-    colors: ["#2B60AD"],
+    colors: ["#39B1AC"],
     legend: { show: false },
     tooltip: {
       y: {
@@ -78,6 +77,7 @@ const QARBarCharttwo = ({ chartData }) => {
       },
     },
     grid: {
+      show:false,
       strokeDashArray: 3,
       borderColor: "#e0e0e0",
     },

@@ -134,6 +134,7 @@ function QARBarChartfour({ chartData }) {
         fontSize: "11px",
       },
       grid: {
+        show:false,
         borderColor: "#f1f1f1",
       },
       tooltip: {

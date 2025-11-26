@@ -17,8 +17,8 @@ import "jspdf-autotable";
 import { Table } from "react-bootstrap";
 
 function CBMonthlySbmsnTable({ memberRecords, industryRecords, entityList, setCBDropdown, selectedEntity }) {
-  console.log("memberRecords",memberRecords);
-  console.log("industryRecords",industryRecords);
+  console.log("memberRecords", memberRecords);
+  console.log("industryRecords", industryRecords);
 
   const [open] = useState(false);
 
@@ -29,36 +29,36 @@ function CBMonthlySbmsnTable({ memberRecords, industryRecords, entityList, setCB
 
   // ----------------------------
   // MEMBER FIELDS
-  // ----------------------------
+  //   // ----------------------------
   const memberFields = [
-    "Date_1FortSub",
-    "Date_2FortSub",
-    "DailyFilesSubmitted",
-    "VID_fill_rate",
-    "PAN_fill_rate",
-    "Total_monthly_family_income_fill_rate",
-    "Number_of_instalments_fill_rate",
-    "Instalment_amount_fill_rate",
-    "Valid_phone_number_seeding_rate",
-    "Number_of_active_loan_accounts",
-    "Value_of_active_loan_accounts_in_crores",
+    "Date of first fortnightly submission",
+    "Date of second fortnightly/monthly submission",
+    "Count of daily submission",
+    "VID fill rate",
+    "PAN fill rate",
+    "Total monthly family income fill rate",
+    "Number of instalments fill rate",
+    "Instalment amount fill rate",
+    "Valid phone number seeding rate",
+    "Number of active loan accounts",
+    "Value of active loan accounts (in Rs Cr)",
   ];
 
   // ----------------------------
   // INDUSTRY FIELDS
   // ----------------------------
   const industryFields = [
-    "First_Fortnight_File_OnTime",
-    "Second_Fortnight_File_OnTime",
-    "Daily_Files_20Plus",
-    "VID_Fill_Rate",
-    "PAN_Fill_Rate",
-    "Family_Income_Fill_Rate",
-    "Instalment_Amt_Fill_Rate",
-    "Instalment_Num_Fill_Rate",
-    "Phone_Valid_Rate",
-    "Active_Loans_Number_inCr",
-    "Active_Loans_Value_inCr"
+    "Lenders submitted first fortnightly file on or before time (i.e. 22nd of the respective month)",
+    "Lenders submitted second fortnightly/monthly file on or before time (i.e. 7th of the following month)",
+    "Lenders submitted min 20 daily files in the month (%)",
+    "VID fill rate",
+    "PAN fill rate",
+    "Total monthly family income fill rate",
+    "Number of instalments fill rate",
+    "Instalment amount fill rate",
+    "Phone number seeding rate",
+    "Number of active loan accounts (in Cr)",
+    "Value of active loan accounts (in Rs Cr)"
   ];
 
   // ----------------------------
@@ -186,7 +186,7 @@ function CBMonthlySbmsnTable({ memberRecords, industryRecords, entityList, setCB
                   </tr>
                 </thead>
 
-                <tbody>
+                {/* <tbody>
                   {memberFields.map((field) => (
                     <tr key={field}>
                       <td>{field.replace(/_/g, " ")}</td>
@@ -195,7 +195,25 @@ function CBMonthlySbmsnTable({ memberRecords, industryRecords, entityList, setCB
                       ))}
                     </tr>
                   ))}
+                </tbody> */}
+                <tbody>
+                  {memberFields.map((field) => (
+                    <tr key={field}>
+                      {/* Left-aligned field name */}
+                      <td style={{ textAlign: 'left', paddingRight: '10px' }}>
+                        {field.replace(/_/g, " ")}
+                      </td>
+
+                      {/* Right-aligned data cells */}
+                      {memberData.months.map((m) => (
+                        <td key={m} style={{ textAlign: 'right', paddingLeft: '10px' }}>
+                          {getData(memberData, m, field)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
+
               </Table>
             </CardContent>
           </CardActionArea>
@@ -253,7 +271,7 @@ function CBMonthlySbmsnTable({ memberRecords, industryRecords, entityList, setCB
                     ))}
                   </tr>
                 </thead>
-
+                {/* 
                 <tbody>
                   {industryFields.map((field) => (
                     <tr key={field}>
@@ -263,7 +281,32 @@ function CBMonthlySbmsnTable({ memberRecords, industryRecords, entityList, setCB
                       ))}
                     </tr>
                   ))}
+                </tbody> */}
+
+                <tbody>
+                  {industryFields.map((field) => (
+                    <tr key={field}>
+                      {/* Left-aligned field name */}
+                      <td style={{ textAlign: 'left', paddingRight: '10px' }}>
+                        {field.replace(/_/g, " ")}
+                      </td>
+
+                      {/* Right-aligned data cells */}
+                      {industryData.months.map((m) => (
+                        <td key={m} style={{ textAlign: 'right', paddingLeft: '10px' }}>
+                          {getData(industryData, m, field)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
+
+
+
+
+
+
+
               </Table>
             </CardContent>
           </CardActionArea>

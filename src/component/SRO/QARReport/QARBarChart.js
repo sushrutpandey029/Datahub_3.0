@@ -61,10 +61,10 @@ const QARBarChart = ({ guardRailsData }) => {
           type: "bar",
           height: 350,
           toolbar: { show: true },
-         },
+        },
         title: {
           text: title,
-           style: {
+          style: {
             fontSize: "14px",
             fontWeight: "bold",
             fontFamily: "sans-serif",
@@ -90,7 +90,7 @@ const QARBarChart = ({ guardRailsData }) => {
         },
         xaxis: {
           categories,
-          axisBorder: { show: false },
+          axisBorder: { show: true },
           axisTicks: { show: false },
           labels: {
             style: {
@@ -112,6 +112,7 @@ const QARBarChart = ({ guardRailsData }) => {
           y: { formatter: (val) => `${val}%` },
         },
         grid: {
+          show: false,
           strokeDashArray: 3,
           borderColor: "#e0e0e0",
         },

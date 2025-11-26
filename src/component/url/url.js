@@ -91,6 +91,7 @@ export const cbIndustryDataApi = "/api/auth/industryTable2Metrics"
 
 export const  dropdownofcgrm = "/api/auth/CGRM_Drop_down_data";
 export const table1cgrm = "/api/auth/CGRM_getTable1Data";
+export const graph1cgrm = "/api/auth/Nature_of_calls_Member";
 
 
 
