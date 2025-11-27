@@ -113,7 +113,18 @@ import {
   cbIndustryDataApi,
   dropdownofcgrm,
   table1cgrm,
-  graph1cgrm
+  graph1cgrm,
+  graph2cgrm,
+  graph3cgrm,
+  graph4cgrm,
+  graph5cgrm,
+  graph6cgrm,
+  graph7cgrm,
+  graph8cgrm,
+  table2cgrm,
+  table3cgrm
+
+
 } from "../url/url";
 import { BaseUrl } from "../url/url";
 import axios from "axios";
@@ -214,7 +225,24 @@ const SroMaster = () => {
   // Start CGRM Report Information
   const [ReportData, setReportData] = useState(null);
   const [table1cgrm, setTable1cgrm] = useState(null);
-  
+  const [graph1cgrm, setgraph1cgrm] = useState(null);
+  const [graph2cgrm, setgraph2cgrm] = useState(null);
+  const [graph3cgrm, setgraph3cgrm] = useState(null);
+  const [graph4cgrm, setgraph4cgrm] = useState(null);
+  const [graph5cgrm, setgraph5cgrm] = useState(null);
+  const [graph6cgrm, setgraph6cgrm] = useState(null);
+  const [graph7cgrm, setgraph7cgrm] = useState(null);
+
+  const [graph8cgrm, setgraph8cgrm] = useState(null);
+
+  const [table3cgrm, settable3cgrm] = useState(null);
+
+  const [table2cgrm, settable2cgrm] = useState(null);
+
+
+
+
+
 
   //latest
   const [natureOfCallQuery, setNatureOfCallQuery] = useState(0);
@@ -316,7 +344,7 @@ const SroMaster = () => {
     endMonth: null,
     selectedMember: "",
     selectedEntity: "",
-    selectedQuarter:"",
+    selectedQuarter: "",
     isLoader: false,
   });
 
@@ -463,9 +491,439 @@ const SroMaster = () => {
   //     }
   //   }
   // };
- 
- 
-const getCGRMData = async (memberParam = null, quarterParam = null) => {
+
+  // const getCGRMData = async (memberParam = null, quarterParam = null) => {
+  //   const quarter = quarterParam || graphFilter.Quarter;
+  //   const member = memberParam || formState.member;
+
+  //   console.log("🚀 Starting CGRM data fetch...");
+  //   console.log("📊 Parameters:", { member, quarter });
+
+  //   // STEP 2: Fetch Member-specific Nature of Calls - EXTENDED DEBUGGING
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/Nature_of_calls_Member?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Nature of Calls MEMBER API URL:", url);
+
+  //     const memberResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("🎯 FULL API RESPONSE:", memberResponse);
+  //     console.log("✅ Nature of Calls MEMBER Response DATA:", memberResponse.data);
+  //     console.log("📊 Response status:", memberResponse.data.status);
+  //     console.log("📊 Has chart1?", !!memberResponse.data.chart1);
+  //     console.log("📊 chart1 data:", memberResponse.data.chart1);
+  //     console.log("📊 Is chart1 array?", Array.isArray(memberResponse.data.chart1));
+  //     console.log("📊 chart1 length:", memberResponse.data.chart1 ? memberResponse.data.chart1.length : 0);
+
+  //     if (memberResponse.data.status) {
+  //       const reportData = {
+  //         member: memberResponse.data.member || member,
+  //         quarter: memberResponse.data.quarter || quarter,
+  //         chart1: memberResponse.data.chart1 || [],
+  //       };
+
+  //       console.log("🔄 Setting graph1cgrm with:", reportData);
+  //       setgraph1cgrm(reportData);
+
+  //       // Immediately check if state was set
+  //       setTimeout(() => {
+  //         console.log("📝 Current graph1cgrm state:", graph1cgrm);
+  //       }, 100);
+  //     } else {
+  //       console.log("❌ MEMBER API returned status false");
+  //       setgraph1cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Nature of Calls MEMBER data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph1cgrm(null);
+  //   }
+  //   // STEP 2: Fetch Member-specific Nature of Calls - DEBUGGING
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/Nature_of_calls_Member?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Nature of Calls MEMBER API URL:", url);
+
+  //     const memberResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Nature of Calls MEMBER FULL Response:", memberResponse.data);
+  //     console.log("📊 Response status:", memberResponse.data && memberResponse.data.status);
+  //     console.log("📊 Has chart1?", !!(memberResponse.data && memberResponse.data.chart1));
+  //     console.log("📊 chart1 length:", memberResponse.data && memberResponse.data.chart1 ? memberResponse.data.chart1.length : 0);
+  //     console.log("📊 chart1 data:", memberResponse.data && memberResponse.data.chart1);
+
+  //     if (memberResponse.data && memberResponse.data.status) {
+  //       const reportData = {
+  //         member: memberResponse.data.member || member,
+  //         quarter: memberResponse.data.quarter || quarter,
+  //         chart1: memberResponse.data.chart1 || [],
+  //       };
+
+  //       console.log("📊 Setting graph1cgrm:", reportData);
+  //       setgraph1cgrm(reportData);
+  //     } else {
+  //       console.log("❌ MEMBER API returned status false");
+  //       setgraph1cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Nature of Calls MEMBER data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph1cgrm(null);
+  //   }
+
+  //   // STEP 3: Fetch Industry-wide Nature of Calls
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/Nature_of_calls_Industry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Nature of Calls INDUSTRY API URL:", url);
+
+  //     const industryResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Nature of Calls INDUSTRY Response:", industryResponse.data);
+  //     console.log("📊 Response status:", industryResponse.data.status);
+  //     console.log("📊 chart1 data:", industryResponse.data.chart1);
+  //     console.log("📊 Is chart1 array?", Array.isArray(industryResponse.data.chart1));
+  //     console.log("📊 chart1 length:", industryResponse.data.chart1 ? industryResponse.data.chart1.length : 0);
+
+  //     if (industryResponse.data.status) {
+  //       const reportData = {
+  //         member: industryResponse.data.member || member,
+  //         quarter: industryResponse.data.quarter || quarter,
+  //         chart1: industryResponse.data.chart1 || [],
+  //       };
+
+  //       console.log("📊 Setting graph2cgrm:", reportData);
+  //       setgraph2cgrm(reportData);
+  //     } else {
+  //       console.log("❌ INDUSTRY API returned status false");
+  //       setgraph2cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Nature of Calls INDUSTRY data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph2cgrm(null);
+  //   }
+
+  //   // STEP 4: Fetch Category Wise Complaints Member data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/categoryWiseComplaintsMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Category Wise Complaints Member API URL:", url);
+
+  //     const cwcmResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Category Wise Complaints Member Response:", cwcmResponse.data);
+  //     console.log("📊 Response status:", cwcmResponse.data.status);
+  //     console.log("📊 chart3 data:", cwcmResponse.data.chart3);
+  //     console.log("📊 Is chart3 array?", Array.isArray(cwcmResponse.data.chart3));
+  //     console.log("📊 chart3 length:", cwcmResponse.data.chart3 ? cwcmResponse.data.chart3.length : 0);
+
+  //     if (cwcmResponse.data.status) {
+  //       const reportData = {
+  //         member: cwcmResponse.data.member || member,
+  //         quarter: cwcmResponse.data.quarter || quarter,
+  //         chart3: cwcmResponse.data.chart3 || [],
+  //         total: cwcmResponse.data.total || 0,
+  //       };
+
+  //       console.log("📊 Setting graph3cgrm:", reportData);
+  //       setgraph3cgrm(reportData);
+  //     } else {
+  //       console.log("❌ Category Wise Complaints Member API returned status false");
+  //       setgraph3cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Category Wise Complaints Member data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph3cgrm(null);
+  //   }
+
+  //   // STEP 6: Fetch Category Wise Complaints Industry data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/categoryWiseComplaintsIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Category Wise Complaints Industry API URL:", url);
+
+  //     const cwciResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Category Wise Complaints Industry Response:", cwciResponse.data);
+  //     console.log("📊 Response status:", cwciResponse.data.status);
+  //     console.log("📊 chart3 data:", cwciResponse.data.chart3);
+  //     console.log("📊 Is chart3 array?", Array.isArray(cwciResponse.data.chart3));
+  //     console.log("📊 chart3 length:", cwciResponse.data.chart3 ? cwciResponse.data.chart3.length : 0);
+
+  //     if (cwciResponse.data.status) {
+  //       const reportData = {
+  //         member: cwciResponse.data.member || member,
+  //         quarter: cwciResponse.data.quarter || quarter,
+  //         chart3: cwciResponse.data.chart3 || [],
+  //         total: cwciResponse.data.total || 0,
+  //       };
+
+  //       console.log("📊 Setting graph4cgrm:", reportData);
+  //       setgraph4cgrm(reportData);
+  //     } else {
+  //       console.log("❌ Category Wise Complaints Industry API returned status false");
+  //       setgraph4cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Category Wise Complaints Industry data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph4cgrm(null);
+  //   }
+  //   // STEP 7: Fetch Category Wise Queries Member data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/categoryWiseQueriesMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Category Wise Queries Member API URL:", url);
+
+  //     const cwqmResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Category Wise Queries Member Response:", cwqmResponse.data);
+
+  //     if (cwqmResponse.data.status) {
+  //       const reportData = {
+  //         member: cwqmResponse.data.member || member,
+  //         quarter: cwqmResponse.data.quarter || quarter,
+  //         chart5: cwqmResponse.data.chart5 || [],
+  //         total: cwqmResponse.data.total || 0,
+  //       };
+
+  //       console.log("📊 Setting graph5cgrm:", reportData);
+  //       setgraph5cgrm(reportData);
+  //     } else {
+  //       console.log("❌ Category Wise Queries Member API returned status false");
+  //       setgraph5cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Category Wise Queries Member data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph5cgrm(null);
+  //   }
+
+  //   // STEP: Fetch Category Wise Queries Industry data - FIXED
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/categoryWiseQueriesIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Category Wise Queries Industry API URL:", url);
+
+  //     const cwqiResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Category Wise Queries Industry FULL Response:", cwqiResponse.data);
+  //     console.log("📊 Response status:", cwqiResponse.data && cwqiResponse.data.status);
+  //     console.log("📊 Has chart5?", !!(cwqiResponse.data && cwqiResponse.data.chart5));
+  //     console.log("📊 chart5 length:", cwqiResponse.data && cwqiResponse.data.chart5 ? cwqiResponse.data.chart5.length : 0);
+  //     console.log("📊 chart5 data:", cwqiResponse.data && cwqiResponse.data.chart5);
+
+  //     if (cwqiResponse.data && cwqiResponse.data.status) {
+  //       const reportData = {
+  //         member: cwqiResponse.data.member || member,
+  //         quarter: cwqiResponse.data.quarter || quarter,
+  //         chart5: cwqiResponse.data.chart5 || [], // Use chart5 instead of chart3
+  //         total: cwqiResponse.data.total || 0,
+  //       };
+
+  //       console.log("📊 Setting graph6cgrm:", reportData);
+  //       setgraph6cgrm(reportData);
+  //     } else {
+  //       console.log("❌ Category Wise Queries Industry API returned status false");
+  //       setgraph6cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Category Wise Queries Industry data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph6cgrm(null);
+  //   }
+  //   // STEP 10: Fetch Average TAT Member data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/averageTATMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Average TAT Member API URL:", url);
+
+  //     const tatMemberResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Average TAT Member Response:", tatMemberResponse.data);
+
+  //     if (tatMemberResponse.data.status) {
+  //       const reportData = {
+  //         member: tatMemberResponse.data.member || member,
+  //         quarter: tatMemberResponse.data.quarter || quarter,
+  //         chart9: tatMemberResponse.data.chart9 || [],
+  //         total_closed: tatMemberResponse.data.total_closed || 0,
+  //       };
+
+  //       console.log("📊 Setting graph7cgrm:", reportData);
+  //       setgraph7cgrm(reportData);
+  //     } else {
+  //       console.log("❌ Average TAT Member API returned status false");
+  //       setgraph7cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Average TAT Member data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph7cgrm(null);
+  //   }
+  //   // STEP 9: Fetch Average TAT Industry data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/averageTATIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Average TAT Industry API URL:", url);
+
+  //     const tatResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Average TAT Industry Response:", tatResponse.data);
+
+  //     if (tatResponse.data.status) {
+  //       const reportData = {
+  //         entity_type: tatResponse.data.entity_type,
+  //         quarter: tatResponse.data.quarter || quarter,
+  //         chart10: tatResponse.data.chart10 || [],
+  //         total_closed: tatResponse.data.total_closed || 0,
+  //       };
+
+  //       console.log("📊 Setting graph8cgrm:", reportData);
+  //       setgraph8cgrm(reportData);
+  //     } else {
+  //       console.log("❌ Average TAT Industry API returned status false");
+  //       setgraph8cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error fetching Average TAT Industry data:", error);
+  //     if (error.response) {
+  //       console.error("Error response data:", error.response.data);
+  //       console.error("Error response status:", error.response.status);
+  //     }
+  //     setgraph8cgrm(null);
+  //   }
+
+  //   // STEP 11: Fetch Origin of Complaints & Queries Industry data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/OriginOfComplaintsQueriesIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Origin of Complaints & Queries Industry API URL:", url);
+
+  //     const originResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Origin of Complaints & Queries Industry FULL Response:", originResponse.data);
+  //     console.log("📊 Response status:", originResponse.data && originResponse.data.status);
+  //     console.log("📊 Has chart8?", !!(originResponse.data && originResponse.data.chart8));
+  //     console.log("📊 chart8 length:", originResponse.data && originResponse.data.chart8 ? originResponse.data.chart8.length : 0);
+
+  //     if (originResponse.data && originResponse.data.status) {
+  //       const reportData = {
+  //         entity_type: originResponse.data.entity_type,
+  //         quarter: originResponse.data.quarter || quarter,
+  //         chart8: originResponse.data.chart8 || [],
+  //       };
+
+  //       console.log("📊 Setting table2cgrm:", reportData);
+  //       settable2cgrm(reportData);
+  //     } else {
+  //       console.log("❌ API returned status false or no status");
+  //       settable2cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error:", error);
+  //     settable2cgrm(null);
+  //   }
+  //   // STEP: Fetch Origin of Complaints & Queries Member data
+  //   // STEP: Fetch Origin of Complaints & Queries Member data
+  //   try {
+  //     const url = `${BaseUrl}/api/auth/OriginOfComplaintsQueriesMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+  //     console.log("🔗 Origin of Complaints & Queries Member API URL:", url);
+
+  //     const originResponse = await axios.get(url, {
+  //       headers: authHeaders(),
+  //     });
+
+  //     console.log("✅ Origin of Complaints & Queries Member FULL Response:", originResponse.data);
+  //     console.log("📊 Response status:", originResponse.data && originResponse.data.status);
+  //     console.log("📊 Has chart7?", !!(originResponse.data && originResponse.data.chart7));
+  //     console.log("📊 chart7 length:", originResponse.data && originResponse.data.chart7 ? originResponse.data.chart7.length : 0);
+  //     console.log("📊 chart7 data:", originResponse.data && originResponse.data.chart7);
+
+  //     if (originResponse.data && originResponse.data.status) {
+  //       const reportData = {
+  //         entity_type: originResponse.data.entity_type,
+  //         quarter: originResponse.data.quarter || quarter,
+  //         chart7: originResponse.data.chart7 || [], // Use chart7 instead of chart8
+  //       };
+
+  //       console.log("📊 Setting table3cgrm:", reportData);
+  //       settable3cgrm(reportData);
+  //     } else {
+  //       console.log("❌ API returned status false or no status");
+  //       settable3cgrm(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error:", error);
+  //     settable3cgrm(null);
+  //   }
+  //   // STEP 5: Fetch other chart data
+  //   try {
+
+
+
+
+
+
+  //     const cwqResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/category-wise/Query?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     setCategoryWiseQuery(cwqResponse.data);
+
+  //     const csResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/complaint-status?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     setcomplaintStatusData(csResponse.data);
+
+  //     const tatResponse = await axios.get(
+  //       `${BaseUrl}/api/auth/average-tat?month=${quarter}&member=${member}`,
+  //       { headers: authHeaders() }
+  //     );
+  //     setAverageTATData(tatResponse.data);
+
+  //   } catch (error) {
+  //     console.error("❌ Error fetching chart data:", error);
+  //   }
+  // };
+  const getCGRMData = async (memberParam = null, quarterParam = null) => {
   const quarter = quarterParam || graphFilter.Quarter;
   const member = memberParam || formState.member;
 
@@ -493,8 +951,6 @@ const getCGRMData = async (memberParam = null, quarterParam = null) => {
       };
 
       console.log("📊 Setting table1cgrm:", reportData);
-      
-      // ✅ Set the table1cgrm state
       setTable1cgrm(reportData);
     } else {
       console.log("❌ API returned status false");
@@ -508,53 +964,300 @@ const getCGRMData = async (memberParam = null, quarterParam = null) => {
     setTable1cgrm(null);
   }
 
-  // STEP 2: Fetch chart data
+  // STEP 2: Fetch Member-specific Nature of Calls
   try {
-    const nocResponse = await axios.get(
-      `${BaseUrl}/api/auth/nature-of-calls?month=${quarter}&member=${member}`,
-      { headers: authHeaders() }
-    );
-    setNatureOfCallQuery(nocResponse.data.Query);
-    setNatureOfCallComplaint(nocResponse.data.Complaint);
+    const url = `${BaseUrl}/api/auth/Nature_of_calls_Member?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Nature of Calls MEMBER API URL:", url);
 
-    const pwcResponse = await axios.get(
-      `${BaseUrl}/api/auth/product-wise-calls?month=${quarter}&member=${member}`,
-      { headers: authHeaders() }
-    );
-    setProductWiseCallData(pwcResponse.data);
+    const memberResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
 
-    const oocResponse = await axios.get(
-      `${BaseUrl}/api/auth/origin-of-calls?month=${quarter}&member=${member}`,
-      { headers: authHeaders() }
-    );
-    setOriginOfCallData(oocResponse.data);
+    console.log("✅ Nature of Calls MEMBER Response:", memberResponse.data);
 
-    const cwcResponse = await axios.get(
-      `${BaseUrl}/api/auth/category-wise/Complaint?month=${quarter}&member=${member}`,
-      { headers: authHeaders() }
-    );
-    setCategoryWiseComplaint(cwcResponse.data);
+    if (memberResponse.data.status) {
+      const reportData = {
+        member: memberResponse.data.member || member,
+        quarter: memberResponse.data.quarter || quarter,
+        chart1: memberResponse.data.chart1 || [],
+      };
 
-    const cwqResponse = await axios.get(
-      `${BaseUrl}/api/auth/category-wise/Query?month=${quarter}&member=${member}`,
-      { headers: authHeaders() }
-    );
-    setCategoryWiseQuery(cwqResponse.data);
-
-    const csResponse = await axios.get(
-      `${BaseUrl}/api/auth/complaint-status?month=${quarter}&member=${member}`,
-      { headers: authHeaders() }
-    );
-    setcomplaintStatusData(csResponse.data);
-
-    const tatResponse = await axios.get(
-      `${BaseUrl}/api/auth/average-tat?month=${quarter}&member=${member}`,
-      { headers: authHeaders() }
-    );
-    setAverageTATData(tatResponse.data);
-
+      console.log("📊 Setting graph1cgrm:", reportData);
+      setgraph1cgrm(reportData);
+    } else {
+      console.log("❌ MEMBER API returned status false");
+      setgraph1cgrm(null);
+    }
   } catch (error) {
-    console.error("❌ Error fetching chart data:", error);
+    console.error("❌ Error fetching Nature of Calls MEMBER data:", error);
+    setgraph1cgrm(null);
+  }
+
+  // STEP 3: Fetch Industry-wide Nature of Calls
+  try {
+    const url = `${BaseUrl}/api/auth/Nature_of_calls_Industry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Nature of Calls INDUSTRY API URL:", url);
+
+    const industryResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Nature of Calls INDUSTRY Response:", industryResponse.data);
+
+    if (industryResponse.data.status) {
+      const reportData = {
+        member: industryResponse.data.member || member,
+        quarter: industryResponse.data.quarter || quarter,
+        chart1: industryResponse.data.chart1 || [],
+      };
+
+      console.log("📊 Setting graph2cgrm:", reportData);
+      setgraph2cgrm(reportData);
+    } else {
+      console.log("❌ INDUSTRY API returned status false");
+      setgraph2cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error fetching Nature of Calls INDUSTRY data:", error);
+    setgraph2cgrm(null);
+  }
+
+  // STEP 4: Fetch Category Wise Complaints Member data
+  try {
+    const url = `${BaseUrl}/api/auth/categoryWiseComplaintsMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Category Wise Complaints Member API URL:", url);
+
+    const cwcmResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Category Wise Complaints Member Response:", cwcmResponse.data);
+
+    if (cwcmResponse.data.status) {
+      const reportData = {
+        member: cwcmResponse.data.member || member,
+        quarter: cwcmResponse.data.quarter || quarter,
+        chart3: cwcmResponse.data.chart3 || [],
+        total: cwcmResponse.data.total || 0,
+      };
+
+      console.log("📊 Setting graph3cgrm:", reportData);
+      setgraph3cgrm(reportData);
+    } else {
+      console.log("❌ Category Wise Complaints Member API returned status false");
+      setgraph3cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error fetching Category Wise Complaints Member data:", error);
+    setgraph3cgrm(null);
+  }
+
+  // STEP 5: Fetch Category Wise Complaints Industry data
+  try {
+    const url = `${BaseUrl}/api/auth/categoryWiseComplaintsIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Category Wise Complaints Industry API URL:", url);
+
+    const cwciResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Category Wise Complaints Industry Response:", cwciResponse.data);
+
+    if (cwciResponse.data.status) {
+      const reportData = {
+        member: cwciResponse.data.member || member,
+        quarter: cwciResponse.data.quarter || quarter,
+        chart3: cwciResponse.data.chart3 || [],
+        total: cwciResponse.data.total || 0,
+      };
+
+      console.log("📊 Setting graph4cgrm:", reportData);
+      setgraph4cgrm(reportData);
+    } else {
+      console.log("❌ Category Wise Complaints Industry API returned status false");
+      setgraph4cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error fetching Category Wise Complaints Industry data:", error);
+    setgraph4cgrm(null);
+  }
+
+  // STEP 6: Fetch Category Wise Queries Member data
+  try {
+    const url = `${BaseUrl}/api/auth/categoryWiseQueriesMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Category Wise Queries Member API URL:", url);
+
+    const cwqmResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Category Wise Queries Member Response:", cwqmResponse.data);
+
+    if (cwqmResponse.data.status) {
+      const reportData = {
+        member: cwqmResponse.data.member || member,
+        quarter: cwqmResponse.data.quarter || quarter,
+        chart5: cwqmResponse.data.chart5 || [],
+        total: cwqmResponse.data.total || 0,
+      };
+
+      console.log("📊 Setting graph5cgrm:", reportData);
+      setgraph5cgrm(reportData);
+    } else {
+      console.log("❌ Category Wise Queries Member API returned status false");
+      setgraph5cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error fetching Category Wise Queries Member data:", error);
+    setgraph5cgrm(null);
+  }
+
+  // STEP 7: Fetch Category Wise Queries Industry data
+  try {
+    const url = `${BaseUrl}/api/auth/categoryWiseQueriesIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Category Wise Queries Industry API URL:", url);
+
+    const cwqiResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Category Wise Queries Industry Response:", cwqiResponse.data);
+
+    if (cwqiResponse.data.status) {
+      const reportData = {
+        member: cwqiResponse.data.member || member,
+        quarter: cwqiResponse.data.quarter || quarter,
+        chart5: cwqiResponse.data.chart5 || [],
+        total: cwqiResponse.data.total || 0,
+      };
+
+      console.log("📊 Setting graph6cgrm:", reportData);
+      setgraph6cgrm(reportData);
+    } else {
+      console.log("❌ Category Wise Queries Industry API returned status false");
+      setgraph6cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error fetching Category Wise Queries Industry data:", error);
+    setgraph6cgrm(null);
+  }
+
+  // STEP 8: Fetch Origin of Complaints & Queries Member data
+  try {
+    const url = `${BaseUrl}/api/auth/OriginOfComplaintsQueriesMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Origin of Complaints & Queries Member API URL:", url);
+
+    const originResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Origin of Complaints & Queries Member Response:", originResponse.data);
+
+    if (originResponse.data && originResponse.data.status) {
+      const reportData = {
+        entity_type: originResponse.data.entity_type,
+        quarter: originResponse.data.quarter || quarter,
+        chart7: originResponse.data.chart7 || [],
+      };
+
+      console.log("📊 Setting table3cgrm:", reportData);
+      settable3cgrm(reportData);
+    } else {
+      console.log("❌ API returned status false or no status");
+      settable3cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error:", error);
+    settable3cgrm(null);
+  }
+
+  // STEP 9: Fetch Origin of Complaints & Queries Industry data
+  try {
+    const url = `${BaseUrl}/api/auth/OriginOfComplaintsQueriesIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Origin of Complaints & Queries Industry API URL:", url);
+
+    const originResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Origin of Complaints & Queries Industry Response:", originResponse.data);
+
+    if (originResponse.data && originResponse.data.status) {
+      const reportData = {
+        entity_type: originResponse.data.entity_type,
+        quarter: originResponse.data.quarter || quarter,
+        chart8: originResponse.data.chart8 || [],
+      };
+
+      console.log("📊 Setting table2cgrm:", reportData);
+      settable2cgrm(reportData);
+    } else {
+      console.log("❌ API returned status false or no status");
+      settable2cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error:", error);
+    settable2cgrm(null);
+  }
+
+  // STEP 10: Fetch Average TAT Member data
+  try {
+    const url = `${BaseUrl}/api/auth/averageTATMember?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Average TAT Member API URL:", url);
+
+    const tatMemberResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Average TAT Member Response:", tatMemberResponse.data);
+
+    if (tatMemberResponse.data.status) {
+      const reportData = {
+        member: tatMemberResponse.data.member || member,
+        quarter: tatMemberResponse.data.quarter || quarter,
+        chart9: tatMemberResponse.data.chart9 || [],
+        total_closed: tatMemberResponse.data.total_closed || 0,
+      };
+
+      console.log("📊 Setting graph7cgrm:", reportData);
+      setgraph7cgrm(reportData);
+    } else {
+      console.log("❌ Average TAT Member API returned status false");
+      setgraph7cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error fetching Average TAT Member data:", error);
+    setgraph7cgrm(null);
+  }
+
+  // STEP 11: Fetch Average TAT Industry data
+  try {
+    const url = `${BaseUrl}/api/auth/averageTATIndustry?member=${encodeURIComponent(member)}&quarter=${encodeURIComponent(quarter)}`;
+    console.log("🔗 Average TAT Industry API URL:", url);
+
+    const tatResponse = await axios.get(url, {
+      headers: authHeaders(),
+    });
+
+    console.log("✅ Average TAT Industry Response:", tatResponse.data);
+
+    if (tatResponse.data.status) {
+      const reportData = {
+        entity_type: tatResponse.data.entity_type,
+        quarter: tatResponse.data.quarter || quarter,
+        chart10: tatResponse.data.chart10 || [],
+        total_closed: tatResponse.data.total_closed || 0,
+      };
+
+      console.log("📊 Setting graph8cgrm:", reportData);
+      setgraph8cgrm(reportData);
+    } else {
+      console.log("❌ Average TAT Industry API returned status false");
+      setgraph8cgrm(null);
+    }
+  } catch (error) {
+    console.error("❌ Error fetching Average TAT Industry data:", error);
+    setgraph8cgrm(null);
   }
 };
   const chartColorsMap = {
@@ -1414,29 +2117,29 @@ const getCGRMData = async (memberParam = null, quarterParam = null) => {
   //   }));
   // };
 
-const filterCGRMHandler = async () => {
-  console.log("🔍 Filter clicked!");
-  console.log("📋 Selected Member:", cgrmDropdown.selectedMember);
-  console.log("📋 Selected Quarter:", cgrmDropdown.selectedQuarter);
-  
-  setFormState((prevState) => ({
-    ...prevState,
-    isLoader: true,
-    isDisabled: true,
-  }));
-  
-  // ✅ Pass selected values
-  await getCGRMData(
-    cgrmDropdown.selectedMember,
-    cgrmDropdown.selectedQuarter
-  );
-  
-  setFormState((prevState) => ({
-    ...prevState,
-    isLoader: false,
-    isDisabled: false,
-  }));
-};
+  const filterCGRMHandler = async () => {
+    console.log("🔍 Filter clicked!");
+    console.log("📋 Selected Member:", cgrmDropdown.selectedMember);
+    console.log("📋 Selected Quarter:", cgrmDropdown.selectedQuarter);
+
+    setFormState((prevState) => ({
+      ...prevState,
+      isLoader: true,
+      isDisabled: true,
+    }));
+
+    // ✅ Pass selected values
+    await getCGRMData(
+      cgrmDropdown.selectedMember,
+      cgrmDropdown.selectedQuarter
+    );
+
+    setFormState((prevState) => ({
+      ...prevState,
+      isLoader: false,
+      isDisabled: false,
+    }));
+  };
   const filterRBIOthersHandler = async () => {
     setFormState((prevState) => ({
       ...prevState,
@@ -1745,7 +2448,7 @@ const filterCGRMHandler = async () => {
     if (value == 4) {
       // CGRM ke liye dropdown data fetch karein
       fetchCGRMDropdownData();
-      
+
     }
     if (value == 5) {
       getQARLatestMonthYear();
@@ -2362,7 +3065,7 @@ const filterCGRMHandler = async () => {
                                   name="member"
                                   value={cgrmDropdown.selectedMember}
                                   // onChange={(e) => onValueChange(e)}
-                                   onChange={(e) =>
+                                  onChange={(e) =>
                                     setCGRMDropdown(function (prev) {
                                       return { ...prev, selectedMember: e.target.value };
                                     })
@@ -2442,38 +3145,36 @@ const filterCGRMHandler = async () => {
                       >
                         <CardActionArea>
                           <CardContent>
-        <ReportTable table1cgrm={table1cgrm} />
+                            <ReportTable table1cgrm={table1cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
                     </Grid>
 
                     <Grid xs={6} sm={6} md={6}>
-                      <Card
-                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
-                      >
-
-                        <NatureofCall
-                          Query={natureOfCallQuery}
-                          Complaint={natureOfCallComplaint}
-                        />
-
-                      </Card>
-                    </Grid>
-
-                    <Grid xs={6} sm={6} md={6}>
-                      <Card
-                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
-                      >
+                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
                         <CardActionArea>
                           <CardContent>
-                            <ProductWiseCall data={productWiseCallData} />
+                            <NatureofCall
+                              chartData={graph1cgrm && graph1cgrm.chart1 ? graph1cgrm.chart1 : []}
+                              memberName={graph1cgrm && graph1cgrm.member ? graph1cgrm.member : ""}
+                            />
                           </CardContent>
                         </CardActionArea>
                       </Card>
                     </Grid>
 
                     <Grid xs={6} sm={6} md={6}>
+                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
+                        <CardActionArea>
+                          <CardContent>
+                            <ProductWiseCall data={graph2cgrm} />
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+
+                    {/* <Grid xs={6} sm={6} md={6}>
                       <Card
                         style={{ paddingBottom: "20px", marginBottom: "20px" }}
                       >
@@ -2483,15 +3184,23 @@ const filterCGRMHandler = async () => {
                           </CardContent>
                         </CardActionArea>
                       </Card>
-                    </Grid>
-
+                    </Grid> */}
                     <Grid xs={6} sm={6} md={6}>
-                      <Card
-                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
-                      >
+                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
                         <CardActionArea>
                           <CardContent>
-                            <CategoryWiseComplaintsIndustry data={productWiseCallData} />
+                            <CategoryWiseComplaintsMember data={graph3cgrm} />
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+
+                    {/* Industry Chart */}
+                    <Grid xs={6} sm={6} md={6}>
+                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
+                        <CardActionArea>
+                          <CardContent>
+                            <CategoryWiseComplaintsIndustry data={graph4cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
@@ -2503,9 +3212,7 @@ const filterCGRMHandler = async () => {
                       >
                         <CardActionArea>
                           <CardContent>
-                            <CategoryWiseComplaint
-                              data={categoryWiseComplaint}
-                            />
+                            <CategoryWiseComplaint data={graph5cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
@@ -2517,8 +3224,7 @@ const filterCGRMHandler = async () => {
                       >
                         <CardActionArea>
                           <CardContent>
-                            <CategoryWiseQuery data={categoryWiseQuery} />
-                          </CardContent>
+                            <CategoryWiseQuery data={graph6cgrm} />                          </CardContent>
                         </CardActionArea>
                       </Card>
                     </Grid>
@@ -2529,43 +3235,37 @@ const filterCGRMHandler = async () => {
                       >
                         <CardActionArea>
                           <CardContent>
-                            <OriginOfCall data={originOfCallData} />
+                            <OriginOfCall data={table3cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
                     </Grid>
 
                     <Grid xs={12} sm={12} md={12}>
-                      <Card
-                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
-                      >
+                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
                         <CardActionArea>
                           <CardContent>
-                            <OriginOfCallIndustry data={originOfCallData} />
+                            <OriginOfCallIndustry data={table2cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
                     </Grid>
 
                     <Grid xs={6} sm={6} md={6}>
-                      <Card
-                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
-                      >
+                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
                         <CardActionArea>
                           <CardContent>
-                            <ComplaintStatus data={complaintStatusData} />
+                            <ComplaintStatus data={graph7cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>
                     </Grid>
 
                     <Grid xs={6} sm={6} md={6}>
-                      <Card
-                        style={{ paddingBottom: "20px", marginBottom: "20px" }}
-                      >
+                      <Card style={{ paddingBottom: "20px", marginBottom: "20px" }}>
                         <CardActionArea>
                           <CardContent>
-                            <AverageTAT data={averageTATData} />
+                            <AverageTAT data={graph8cgrm} />
                           </CardContent>
                         </CardActionArea>
                       </Card>

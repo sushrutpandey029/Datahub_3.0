@@ -122,7 +122,7 @@ function ReportTable({ table1cgrm }) {
   };
 
   const dataCellStyle = {
-    textAlign: "right",
+    textAlign: "center",
     padding: "8px 12px",
   };
 

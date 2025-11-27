@@ -1,129 +1,135 @@
 import React from "react";
-import { CardContent, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 
 const NatureofCall = ({ chartData, memberName }) => {
-  console.log("🔍 NatureofCall chartData:", chartData);
-  console.log("👤 Member Name:", memberName);
+  console.log("🎯 NATUREOFCALL PROPS RECEIVED:");
+  console.log("📊 chartData:", chartData);
+  console.log("📊 memberName:", memberName);
+  console.log("📊 Type of chartData:", typeof chartData);
+  console.log("📊 Is chartData array?", Array.isArray(chartData));
+  
+  // Static categories
+  const staticCategories = ["Query", "Complaint"];
+  
+  // Process the API data structure
+  let series = [];
+  let labels = staticCategories;
 
-  // --- STATIC ITEMS (ALWAYS SHOW) ---
-  const staticItems = [
-    { label: "Query", value: 0, percentage: "0%" },
-    { label: "Complaints", value: 0, percentage: "0%" },
-  ];
-
-  // --- MERGE STATIC + DYNAMIC ---
-  let mergedData = [];
-
-  if (Array.isArray(chartData)) {
-    const map = {};
-
-    // 1. Add static items first
-    staticItems.forEach(item => {
-      map[item.label.toLowerCase()] = item;
-    });
-
-    // 2. Add dynamic items (overwrite if same label)
-    chartData.forEach(item => {
-      if (item.label) {
-        map[item.label.toLowerCase()] = item;
+  // CategoryWiseQuery की तरह data processing
+  if (chartData && Array.isArray(chartData) && chartData.length > 0) {
+    console.log("✅ Valid chartData found in component");
+    
+    series = staticCategories.map(staticLabel => {
+      const matchingItem = chartData.find(item => item && item.label === staticLabel);
+      console.log(`🔍 Looking for ${staticLabel}:`, matchingItem);
+      
+      if (matchingItem && matchingItem.percentage) {
+        const percentageValue = parseFloat(matchingItem.percentage.replace("%", "")) || 0;
+        console.log(`✅ ${staticLabel}: ${percentageValue}%`);
+        return percentageValue;
       }
+      console.log(`❌ ${staticLabel}: No matching data found`);
+      return 0;
     });
-
-    // Convert map → array
-    mergedData = Object.values(map);
+  } else {
+    console.log("❌ No valid chartData found in component");
+    console.log("💡 Using fallback data");
+    series = staticCategories.map(() => 0);
   }
 
-  // If nothing even after merge → show empty state
-  if (!mergedData || mergedData.length === 0) {
-    return (
-      <CardContent>
-        <Box width="100%">
-          <Box
-            mb={2}
-            textAlign="left"
-            style={{ fontSize: "16px", fontWeight: "bold", color: "#263238" }}
-          >
-            Nature of calls - {memberName || "Member"}
-          </Box>
-
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height={270}
-            borderRadius="10px"
-          ></Box>
-        </Box>
-      </CardContent>
-    );
-  }
-
-  // Convert % string → number
-  const parsePercentage = (str) => {
-    if (!str) return 0;
-    return parseFloat(str.replace("%", "")) || 0;
-  };
-
-  const series = mergedData.map(item => parsePercentage(item.percentage));
-  const labels = mergedData.map(item => item.label);
+  console.log("📊 Final series:", series);
+  console.log("📊 Final labels:", labels);
 
   const pieChartOptions = {
     chart: {
       type: "pie",
       toolbar: {
         show: true,
-        tools: {
-          download: true,
-          selection: true,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: true,
-          reset: true,
-        },
       },
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+          enabled: true,
+          delay: 150
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 350
+        }
+      }
     },
     labels: labels,
-    colors: ["#2B60AD", "#FFA500", "#D9534F", "#5BC0DE"],
+    colors: ["#2B60AD", "#FFA500"],
     title: {
-      text: `Nature of calls - ${memberName || "Member"}`,
+      text: "Nature of calls - " + (memberName || 'Member'),
       align: "left",
-      style: { fontSize: "16px", fontWeight: "bold", color: "#263238" },
+      style: { 
+        fontSize: "16px", 
+        fontWeight: "bold", 
+        color: "#263238",
+        fontFamily: 'sans-serif'
+      },
     },
     legend: {
       position: "bottom",
+      horizontalAlign: "center",
       fontSize: "14px",
-      formatter: function (seriesName, opts) {
-        const percentage = opts.w.config.series[opts.seriesIndex].toFixed(2);
-        const item = mergedData[opts.seriesIndex];
-        const count = item ? item.value : "0";
-        return `${seriesName} - ${percentage}% (${count} calls)`;
-      },
+      fontFamily: 'sans-serif',
+      labels: {
+        colors: "#444",
+        useSeriesColors: false
+      }
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val, opts) {
-        return opts.w.config.series[opts.seriesIndex].toFixed(2) + "%";
+      formatter: function(val, opts) {
+        const percentage = val.toFixed(2) + "%";
+        const category = labels[opts.seriesIndex];
+        const matchingItem = chartData && chartData.find(item => item && item.label === category);
+        const value = matchingItem && matchingItem.value ? matchingItem.value : "0";
+        return [value, percentage];
       },
-      style: { fontSize: "14px", fontWeight: "bold", colors: ["#fff"] },
-      dropShadow: { enabled: true, top: 1, left: 1, blur: 1, color: "#000", opacity: 0.45 },
+      style: {
+        fontSize: "11px",
+        colors: ["#fff"],
+        fontWeight: "bold",
+        fontFamily: 'sans-serif'
+      },
+      dropShadow: {
+        enabled: true,
+        top: 1,
+        left: 1,
+        blur: 1,
+        color: '#000',
+        opacity: 0.45
+      }
     },
     tooltip: {
-      y: {
-        formatter: function (val, { seriesIndex }) {
-          const percentage = val.toFixed(2) + "%";
-          const item = mergedData[seriesIndex];
-          const count = item ? item.value : "0";
-          return `${count} calls (${percentage})`;
-        },
+      style: {
+        fontFamily: 'sans-serif'
       },
+      y: {
+        formatter: function(val, { seriesIndex, w }) {
+          const category = labels[seriesIndex];
+          const matchingItem = chartData && chartData.find(item => item && item.label === category);
+          if (matchingItem && matchingItem.value && matchingItem.percentage) {
+            return matchingItem.value + " (" + matchingItem.percentage + ")";
+          }
+          return val.toFixed(2) + "%";
+        }
+      }
     },
     plotOptions: {
       pie: {
-        dataLabels: { offset: -10 },
-      },
-    },
+        dataLabels: {
+          offset: -5,
+          minAngleToShowLabel: 10
+        }
+      }
+    }
   };
 
   return (
@@ -132,7 +138,8 @@ const NatureofCall = ({ chartData, memberName }) => {
         options={pieChartOptions}
         series={series}
         type="pie"
-        height={350}
+        height={400}
+        key={chartData ? JSON.stringify(chartData) : "empty"}
       />
     </Box>
   );

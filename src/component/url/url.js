@@ -92,9 +92,15 @@ export const cbIndustryDataApi = "/api/auth/industryTable2Metrics"
 export const  dropdownofcgrm = "/api/auth/CGRM_Drop_down_data";
 export const table1cgrm = "/api/auth/CGRM_getTable1Data";
 export const graph1cgrm = "/api/auth/Nature_of_calls_Member";
-
-
-
+export const graph2cgrm  = "/api/auth/Nature_of_calls_Industry";
+export const graph3cgrm = "/api/auth/categoryWiseComplaintsMember";
+export const graph4cgrm = "/api/auth/categoryWiseComplaintsIndustry";
+export const graph5cgrm = "/api/auth/categoryWiseQueriesMember";
+export const graph6cgrm = "/api/auth/categoryWiseQueriesIndustry";
+export const graph7cgrm = "/api/auth/averageTATMember";
+export const graph8cgrm = "/api/auth/averageTATIndustry";
+export const table3cgrm = "/api/auth/categoryWiseQueriesMember";
+export const table2cgrm = "/api/auth/OriginOfComplaintsQueriesIndustry";
 // SRO RBI Others
 export const rbiQuarterlyDataApi = "api/auth/rbi_data";
 
