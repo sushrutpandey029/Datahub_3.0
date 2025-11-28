@@ -471,9 +471,8 @@ const PieChart = ({
           ? activityData.data.activity_type
           : "";
 
-      title = `Regional Heads for ${activityType} - ${
-        monthName || "All Months"
-      } ${localYear}`;
+      title = `Regional Heads for ${activityType} - ${monthName || "All Months"
+        } ${localYear}`;
     } else if (currentLevel === "dates" && data && data.dates) {
       series = data.dates.map((item) => item.total);
       labels = data.dates.map((item) => item.date);
@@ -493,9 +492,8 @@ const PieChart = ({
       const regionHead =
         regionData && regionData.data ? regionData.data.regional_head : "";
 
-      title = `Dates for ${regionHead} - ${activityType} - ${
-        monthName || "All Months"
-      } ${localYear}`;
+      title = `Dates for ${regionHead} - ${activityType} - ${monthName || "All Months"
+        } ${localYear}`;
     }
 
     return { series, labels, title };
@@ -550,21 +548,195 @@ const PieChart = ({
     },
   };
 
+  // return (
+  //   <div className="bg-white p-4 rounded-lg shadow h-full">
+  //     {/* Header with filters and back button */}
+  //     <div className="flex justify-between items-center mb-4">
+  //       <div className="mb-4 flex flex-wrap md:flex-nowrap gap-4 items-end">
+  //         <div className="w-32">
+  //           {drilldownHistory.length > 0 && (
+  //             <Button onClick={handleBackClick} disabled={loading}>
+  //               <ArrowBackIcon />
+  //             </Button>
+  //           )}
+  //           <label
+  //             htmlFor="year-select"
+  //             className="block text-sm font-medium text-gray-700 mb-1 px-3"
+  //           >
+  //             Financial Year
+  //           </label>
+  //           <select
+  //             value={localYear}
+  //             onChange={(e) => handleYearChange(e.target.value)}
+  //             className="w-full p-2 border border-gray-300 rounded-md text-sm"
+  //             disabled={loading}
+  //           >
+  //             {years.map((year) => (
+  //               <option key={year} value={year}>
+  //                 {year}
+  //               </option>
+  //             ))}
+  //           </select>
+
+  //           <label
+  //             htmlFor="month-select"
+  //             className="block text-sm font-medium text-gray-700 mb-1 px-3 mt-2"
+  //           >
+  //             Month
+  //           </label>
+  //           <select
+  //             value={localMonth}
+  //             onChange={(e) => handleMonthChange(e.target.value)}
+  //             className="w-full p-2 border border-gray-300 rounded-md"
+  //             disabled={loading}
+  //           >
+  //             <option value="">All Months</option>
+  //             {months.map((month) => (
+  //               <option key={month} value={month}>
+  //                 {month}
+  //               </option>
+  //             ))}
+  //           </select>
+  //         </div>
+  //       </div>
+  //     </div>
+
+  //     {/* Unified Chart Wrapper (Fixed Height) */}
+  //     <div
+  //       className="flex items-center justify-center w-full"
+  //       style={{ height: "400px" }}
+  //     >
+  //       {loading ? (
+  //         <div className="text-gray-500">Loading chart data...</div>
+  //       ) : error ? (
+  //         <div className="text-red-500">{error}</div>
+  //       ) : series.length > 0 ? (
+  //         <ReactApexChart
+  //           options={chartOptions}
+  //           series={series}
+  //           type="donut"
+  //           width="100%"
+  //           height="100%"
+  //         />
+  //       ) : (
+  //         <div className="text-gray-500">No data available</div>
+  //       )}
+  //     </div>
+
+  //     {/* Record Details Modal */}
+  //     <Dialog
+  //       open={modalOpen}
+  //       onClose={() => setModalOpen(false)}
+  //       maxWidth="lg"
+  //       fullWidth
+  //     >
+  //       <DialogTitle>
+  //         <Box
+  //           display="flex"
+  //           justifyContent="space-between"
+  //           alignItems="center"
+  //         >
+  //           <Typography variant="h6">Meeting Details</Typography>
+  //           <IconButton onClick={() => setModalOpen(false)}>
+  //             <Close />
+  //           </IconButton>
+  //         </Box>
+  //       </DialogTitle>
+  //       <DialogContent>
+  //         {modalData.length > 0 ? (
+  //           modalData.map((meeting, index) => (
+  //             <Paper key={index} sx={{ p: 2, mb: 2 }}>
+  //               <Typography variant="h6" gutterBottom>
+  //                 {meeting.activity_type} Meeting - {meeting.dateOfMeeting}
+  //               </Typography>
+  //               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
+  //                 <Chip icon={<Map />} label={meeting.region} size="small" />
+  //                 <Chip
+  //                   icon={<Event />}
+  //                   label={meeting.dateOfMeeting}
+  //                   size="small"
+  //                 />
+  //                 <Chip
+  //                   icon={<PieChartIcon />}
+  //                   label={meeting.activity_type}
+  //                   size="small"
+  //                 />
+  //               </Box>
+  //               <Typography variant="body2" paragraph>
+  //                 <strong>Regional Head:</strong> {meeting.regional_head}
+  //               </Typography>
+  //               {meeting.state && (
+  //                 <Typography variant="body2" paragraph>
+  //                   <strong>State:</strong> {meeting.state}
+  //                 </Typography>
+  //               )}
+  //               {meeting.district && (
+  //                 <Typography variant="body2" paragraph>
+  //                   <strong>District:</strong> {meeting.district}
+  //                 </Typography>
+  //               )}
+  //               {meeting.short_description && (
+  //                 <Typography variant="body2" paragraph>
+  //                   <strong>Description:</strong> {meeting.short_description}
+  //                 </Typography>
+  //               )}
+  //               {meeting.important_decision && (
+  //                 <Typography variant="body2" paragraph>
+  //                   <strong>Important Decision:</strong>{" "}
+  //                   {meeting.important_decision}
+  //                 </Typography>
+  //               )}
+  //               {meeting.activity_details && (
+  //                 <div className="activity-details-content">
+  //                   <Typography variant="body2" paragraph>
+  //                     <strong>Activity Details:</strong>
+  //                   </Typography>
+  //                   <div
+  //                     dangerouslySetInnerHTML={{
+  //                       __html: DOMPurify.sanitize(meeting.activity_details),
+  //                     }}
+  //                   />
+  //                 </div>
+  //               )}
+  //               {meeting.url && (
+  //                 <Typography variant="body2">
+  //                   <strong>URL:</strong>{" "}
+  //                   <a
+  //                     href={meeting.url}
+  //                     target="_blank"
+  //                     rel="noopener noreferrer"
+  //                   >
+  //                     {meeting.url}
+  //                   </a>
+  //                 </Typography>
+  //               )}
+  //             </Paper>
+  //           ))
+  //         ) : (
+  //           <Typography>No meeting details available</Typography>
+  //         )}
+  //       </DialogContent>
+  //     </Dialog>
+  //   </div>
+  // );
   return (
-    <div className="bg-white p-4 rounded-lg shadow h-full">
-      {/* Header with filters and back button */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="mb-4 flex flex-wrap md:flex-nowrap gap-4 items-end">
-          <div className="w-32">
+    <div className="bg-white p-4 rounded-lg shadow h-full w-full">
+
+      {/* Header Responsive */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+
+        {/* Filters Responsive */}
+        <div className="flex flex-wrap gap-4 w-full md:w-auto">
+          <div className="w-full sm:w-1/2 md:w-32">
+
             {drilldownHistory.length > 0 && (
               <Button onClick={handleBackClick} disabled={loading}>
                 <ArrowBackIcon />
               </Button>
             )}
-            <label
-              htmlFor="year-select"
-              className="block text-sm font-medium text-gray-700 mb-1 px-3"
-            >
+
+            {/* Year */}
+            <label className="block text-sm font-medium text-gray-700 mb-1 px-1">
               Financial Year
             </label>
             <select
@@ -574,40 +746,41 @@ const PieChart = ({
               disabled={loading}
             >
               {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
+                <option key={year} value={year}>{year}</option>
               ))}
             </select>
 
-            <label
-              htmlFor="month-select"
-              className="block text-sm font-medium text-gray-700 mb-1 px-3 mt-2"
-            >
+            {/* Month */}
+            <label className="block text-sm font-medium text-gray-700 mb-1 px-1 mt-2">
               Month
             </label>
             <select
               value={localMonth}
               onChange={(e) => handleMonthChange(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md text-sm"
               disabled={loading}
             >
               <option value="">All Months</option>
               {months.map((month) => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
+                <option key={month} value={month}>{month}</option>
               ))}
             </select>
+
           </div>
         </div>
+
       </div>
 
-      {/* Unified Chart Wrapper (Fixed Height) */}
+      {/* Chart Responsive Wrapper */}
       <div
         className="flex items-center justify-center w-full"
-        style={{ height: "400px" }}
+        style={{
+          height: "400px",      // SAME AS YOUR ORIGINAL
+          maxWidth: "100%",      // prevent overflow
+          overflow: "hidden"     // stop horizontal scroll on small screens
+        }}
       >
+
         {loading ? (
           <div className="text-gray-500">Loading chart data...</div>
         ) : error ? (
@@ -618,78 +791,75 @@ const PieChart = ({
             series={series}
             type="donut"
             width="100%"
-            height="100%"
+            height="400px"
           />
         ) : (
           <div className="text-gray-500">No data available</div>
         )}
       </div>
 
-      {/* Record Details Modal */}
+      {/* Modal Responsive */}
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        maxWidth="lg"
         fullWidth
+        maxWidth="lg"
       >
         <DialogTitle>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="h6">Meeting Details</Typography>
             <IconButton onClick={() => setModalOpen(false)}>
               <Close />
             </IconButton>
           </Box>
         </DialogTitle>
-        <DialogContent>
+
+        <DialogContent dividers style={{ maxHeight: "70vh", overflow: "auto" }}>
           {modalData.length > 0 ? (
             modalData.map((meeting, index) => (
               <Paper key={index} sx={{ p: 2, mb: 2 }}>
                 <Typography variant="h6" gutterBottom>
                   {meeting.activity_type} Meeting - {meeting.dateOfMeeting}
                 </Typography>
+
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
                   <Chip icon={<Map />} label={meeting.region} size="small" />
-                  <Chip
-                    icon={<Event />}
-                    label={meeting.dateOfMeeting}
-                    size="small"
-                  />
-                  <Chip
-                    icon={<PieChartIcon />}
-                    label={meeting.activity_type}
-                    size="small"
-                  />
+                  <Chip icon={<Event />} label={meeting.dateOfMeeting} size="small" />
+                  <Chip icon={<PieChartIcon />} label={meeting.activity_type} size="small" />
                 </Box>
-                <Typography variant="body2" paragraph>
-                  <strong>Regional Head:</strong> {meeting.regional_head}
-                </Typography>
+
+                {meeting.regional_head && (
+                  <Typography variant="body2" paragraph>
+                    <strong>Regional Head:</strong> {meeting.regional_head}
+                  </Typography>
+                )}
+
                 {meeting.state && (
                   <Typography variant="body2" paragraph>
                     <strong>State:</strong> {meeting.state}
                   </Typography>
                 )}
+
                 {meeting.district && (
                   <Typography variant="body2" paragraph>
                     <strong>District:</strong> {meeting.district}
                   </Typography>
                 )}
+
                 {meeting.short_description && (
                   <Typography variant="body2" paragraph>
                     <strong>Description:</strong> {meeting.short_description}
                   </Typography>
                 )}
+
                 {meeting.important_decision && (
                   <Typography variant="body2" paragraph>
-                    <strong>Important Decision:</strong>{" "}
-                    {meeting.important_decision}
+                    <strong>Important Decision:</strong> {meeting.important_decision}
                   </Typography>
                 )}
+
                 {meeting.activity_details && (
-                  <div className="activity-details-content">
+                  <>
                     <Typography variant="body2" paragraph>
                       <strong>Activity Details:</strong>
                     </Typography>
@@ -698,16 +868,13 @@ const PieChart = ({
                         __html: DOMPurify.sanitize(meeting.activity_details),
                       }}
                     />
-                  </div>
+                  </>
                 )}
+
                 {meeting.url && (
                   <Typography variant="body2">
                     <strong>URL:</strong>{" "}
-                    <a
-                      href={meeting.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={meeting.url} target="_blank" rel="noopener noreferrer">
                       {meeting.url}
                     </a>
                   </Typography>
@@ -721,6 +888,8 @@ const PieChart = ({
       </Dialog>
     </div>
   );
+
+
 };
 
 PieChart.propTypes = {

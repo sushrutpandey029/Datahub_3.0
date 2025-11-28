@@ -8,9 +8,12 @@ const OriginOfCall = ({ data }) => {
   useEffect(() => {
     console.log("🔍 OriginOfCall Component - Data prop received:", data);
     
-    // Static series names - always show Query and Complaint
+    // Static series names - ALWAYS show Query and Complaint (filter ke pehle aur baad dono mein)
     const staticSeriesNames = ["Query", "Complaint"];
     
+    // Get member name from data (filter ke baad actual member name show karega)
+    const memberName = data && (data.member || data.entity_type) ? (data.member || data.entity_type) : 'Member';
+
     // Use chart7 instead of chart8 for Member API
     if (data && data.chart7 && Array.isArray(data.chart7)) {
       console.log("✅ Valid data received in OriginOfCall");
@@ -27,14 +30,14 @@ const OriginOfCall = ({ data }) => {
       console.log("📊 Processed Query Data:", queryData);
       console.log("📊 Processed Complaint Data:", complaintData);
 
-      // Transform data into ApexCharts series format with static names
+      // Transform data into ApexCharts series format with STATIC names (Query, Complaint)
       const seriesData = [
         {
-          name: staticSeriesNames[0], // "Query"
+          name: staticSeriesNames[0], // ALWAYS "Query"
           data: queryData,
         },
         {
-          name: staticSeriesNames[1], // "Complaint"
+          name: staticSeriesNames[1], // ALWAYS "Complaint"
           data: complaintData,
         },
       ];
@@ -47,10 +50,7 @@ const OriginOfCall = ({ data }) => {
       const maxComplaintValue = Math.max(...complaintData);
       const maxOverallValue = Math.max(maxQueryValue, maxComplaintValue);
 
-      // Get member name from data
-      const memberName = data.member || data.entity_type || 'Member';
-
-      // Set chart options
+      // Set chart options - MEMBER NAME INCLUDED IN TITLE
       setOptions({
         chart: {
           type: "bar",
@@ -114,7 +114,7 @@ const OriginOfCall = ({ data }) => {
           colors: ['transparent']
         },
         title: {
-          text: `Origin of complaints & queries - Top 10 states (${memberName})`,
+          text: `Origin of complaints & queries - Top 10 states (${memberName})`, // MEMBER NAME INCLUDED
           align: "left",
           style: {
             fontSize: "16px",
@@ -208,17 +208,14 @@ const OriginOfCall = ({ data }) => {
       console.log("Has chart7?", !!(data && data.chart7));
       console.log("Is array?", Array.isArray(data && data.chart7));
       
-      // Get member name even when no data
-      const memberName = data && (data.member || data.entity_type) ? (data.member || data.entity_type) : 'Member';
-
-      // Set empty state with static series
+      // Set empty state with STATIC series (Query, Complaint) - MEMBER NAME INCLUDED
       const emptySeriesData = [
         {
-          name: staticSeriesNames[0], // "Query"
+          name: staticSeriesNames[0], // ALWAYS "Query"
           data: [],
         },
         {
-          name: staticSeriesNames[1], // "Complaint" 
+          name: staticSeriesNames[1], // ALWAYS "Complaint" 
           data: [],
         },
       ];
@@ -232,7 +229,7 @@ const OriginOfCall = ({ data }) => {
           }
         },
         title: {
-          text: `Origin of complaints & queries - Top 10 states (${memberName})`,
+          text: `Origin of complaints & queries - Top 10 states (${memberName})`, // MEMBER NAME INCLUDED
           align: "left",
           style: {
             fontSize: "16px",
@@ -262,7 +259,6 @@ const OriginOfCall = ({ data }) => {
           }
         },
         noData: {
-          text: "No data available",
           align: 'center',
           verticalAlign: 'middle',
           offsetX: 0,

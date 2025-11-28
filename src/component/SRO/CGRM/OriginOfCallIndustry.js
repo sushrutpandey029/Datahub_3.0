@@ -262,7 +262,6 @@ const OriginOfCallIndustry = ({ data }) => {
           }
         },
         noData: {
-          text: "No data available",
           align: 'center',
           verticalAlign: 'middle',
           offsetX: 0,
